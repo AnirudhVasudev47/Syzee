@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "157856312032",
+    "project_id": "syzee-50383",
+    "storage_bucket": "syzee-50383.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157856312032:android:9e8ef44f2e0e6e02c7fe85",
+        "android_client_info": {
+          "package_name": "com.webbirth.syzee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "157856312032-dhk9doree3nakm7r6psqhm3k1l8qksm7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.webbirth.syzee",
+            "certificate_hash": "ba0d6b59c6d0e7e34a60321308015d9ca38dfc3c"
+          }
+        },
+        {
+          "client_id": "157856312032-6352ft707n44bv22nkadu4cians3tql1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu_ZpME1_nxSSacIK7akXUouLBGZbLAXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "157856312032-6352ft707n44bv22nkadu4cians3tql1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
