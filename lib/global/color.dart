@@ -7,7 +7,7 @@ class ThemeColors {
   static Color errorColor = Color(0xFFE04642);
   static Color prime = Color(0xff240046);
   static Color black = Color(0xff000000);
-  static Color iconActiveColor = Color(0xffEF233C);
+  static Color iconActiveColor = Color(0xff009B93);
   static Color iconInActiveColor = Color.fromRGBO(24, 24, 24, 0.5);
   static Color navPillColor = Color(0xffEDF2F4);
   static Color transparent = Colors.transparent;

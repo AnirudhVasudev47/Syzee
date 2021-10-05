@@ -14,13 +14,13 @@ displayToast(context,
       type == 'success' ? Icons.info_outline : Icons.error_outline,
       size: 28.0,
       color:
-      type == 'success' ? ThemeColors.statusColor : ThemeColors.errorColor,
+          type == 'success' ? ThemeColors.statusColor : ThemeColors.errorColor,
     ),
     title: title ?? 'Title',
     message: desc ?? 'Message',
     duration: const Duration(seconds: 4),
     leftBarIndicatorColor:
-    type == 'success' ? ThemeColors.statusColor : ThemeColors.errorColor,
+        type == 'success' ? ThemeColors.statusColor : ThemeColors.errorColor,
   ).show(context);
 }
 
@@ -39,7 +39,11 @@ loadingDialog(BuildContext context, {String? asset}) {
             alignment: Alignment.center,
             child: asset == null
                 ? const CircularProgressIndicator()
-                : Lottie.asset(asset),
+                : Lottie.asset(
+                    asset,
+                    height: 200,
+                    width: 200,
+                  ),
           ),
         );
       });

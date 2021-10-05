@@ -91,12 +91,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     bool isGood = checkFields();
     if (isGood) {
       if (tnc) {
-        loadingDialog(context);
-        signUpResult = await context.read<AuthenticationService>().signUp(
-          email: emailText.text,
-          password: passwordText.text,
-          context: context,
+        loadingDialog(
+          context,
+          asset: 'assets/images/home/lottie/loading.json'
         );
+        signUpResult = await context.read<AuthenticationService>().signUp(
+              email: emailText.text,
+              password: passwordText.text,
+              context: context,
+            );
       } else {
         displayToast(
           context,

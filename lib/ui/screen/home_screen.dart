@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Profile',
           ),
         ],
-        iconSize: 22,
+        iconSize: 18,
         backgroundColor: ThemeColors.navPillColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: provider.currentIndex,

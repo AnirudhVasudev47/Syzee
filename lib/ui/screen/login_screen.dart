@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
 import 'package:syzee/services/auth_service.dart';
+import 'package:syzee/ui/screen/landing_screen.dart';
 import 'package:syzee/ui/screen/signup_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -56,13 +57,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   handleEmailLogin() async {
     bool isGood = checkFields();
-    if(isGood) {
-      loadingDialog(context);
-      signInResult = await context.read<AuthenticationService>().signUp(
-        email: emailText.text,
-        password: passText.text,
-        context: context,
+    if (isGood) {
+      loadingDialog(
+        context,
+        asset: 'assets/images/home/lottie/loading.json'
       );
+      signInResult = await context.read<AuthenticationService>().signIn(
+            email: emailText.text,
+            password: passText.text,
+          );
     } else {
       return;
     }
@@ -73,7 +76,15 @@ class _LoginScreenState extends State<LoginScreen> {
         desc: 'Please try again later.',
       );
     } else {
-      displayToast(context, title: 'Success', desc: 'Successfully signed up');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LandingPage(),
+        ),
+        (route) => false,
+      );
+      displayToast(context,
+          title: 'Success', desc: 'Successfully signed up', type: 'success');
     }
   }
 
@@ -122,19 +133,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(
+                    Padding(
+                      padding: const EdgeInsets.only(
                         top: 45.0,
                         left: 25,
                         right: 25,
                       ),
                       child: TextField(
-                        style: TextStyle(
+                        controller: emailText,
+                        style: const TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 16,
                         ),
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0xff169B93),
@@ -155,6 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         right: 25,
                       ),
                       child: TextField(
+                        controller: passText,
                         obscureText: !isTextVisible,
                         style: const TextStyle(
                           fontFamily: 'Montserrat',
@@ -191,16 +204,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (isEmail(emailText.text)) {
-                            context
+                            String result = await context
                                 .read<AuthenticationService>()
                                 .resetPassword(emailText.text);
+                            if (result == 'sent') {
+                              displayToast(context,
+                                  title: 'Email sent',
+                                  desc:
+                                      'Please reset your password from the link sent',
+                                  type: 'success');
+                            } else {
+                              displayToast(
+                                context,
+                                title: 'Something went wrong',
+                                desc: 'Please try again later',
+                              );
+                            }
                           } else {
                             displayToast(
                               context,
                               title: 'Invalid Email',
-                              desc: 'Email entered is wrong please check again',
+                              desc: 'Please check the entered e-mail again',
                             );
                           }
                         },

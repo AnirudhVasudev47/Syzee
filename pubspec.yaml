@@ -78,6 +78,7 @@ flutter:
     - assets/images/bottom_nav_bar/
     - assets/images/home/
     - assets/images/home/lottie/
+    - assets/images/home/brands_tab/
   #   - images/a_dot_ham.jpeg
 
   fonts:
