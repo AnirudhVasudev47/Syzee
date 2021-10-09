@@ -48,7 +48,7 @@ class _BrandProductListState extends State<BrandProductList> {
           crossAxisCount: 2,
           crossAxisSpacing: 12,
           mainAxisSpacing: 10,
-          childAspectRatio: 168/313,
+          childAspectRatio: 168/290,
         ),
         itemBuilder: (context, index) {
           return BrandProductTile(

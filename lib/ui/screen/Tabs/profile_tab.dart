@@ -22,22 +22,43 @@ class _ProfileTabState extends State<ProfileTab> {
     super.initState();
   }
 
-  Widget profileTile(String image, String name) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Row(
-        children: [
-          Image.asset(
-            image,
-            fit: BoxFit.contain,
-          ),
-          Expanded(
-            child: Text(
-              name,
-
+  Widget profileTile(String image, String name, {onTap}) {
+    return InkWell(
+      onTap: onTap ?? () {},
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          vertical: 13,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 25,
+        ),
+        child: Row(
+          children: [
+            Image.asset(
+              image,
+              width: 40,
+              height: 40,
+              fit: BoxFit.contain,
             ),
-          ),
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                    fontFamily: 'VarelaRound',
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+            Image.asset(
+              'assets/images/home/profile_tab/arrow_right.png',
+              width: 9,
+              height: 9,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -93,33 +114,130 @@ class _ProfileTabState extends State<ProfileTab> {
               )
             ],
           )
-        : Center(
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  context.read<AuthenticationService>().signOut();
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                primary: const Color(0xff169B93),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 72,
-                ),
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(
+                height: 10,
               ),
-              child: const Text(
-                'Sign out',
+              const Text(
+                'Account',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
+                  fontSize: 24,
+                  color: Color(0xff009C95),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 25,
+                ),
+                child: Text(
+                  'James',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 25,
+                ),
+                child: Text(
+                  'jamesondunn@gmail.com',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      profileTile(
+                        'assets/images/home/profile_tab/edit.png',
+                        'My Profile',
+                      ),
+                      profileTile(
+                        'assets/images/home/profile_tab/location.png',
+                        'My Address',
+                      ),
+                      profileTile(
+                        'assets/images/home/profile_tab/clock.png',
+                        'My Orders',
+                      ),
+                      profileTile(
+                        'assets/images/home/profile_tab/payment.png',
+                        'Payment details',
+                      ),
+                      profileTile(
+                        'assets/images/home/profile_tab/notification.png',
+                        'Sizing Profile',
+                      ),
+                      profileTile(
+                        'assets/images/home/profile_tab/logout.png',
+                        'Membership ',
+                      ),
+                      profileTile(
+                        'assets/images/home/profile_tab/logout.png',
+                        'Contact us',
+                      ),
+                      profileTile(
+                        'assets/images/home/profile_tab/logout.png',
+                        'Log Out',
+                        onTap: () {
+                          setState(() {
+                            context.read<AuthenticationService>().signOut();
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            onTap: () {},
+                            child: const Text(
+                              'Terms & conditions',
+                              style: TextStyle(
+                                fontFamily: 'VarelaRound',
+                                fontSize: 17,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {},
+                            child: const Text(
+                              'Privacy Policy',
+                              style: TextStyle(
+                                fontFamily: 'VarelaRound',
+                                fontSize: 17,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
           );
   }
 }

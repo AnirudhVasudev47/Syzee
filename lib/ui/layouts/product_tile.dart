@@ -56,40 +56,23 @@ class ProductTile extends StatelessWidget {
                       Text(
                         '\$' + price.toString(),
                         style: const TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 18,
-                          color: Color(0xff009C95)
-                        ),
+                            fontFamily: 'Montserrat',
+                            fontSize: 18,
+                            color: Color(0xff009C95)),
                       ),
                     ],
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Image.asset(
-                          'assets/images/home/cart.png',
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Image.asset(
+                      'assets/images/home/heart.png',
+                      height: 20,
+                      width: 20,
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Image.asset(
-                          'assets/images/home/heart.png',
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),

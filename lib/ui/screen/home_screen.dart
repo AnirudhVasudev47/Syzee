@@ -55,25 +55,43 @@ class _HomePageState extends State<HomePage> {
           width: 104,
         ),
         leading: IconButton(
-          icon: const Icon(Icons.search),
+          icon: const Icon(
+            Icons.search,
+            size: 30,
+            color: Color(0xff000000),
+          ),
           onPressed: () {},
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () {},
+          Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            child: InkWell(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(50),
+              ),
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: SvgPicture.asset(
+                  'assets/images/home/appbar/bag.svg',
+                  width: 25,
+                  height: 25,
+                ),
+              ),
+            ),
           ),
         ],
       ),
       key: scaffoldKey,
       body: Builder(
-        builder: (context) =>
-            SafeArea(
-              // top: false,
-              child: Container(
-                child: _widgetOptions[provider.currentIndex],
-              ),
-            ),
+        builder: (context) => SafeArea(
+          // top: false,
+          child: Container(
+            child: _widgetOptions[provider.currentIndex],
+          ),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

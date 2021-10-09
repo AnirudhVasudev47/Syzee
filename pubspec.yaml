@@ -77,8 +77,11 @@ flutter:
     - assets/images/
     - assets/images/bottom_nav_bar/
     - assets/images/home/
+    - assets/images/home/appbar/
     - assets/images/home/lottie/
+    - assets/images/home/home_tab/
     - assets/images/home/brands_tab/
+    - assets/images/home/profile_tab/
   #   - images/a_dot_ham.jpeg
 
   fonts:

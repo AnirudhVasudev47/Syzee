@@ -39,22 +39,25 @@ class _WishlistProductListState extends State<WishlistProductList> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: listData.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 10,
-        childAspectRatio: 168/313,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+        itemCount: listData.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 10,
+          childAspectRatio: 168/290,
+        ),
+        itemBuilder: (context, index) {
+          return ProductTile(
+            name: listData[index].name,
+            brand: listData[index].brand,
+            price: listData[index].price,
+            image: listData[index].image,
+          );
+        },
       ),
-      itemBuilder: (context, index) {
-        return ProductTile(
-          name: listData[index].name,
-          brand: listData[index].brand,
-          price: listData[index].price,
-          image: listData[index].image,
-        );
-      },
     );
   }
 }

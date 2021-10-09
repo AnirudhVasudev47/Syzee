@@ -69,19 +69,8 @@ class BrandProductTile extends StatelessWidget {
                   ),
                 ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Image.asset(
-                          'assets/images/home/cart.png',
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
-                    ),
                     InkWell(
                       onTap: () {},
                       child: Padding(
