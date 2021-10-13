@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syzee/models/product_list_model.dart';
 import 'package:syzee/ui/layouts/product_tile.dart';
+import 'package:syzee/ui/screen/single_product_screen.dart';
 
 class WishlistProductList extends StatefulWidget {
   const WishlistProductList({Key? key}) : super(key: key);
@@ -16,25 +17,36 @@ class _WishlistProductListState extends State<WishlistProductList> {
       name: 'Red women dress',
       image: 'assets/images/578.png',
       brand: 'ZARA',
+      wishlist: true,
     ),
     ProductTileModel(
       price: 14,
       name: 'Women checks',
       image: 'assets/images/pink.png',
       brand: 'Allen Solly',
+      wishlist: true,
     ),
     ProductTileModel(
       price: 24,
       name: 'Flower women ',
       image: 'assets/images/black.png',
       brand: 'Trends',
+      wishlist: true,
     ),
     ProductTileModel(
       price: 12,
       name: 'Women pink dress',
       image: 'assets/images/white.png',
       brand: 'ZARA',
+      wishlist: true,
     ),
+  ];
+
+  var wishlistState = [
+    true,
+    true,
+    true,
+    true,
   ];
 
   @override
@@ -55,6 +67,20 @@ class _WishlistProductListState extends State<WishlistProductList> {
             brand: listData[index].brand,
             price: listData[index].price,
             image: listData[index].image,
+            isWished: wishlistState[index],
+            onTapHeart: () {
+              setState(() {
+                wishlistState[index] = !wishlistState[index];
+              });
+            },
+            onTapCard: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SingleProductScreen(),
+                ),
+              );
+            },
           );
         },
       ),

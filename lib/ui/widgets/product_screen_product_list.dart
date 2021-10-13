@@ -1,55 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:syzee/ui/layouts/brand_product_list_tile.dart';
+import 'package:syzee/models/product_list_model.dart';
+import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
 
-class BrandProductList extends StatefulWidget {
-  const BrandProductList({Key? key}) : super(key: key);
+class ProductScreenProductList extends StatefulWidget {
+  const ProductScreenProductList({Key? key}) : super(key: key);
 
   @override
-  State<BrandProductList> createState() => _BrandProductListState();
+  State<ProductScreenProductList> createState() =>
+      _ProductScreenProductListState();
 }
 
-class _BrandProductListState extends State<BrandProductList> {
+class _ProductScreenProductListState extends State<ProductScreenProductList> {
   var listData = [
-    BrandProductTile(
+    ProductTileModel(
       price: 34,
-      brand: 'Gucci shirts',
-      image: 'assets/images/home/brands_tab/image1.png',
-      name: 'Men\'s Cotton shirt',
-      isWished: true,
-      onTapCard: () {},
-      onTapHeart: () {},
+      name: 'Red women dress',
+      image: 'assets/images/578.png',
+      brand: 'ZARA',
+      wishlist: true,
     ),
-    BrandProductTile(
+    ProductTileModel(
       price: 14,
-      brand: 'Gucci T Shirt',
-      image: 'assets/images/home/brands_tab/image2.png',
-      name: 'White men t-shirt',
-      isWished: true,
-      onTapCard: () {},
-      onTapHeart: () {},
+      name: 'Women checks',
+      image: 'assets/images/pink.png',
+      brand: 'Allen Solly',
+      wishlist: true,
     ),
-    BrandProductTile(
+    ProductTileModel(
       price: 24,
-      brand: 'Gucci shoes',
-      image: 'assets/images/home/brands_tab/image3.png',
-      name: 'Black Women shoes',
-      isWished: true,
-      onTapCard: () {},
-      onTapHeart: () {},
+      name: 'Flower women ',
+      image: 'assets/images/black.png',
+      brand: 'Trends',
+      wishlist: true,
     ),
-    BrandProductTile(
+    ProductTileModel(
       price: 12,
-      brand: 'Gucci belt',
-      image: 'assets/images/home/brands_tab/image4.png',
-      name: 'Pure leather belt',
-      isWished: true,
-      onTapCard: () {},
-      onTapHeart: () {},
+      name: 'Women pink dress',
+      image: 'assets/images/white.png',
+      brand: 'ZARA',
+      wishlist: true,
     ),
   ];
 
-  var wishedList = [
+  var wishlistState = [
     false,
     false,
     false,
@@ -58,26 +52,26 @@ class _BrandProductListState extends State<BrandProductList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10,),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
         itemCount: listData.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 12,
           mainAxisSpacing: 10,
-          childAspectRatio: 168/290,
+          childAspectRatio: 168 / 290,
         ),
         itemBuilder: (context, index) {
-          return BrandProductTile(
+          return ProductTile(
             name: listData[index].name,
             brand: listData[index].brand,
             price: listData[index].price,
             image: listData[index].image,
-            isWished: wishedList[index],
+            isWished: wishlistState[index],
             onTapHeart: () {
               setState(() {
-                wishedList[index] = !wishedList[index];
+                wishlistState[index] = !wishlistState[index];
               });
             },
             onTapCard: () {

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:syzee/global/theme.dart';
 import 'package:syzee/services/auth_service.dart';
 import 'package:syzee/ui/screen/Tabs/home_tab.dart';
 import 'package:syzee/ui/screen/home_screen.dart';
@@ -169,6 +170,12 @@ class _ProfileTabState extends State<ProfileTab> {
                       profileTile(
                         'assets/images/home/profile_tab/edit.png',
                         'My Profile',
+                        onTap: () {
+                          setState(() {
+                            currentTheme.toggleTheme();
+                          });
+                          print(currentTheme.currentTheme);
+                        },
                       ),
                       profileTile(
                         'assets/images/home/profile_tab/location.png',

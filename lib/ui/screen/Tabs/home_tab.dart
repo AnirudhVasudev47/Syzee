@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:syzee/global/theme.dart';
 import 'package:syzee/models/product_list_model.dart';
 import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/widgets/home_tab_banner.dart';
 import 'package:syzee/ui/widgets/home_tab_blogger_list.dart';
 import 'package:syzee/ui/widgets/home_tab_categories.dart';
 import 'package:syzee/ui/widgets/home_tab_influencers_stories.dart';
+import 'package:syzee/ui/widgets/home_tab_most_wanted.dart';
 import 'package:syzee/ui/widgets/home_tab_weeks_highlights.dart';
 import 'package:syzee/ui/widgets/look_of_the_day.dart';
 
@@ -22,24 +24,28 @@ class _HomeTabState extends State<HomeTab> {
       name: 'Red women dress',
       image: 'assets/images/578.png',
       brand: 'ZARA',
+      wishlist: true,
     ),
     ProductTileModel(
       price: 14,
       name: 'Women checks',
       image: 'assets/images/pink.png',
       brand: 'Allen Solly',
+      wishlist: true,
     ),
     ProductTileModel(
       price: 24,
       name: 'Flower women ',
       image: 'assets/images/black.png',
       brand: 'Trends',
+      wishlist: true,
     ),
     ProductTileModel(
       price: 12,
       name: 'Women pink dress',
       image: 'assets/images/white.png',
       brand: 'ZARA',
+      wishlist: true,
     ),
   ];
 
@@ -229,6 +235,9 @@ class _HomeTabState extends State<HomeTab> {
                       brand: listData[0].brand,
                       price: listData[0].price,
                       image: listData[0].image,
+                      isWished: listData[0].wishlist,
+                      onTapCard: () {},
+                      onTapHeart: () {},
                     ),
                   ),
                 ),
@@ -242,6 +251,9 @@ class _HomeTabState extends State<HomeTab> {
                       brand: listData[1].brand,
                       price: listData[1].price,
                       image: listData[1].image,
+                      isWished: listData[1].wishlist,
+                      onTapCard: () {},
+                      onTapHeart: () {},
                     ),
                   ),
                 ),
@@ -255,6 +267,12 @@ class _HomeTabState extends State<HomeTab> {
                       brand: listData[2].brand,
                       price: listData[2].price,
                       image: listData[2].image,
+                      isWished: listData[2].wishlist,
+                      onTapCard: () {},
+                      onTapHeart: () {
+                        setState(() {
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -268,6 +286,9 @@ class _HomeTabState extends State<HomeTab> {
                       brand: listData[3].brand,
                       price: listData[3].price,
                       image: listData[3].image,
+                      isWished: listData[3].wishlist,
+                      onTapCard: () {},
+                      onTapHeart: () {},
                     ),
                   ),
                 ),
@@ -329,6 +350,18 @@ class _HomeTabState extends State<HomeTab> {
               color: Color(0xffE7D1A8),
             ),
           ),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 25,
+            ).copyWith(bottom: 25, top: 10),
+            child: const Text(
+              'This week\'s Highlights',
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -364,7 +397,117 @@ class _HomeTabState extends State<HomeTab> {
                   fontWeight: FontWeight.w500),
             ),
           ),
-          const HomeTabWeeksHighlights()
+          const HomeTabWeeksHighlights(),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 25,
+              vertical: 25,
+            ),
+            child: const Text(
+              'Most Wanted',
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          const HomeTabMostWanted(),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 25,
+            ),
+            child: Image.asset(
+              'assets/images/home/home_tab/banner1.png',
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.contain,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 25,
+            ),
+            child: Image.asset(
+              'assets/images/home/home_tab/banner2.png',
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.contain,
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            color: Colors.black,
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            child: const Text(
+              'Couldn\'t find something your were looking for?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Montserrat',
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 25),
+            padding: const EdgeInsets.only(top: 8),
+            color: const Color(0xffD3D4D6),
+            child: Column(
+              children: [
+                const Text(
+                  'We can help you find it, Please answer these\nsimple questions.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 25.0).copyWith(top: 15),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Get Started',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color:  Colors.black,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                          ),
+                        ),
+                        Container(
+                          child: Image.asset(
+                            'assets/images/home/home_tab/arrow.png',
+                            width: 25,
+                            height: 25,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 25,
+            ),
+            child: Image.asset(
+              'assets/images/home/home_tab/banner3.png',
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.contain,
+            ),
+          ),
         ],
       ),
     );

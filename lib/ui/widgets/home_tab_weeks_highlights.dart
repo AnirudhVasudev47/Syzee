@@ -25,6 +25,7 @@ class _HomeTabWeeksHighlightsState extends State<HomeTabWeeksHighlights> {
                   (item) => InkWell(
                     onTap: () {},
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Image.asset(
@@ -52,7 +53,7 @@ class _HomeTabWeeksHighlightsState extends State<HomeTabWeeksHighlights> {
                   ),
           ).toList(),
           options: CarouselOptions(
-            aspectRatio: 343/330,
+            aspectRatio: 343/315,
             viewportFraction: 0.7,
             enlargeCenterPage: true,
             enlargeStrategy: CenterPageEnlargeStrategy.height,

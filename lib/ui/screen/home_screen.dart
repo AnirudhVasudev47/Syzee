@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:syzee/global/color.dart';
 import 'package:syzee/global/constants.dart';
+import 'package:syzee/global/theme.dart';
 import 'package:syzee/services/bottom_nav_provider.dart';
 import 'package:syzee/ui/screen/Tabs/brand_tab.dart';
 import 'package:syzee/ui/screen/Tabs/categories_tab.dart';
@@ -23,6 +24,14 @@ class _HomePageState extends State<HomePage> {
   final firebaseAuth = FirebaseAuth.instance;
   ScreenUtil screenUtil = ScreenUtil();
   GlobalKey scaffoldKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    currentTheme.addListener(() {
+      setState(() {});
+    });
+  }
 
   final List<Widget> _widgetOptions = <Widget>[
     const HomeTab(),
@@ -43,47 +52,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var provider = Provider.of<BottomNavigationBarProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColors.white,
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Image.asset(
-          AssetConstants.blackLogo,
-          fit: BoxFit.contain,
-          height: 35,
-          width: 104,
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.search,
-            size: 30,
-            color: Color(0xff000000),
-          ),
-          onPressed: () {},
-        ),
-        actions: [
-          Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            child: InkWell(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(50),
-              ),
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: SvgPicture.asset(
-                  'assets/images/home/appbar/bag.svg',
-                  width: 25,
-                  height: 25,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: AssetConstants.customAppBar,
       key: scaffoldKey,
       body: Builder(
         builder: (context) => SafeArea(

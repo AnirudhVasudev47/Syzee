@@ -113,25 +113,21 @@ class CustomTheme with ChangeNotifier {
     return ThemeData(
       brightness: Brightness.light,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      colorScheme: kColorScheme,
       backgroundColor: ThemeColors.backgroundColorLight,
       primaryColor: ThemeColors.primaryColorLight,
       primaryColorLight: ThemeColors.primaryColorLight,
       primaryColorDark: ThemeColors.primaryColorLight,
-      accentColor: ThemeColors.primaryColorLight,
-      buttonColor: ThemeColors.primaryColorLight,
       cardColor: ThemeColors.primaryColorLight,
       errorColor: ThemeColors.errorColor,
       iconTheme: _customIconTheme(base.iconTheme),
       primaryIconTheme: _customIconTheme(base.iconTheme),
       textTheme: _buildTextTheme(base.textTheme),
       primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
-      accentTextTheme: _buildTextTheme(base.accentTextTheme),
       hintColor: ThemeColors.hintTextColor,
       indicatorColor: ThemeColors.primaryColorLight,
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
-        border: UnderlineInputBorder(),
+        border: const UnderlineInputBorder(),
         errorBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: ThemeColors.errorColor),
         ),
@@ -154,13 +150,12 @@ class CustomTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(
         elevation: 4,
         color: ThemeColors.headLineText1Light,
-        textTheme: _buildTextTheme(base.textTheme),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          minimumSize: Size(double.minPositive, double.minPositive),
+          minimumSize: const Size(double.minPositive, double.minPositive),
           primary: ThemeColors.primaryColorLight,
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
         ),
       ),
       cardTheme: CardTheme(
@@ -172,7 +167,7 @@ class CustomTheme with ChangeNotifier {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          minimumSize: Size(double.minPositive, double.minPositive),
+          minimumSize: const Size(double.minPositive, double.minPositive),
           onPrimary: ThemeColors.primaryColorLight,
           primary: ThemeColors.primaryColorLight,
           textStyle: base.textTheme.button,
@@ -183,7 +178,7 @@ class CustomTheme with ChangeNotifier {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          minimumSize: Size(double.minPositive, double.minPositive),
+          minimumSize: const Size(double.minPositive, double.minPositive),
           elevation: 0,
           side: BorderSide(
             color: ThemeColors.primaryColorLight,
@@ -202,7 +197,7 @@ class CustomTheme with ChangeNotifier {
           borderRadius: BorderRadius.circular(30.0),
           side: BorderSide.none,
         ),
-      ),
+      ), colorScheme: kColorScheme.copyWith(secondary: ThemeColors.primaryColorLight),
     );
   }
 
@@ -211,24 +206,20 @@ class CustomTheme with ChangeNotifier {
     return ThemeData(
       brightness: Brightness.light,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      colorScheme: kColorScheme,
       backgroundColor: ThemeColors.backgroundColorLight,
       primaryColor: ThemeColors.primaryColorLight,
       primaryColorLight: ThemeColors.primaryColorLight,
       primaryColorDark: ThemeColors.primaryColorLight,
-      accentColor: ThemeColors.primaryColorLight,
-      buttonColor: ThemeColors.primaryColorLight,
       cardColor: ThemeColors.primaryColorLight,
       errorColor: ThemeColors.errorColor,
       iconTheme: _customIconTheme(base.iconTheme),
       primaryIconTheme: _customIconTheme(base.iconTheme),
       textTheme: _buildTextTheme(base.textTheme),
       primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
-      accentTextTheme: _buildTextTheme(base.accentTextTheme),
       hintColor: ThemeColors.hintTextColor,
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
-        border: UnderlineInputBorder(),
+        border: const UnderlineInputBorder(),
         errorBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: ThemeColors.errorColor),
         ),
@@ -247,17 +238,16 @@ class CustomTheme with ChangeNotifier {
           color: ThemeColors.headLineText1Light,
         ),
       ),
-      scaffoldBackgroundColor: Colors.white,
-      appBarTheme: AppBarTheme(
+      scaffoldBackgroundColor: Colors.black,
+      appBarTheme: const AppBarTheme(
         elevation: 4,
-        color: ThemeColors.headLineText1Light,
-        textTheme: _buildTextTheme(base.textTheme),
+        backgroundColor: Colors.black,
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          minimumSize: Size(double.minPositive, double.minPositive),
+          minimumSize: const Size(double.minPositive, double.minPositive),
           primary: ThemeColors.primaryColorLight,
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
         ),
       ),
       cardTheme: CardTheme(
@@ -300,7 +290,7 @@ class CustomTheme with ChangeNotifier {
           borderRadius: BorderRadius.circular(30.0),
           side: BorderSide.none,
         ),
-      ),
+      ), colorScheme: kColorScheme.copyWith(secondary: ThemeColors.primaryColorLight),
     );
   }
 }

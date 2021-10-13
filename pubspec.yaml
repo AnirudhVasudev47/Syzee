@@ -82,6 +82,8 @@ flutter:
     - assets/images/home/home_tab/
     - assets/images/home/brands_tab/
     - assets/images/home/profile_tab/
+    - assets/images/products_screen/
+    - assets/images/single_product/
   #   - images/a_dot_ham.jpeg
 
   fonts:
