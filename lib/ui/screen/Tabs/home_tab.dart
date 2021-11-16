@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:syzee/global/theme.dart';
 import 'package:syzee/models/product_list_model.dart';
 import 'package:syzee/ui/layouts/product_tile.dart';
+import 'package:syzee/ui/screen/single_product_screen.dart';
 import 'package:syzee/ui/widgets/home_tab_banner.dart';
 import 'package:syzee/ui/widgets/home_tab_blogger_list.dart';
 import 'package:syzee/ui/widgets/home_tab_categories.dart';
@@ -24,30 +24,57 @@ class _HomeTabState extends State<HomeTab> {
       name: 'Red women dress',
       image: 'assets/images/578.png',
       brand: 'ZARA',
-      wishlist: true,
+      wishlist: false,
     ),
     ProductTileModel(
       price: 14,
       name: 'Women checks',
       image: 'assets/images/pink.png',
       brand: 'Allen Solly',
-      wishlist: true,
+      wishlist: false,
     ),
     ProductTileModel(
       price: 24,
       name: 'Flower women ',
       image: 'assets/images/black.png',
       brand: 'Trends',
-      wishlist: true,
+      wishlist: false,
     ),
     ProductTileModel(
       price: 12,
       name: 'Women pink dress',
       image: 'assets/images/white.png',
       brand: 'ZARA',
-      wishlist: true,
+      wishlist: false,
     ),
   ];
+
+  var wishData = [
+    false,
+    false,
+    false,
+    false,
+  ];
+
+  DateTime now = DateTime.now();
+
+  String greetingText = '';
+
+  getGreet() {
+    if (now.hour < 12) {
+      greetingText = 'Good Morning! ';
+    } else if (now.hour >= 12) {
+      greetingText = 'Good Afternoon! ';
+    } else {
+      greetingText = 'Good Evening! ';
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getGreet();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +88,10 @@ class _HomeTabState extends State<HomeTab> {
               horizontal: 25,
             ),
             color: const Color.fromRGBO(0, 0, 0, 0.65),
-            child: const Text(
-              'Good morning! Welcome :)',
+            child: Text(
+              greetingText + 'Welcome :)',
               textAlign: TextAlign.start,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Montserrat',
                 fontSize: 19,
                 color: Colors.white,
@@ -85,23 +112,18 @@ class _HomeTabState extends State<HomeTab> {
                   fontWeight: FontWeight.w500),
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: const [
-                HomeTabCategories(
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 178,
+            child: ListView.builder(
+              itemCount: 3,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return const HomeTabCategories(
                   image: 'assets/images/home/home_tab/category1.png',
                   name: 'Clothing',
-                ),
-                HomeTabCategories(
-                  image: 'assets/images/home/home_tab/category2.png',
-                  name: 'Shoes',
-                ),
-                HomeTabCategories(
-                  image: 'assets/images/home/home_tab/category3.png',
-                  name: 'Bags',
-                ),
-              ],
+                );
+              },
             ),
           ),
           Container(
@@ -221,78 +243,41 @@ class _HomeTabState extends State<HomeTab> {
                   fontWeight: FontWeight.w500),
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                Padding(
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 310,
+            child: ListView.builder(
+              itemCount: listData.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: SizedBox(
                     width: 168,
                     height: 305,
                     child: ProductTile(
-                      name: listData[0].name,
-                      brand: listData[0].brand,
-                      price: listData[0].price,
-                      image: listData[0].image,
-                      isWished: listData[0].wishlist,
-                      onTapCard: () {},
-                      onTapHeart: () {},
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: SizedBox(
-                    width: 168,
-                    height: 305,
-                    child: ProductTile(
-                      name: listData[1].name,
-                      brand: listData[1].brand,
-                      price: listData[1].price,
-                      image: listData[1].image,
-                      isWished: listData[1].wishlist,
-                      onTapCard: () {},
-                      onTapHeart: () {},
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: SizedBox(
-                    width: 168,
-                    height: 305,
-                    child: ProductTile(
-                      name: listData[2].name,
-                      brand: listData[2].brand,
-                      price: listData[2].price,
-                      image: listData[2].image,
-                      isWished: listData[2].wishlist,
-                      onTapCard: () {},
+                      name: listData[index].name,
+                      brand: listData[index].brand,
+                      price: listData[index].price,
+                      image: listData[index].image,
+                      isWished: wishData[index],
+                      onTapCard: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SingleProductScreen(),
+                          ),
+                        );
+                      },
                       onTapHeart: () {
                         setState(() {
+                          wishData[index] = !wishData[index];
                         });
                       },
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: SizedBox(
-                    width: 168,
-                    height: 305,
-                    child: ProductTile(
-                      name: listData[3].name,
-                      brand: listData[3].brand,
-                      price: listData[3].price,
-                      image: listData[3].image,
-                      isWished: listData[3].wishlist,
-                      onTapCard: () {},
-                      onTapHeart: () {},
-                    ),
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
           const Padding(
@@ -355,7 +340,7 @@ class _HomeTabState extends State<HomeTab> {
               horizontal: 25,
             ).copyWith(bottom: 25, top: 10),
             child: const Text(
-              'This week\'s Highlights',
+              'Look of the day',
               style: TextStyle(
                   fontSize: 16,
                   fontFamily: 'Montserrat',

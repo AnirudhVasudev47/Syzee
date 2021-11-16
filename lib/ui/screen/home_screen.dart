@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   final firebaseAuth = FirebaseAuth.instance;
   ScreenUtil screenUtil = ScreenUtil();
   GlobalKey scaffoldKey = GlobalKey();
+  double iconSize = 20;
 
   @override
   void initState() {
@@ -68,20 +69,28 @@ class _HomePageState extends State<HomePage> {
               icon: SvgPicture.asset(
                 AssetConstants.home,
                 color: ThemeColors.iconInActiveColor,
+                height: iconSize,
+                width: iconSize,
               ),
               activeIcon: SvgPicture.asset(
                 AssetConstants.homeActive,
                 color: ThemeColors.iconActiveColor,
+                height: iconSize,
+                width: iconSize,
               ),
               label: 'Home'),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               AssetConstants.categories,
               color: ThemeColors.iconInActiveColor,
+              height: iconSize,
+              width: iconSize,
             ),
             activeIcon: SvgPicture.asset(
               AssetConstants.categoriesActive,
               color: ThemeColors.iconActiveColor,
+              height: iconSize,
+              width: iconSize,
             ),
             label: 'Categories',
           ),
@@ -89,10 +98,14 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(
               AssetConstants.brand,
               color: ThemeColors.iconInActiveColor,
+              height: iconSize,
+              width: iconSize,
             ),
             activeIcon: SvgPicture.asset(
               AssetConstants.brandActive,
               color: ThemeColors.iconActiveColor,
+              height: iconSize,
+              width: iconSize,
             ),
             label: 'Brand',
           ),
@@ -100,10 +113,14 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(
               AssetConstants.wish,
               color: ThemeColors.iconInActiveColor,
+              height: iconSize,
+              width: iconSize,
             ),
             activeIcon: SvgPicture.asset(
               AssetConstants.wishActive,
               color: ThemeColors.iconActiveColor,
+              height: iconSize,
+              width: iconSize,
             ),
             label: 'Wishlist',
           ),
@@ -111,15 +128,19 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(
               AssetConstants.profile,
               color: ThemeColors.iconInActiveColor,
+              height: iconSize,
+              width: iconSize,
             ),
             activeIcon: SvgPicture.asset(
               AssetConstants.profileActive,
               color: ThemeColors.iconActiveColor,
+              height: iconSize,
+              width: iconSize,
             ),
             label: 'Profile',
           ),
         ],
-        iconSize: 18,
+        iconSize: 14,
         backgroundColor: ThemeColors.navPillColor,
         type: BottomNavigationBarType.fixed,
         currentIndex: provider.currentIndex,

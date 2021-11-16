@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
 import 'package:syzee/services/auth_service.dart';
 import 'package:syzee/ui/screen/landing_screen.dart';
 import 'package:syzee/ui/screen/signup_screen.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -147,17 +147,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xff169B93),
-                                width: 1,
-                              ),
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xff169B93),
+                              width: 1,
                             ),
-                            hintText: 'Enter your email',
-                            hintStyle: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
-                            )),
+                          ),
+                          hintText: 'Enter your email',
+                          hintStyle: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                     ),
                     Padding(

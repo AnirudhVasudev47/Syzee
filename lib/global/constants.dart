@@ -28,6 +28,8 @@ class AssetConstants {
   static const heartActive = 'assets/images/home/brands_tab/heart_active.png';
   static const heartInactive = 'assets/images/home/brands_tab/heart_inactive.png';
 
+  static const bin = 'assets/images/checkout/bin.png';
+
   static PreferredSizeWidget customAppBar = (AppBar(
     elevation: 0,
     backgroundColor: currentTheme.currentTheme == ThemeMode.dark

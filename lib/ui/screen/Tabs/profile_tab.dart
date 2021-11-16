@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:syzee/global/theme.dart';
 import 'package:syzee/services/auth_service.dart';
-import 'package:syzee/ui/screen/Tabs/home_tab.dart';
-import 'package:syzee/ui/screen/home_screen.dart';
 import 'package:syzee/ui/screen/login_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:syzee/ui/screen/sizing_profile_screen.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({Key? key}) : super(key: key);
@@ -133,26 +132,26 @@ class _ProfileTabState extends State<ProfileTab> {
               const SizedBox(
                 height: 25,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
+              Padding(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 25,
                 ),
                 child: Text(
-                  'James',
-                  style: TextStyle(
+                  firebaseAuth.currentUser!.uid,
+                  style: const TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
+              Padding(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 25,
                 ),
                 child: Text(
-                  'jamesondunn@gmail.com',
-                  style: TextStyle(
+                  firebaseAuth.currentUser!.email?? '',
+                  style: const TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -182,17 +181,29 @@ class _ProfileTabState extends State<ProfileTab> {
                         'My Address',
                       ),
                       profileTile(
-                        'assets/images/home/profile_tab/clock.png',
-                        'My Orders',
-                      ),
+                          'assets/images/home/profile_tab/clock.png',
+                          'My Orders', onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SizingProfileScreen(),
+                          ),
+                        );
+                      }),
                       profileTile(
                         'assets/images/home/profile_tab/payment.png',
                         'Payment details',
                       ),
                       profileTile(
-                        'assets/images/home/profile_tab/notification.png',
-                        'Sizing Profile',
-                      ),
+                          'assets/images/home/profile_tab/notification.png',
+                          'Sizing Profile', onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SizingProfileScreen(),
+                          ),
+                        );
+                      }),
                       profileTile(
                         'assets/images/home/profile_tab/logout.png',
                         'Membership ',

@@ -85,31 +85,6 @@ class LandingPage extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      height: 60,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: const Color(0xff0B4E4A)),
-                        child: const Text(
-                          'SHOP MEN',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ChangeNotifierProvider<
-                                  BottomNavigationBarProvider>(
-                                child: const HomePage(),
-                                create: (BuildContext context) =>
-                                    BottomNavigationBarProvider(),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
                   ],
                 ),
               ],
@@ -120,3 +95,5 @@ class LandingPage extends StatelessWidget {
     );
   }
 }
+
+    
