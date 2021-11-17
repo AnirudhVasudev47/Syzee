@@ -18,15 +18,23 @@ class SizingProfileCardLayout extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
-              color: Color(0x29656161),
-              offset: Offset(0, 2),
-              blurRadius: 1,
-              spreadRadius: 1)
+            color: Color(0x29656161),
+            offset: Offset(0, 2),
+            blurRadius: 1,
+            spreadRadius: 1,
+          ),
         ],
       ),
-      child: const Text(
-        'test',
-      ),
+      child: Column (
+        children: [
+          Text(
+            'Me',
+            style: TextStyle(
+              fontFamily: 'Montserrat'
+            ),
+          )
+        ],
+      )
     );
   }
 }
