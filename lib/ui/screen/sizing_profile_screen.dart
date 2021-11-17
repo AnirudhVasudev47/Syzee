@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/theme.dart';
+import 'package:syzee/ui/layouts/sizing_profile_card_layout.dart';
 
 class SizingProfileScreen extends StatelessWidget {
   const SizingProfileScreen({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class SizingProfileScreen extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-
+          SizingProfileCardLayout()
         ],
       ),
     );
