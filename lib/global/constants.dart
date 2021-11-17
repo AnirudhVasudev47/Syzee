@@ -4,6 +4,8 @@ import 'package:syzee/global/theme.dart';
 
 class AssetConstants {
 
+  static const mockApiLink = 'https://8be9-49-206-241-170.ngrok.io/api';
+
   static const logo = 'assets/images/logo.png';
   static const blackLogo = 'assets/images/logo1.png';
 

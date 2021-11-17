@@ -4,6 +4,7 @@ import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
 import 'package:syzee/ui/widgets/home_tab_banner.dart';
 import 'package:syzee/ui/widgets/home_tab_blogger_list.dart';
+import 'package:syzee/ui/layouts/home_tab_categories.dart';
 import 'package:syzee/ui/widgets/home_tab_categories.dart';
 import 'package:syzee/ui/widgets/home_tab_influencers_stories.dart';
 import 'package:syzee/ui/widgets/home_tab_most_wanted.dart';
@@ -115,16 +116,7 @@ class _HomeTabState extends State<HomeTab> {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 178,
-            child: ListView.builder(
-              itemCount: 3,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return const HomeTabCategories(
-                  image: 'assets/images/home/home_tab/category1.png',
-                  name: 'Clothing',
-                );
-              },
-            ),
+            child: const HomeTabCategories(),
           ),
           Container(
             padding: const EdgeInsets.symmetric(
