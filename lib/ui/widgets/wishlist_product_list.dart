@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syzee/global/constants.dart';
 import 'package:syzee/models/product_list_model.dart';
 import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
@@ -13,6 +14,7 @@ class WishlistProductList extends StatefulWidget {
 class _WishlistProductListState extends State<WishlistProductList> {
   var listData = [
     ProductTileModel(
+      id: '1',
       price: 34,
       name: 'Red women dress',
       image: 'assets/images/578.png',
@@ -20,6 +22,7 @@ class _WishlistProductListState extends State<WishlistProductList> {
       wishlist: true,
     ),
     ProductTileModel(
+      id: '1',
       price: 14,
       name: 'Women checks',
       image: 'assets/images/pink.png',
@@ -27,6 +30,7 @@ class _WishlistProductListState extends State<WishlistProductList> {
       wishlist: true,
     ),
     ProductTileModel(
+      id: '1',
       price: 24,
       name: 'Flower women ',
       image: 'assets/images/black.png',
@@ -34,6 +38,7 @@ class _WishlistProductListState extends State<WishlistProductList> {
       wishlist: true,
     ),
     ProductTileModel(
+      id: '1',
       price: 12,
       name: 'Women pink dress',
       image: 'assets/images/white.png',
@@ -77,7 +82,10 @@ class _WishlistProductListState extends State<WishlistProductList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SingleProductScreen(),
+                  builder: (context) => const SingleProductScreen(
+                    id: 'SYZEEWOMEN001',
+                    mainCat: MainCategory.women,
+                  ),
                 ),
               );
             },

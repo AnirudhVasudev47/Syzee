@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
 import 'package:syzee/services/auth_service.dart';
@@ -18,15 +20,20 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailText = TextEditingController();
   TextEditingController passText = TextEditingController();
-  String? signInResult;
+  TextEditingController otpText = TextEditingController();
+  String signInResult = '';
+
+  String phone = '';
 
   bool isTextVisible = false;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void dispose() {
     super.dispose();
     emailText.dispose();
     passText.dispose();
+    otpText.dispose();
   }
 
   bool checkFields() {
@@ -58,14 +65,12 @@ class _LoginScreenState extends State<LoginScreen> {
   handleEmailLogin() async {
     bool isGood = checkFields();
     if (isGood) {
-      loadingDialog(
-        context,
-        asset: 'assets/images/home/lottie/loading.json'
-      );
-      signInResult = await context.read<AuthenticationService>().signIn(
-            email: emailText.text,
-            password: passText.text,
+      loadingDialog(context, asset: 'assets/images/home/lottie/loading.json');
+      signInResult = await context.read<AuthenticationService>().logInUser(
+            emailText.text,
+            passText.text,
           );
+      print('result: ' + signInResult);
     } else {
       return;
     }
@@ -75,17 +80,215 @@ class _LoginScreenState extends State<LoginScreen> {
         title: 'Something went wrong',
         desc: 'Please try again later.',
       );
+    } else if (signInResult == 'not-reg') {
+      displayToast(
+        context,
+        title: 'User not registered',
+        desc: 'Sign up to continue',
+      );
+    } else if (signInResult == 'wrong-pass') {
+      displayToast(
+        context,
+        title: 'Wrong password',
+        desc: 'Please enter the correct password',
+      );
     } else {
+      setState(() {
+        phone = signInResult;
+      });
+      continueWithVerification();
+    }
+  }
+
+  continueWithVerification() async {
+    print('phone: '+phone);
+    try {
+      await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phone,
+        timeout: const Duration(minutes: 2),
+        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
+          _firebaseAuth
+              .signInWithCredential(phoneAuthCredential)
+              .whenComplete(verSuccess);
+        },
+        verificationFailed: (FirebaseAuthException authException) {
+          displayToast(
+            context,
+            title:
+            'Phone number verification failed. Code: ${authException.code}',
+            desc: ' Message: ${authException.message}',
+          );
+          verFailed();
+        },
+        codeSent: (String verificationId, [int? forceResendingToken]) {
+          showOtpDialog(verificationId);
+          displayToast(context,
+              title: 'OTP sent successfully',
+              desc: 'Please check your phone for the verification code.',
+              type: 'success');
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          showOtpDialog(verificationId);
+        },
+      );
+    } catch (e) {
+      displayToast(
+        context,
+        title: "Failed to Verify Phone Number: ",
+        desc: e.toString(),
+      );
+      return 'failed';
+    }
+  }
+
+  verFailed() {
+    displayToast(
+      context,
+      title: 'Something went wrong',
+      desc: 'Please try again later.',
+      type: 'danger',
+    );
+  }
+
+  verSuccess() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userMail', emailText.text);
+    displayToast(
+      context,
+      title: 'Phone number automatically verified',
+      desc: 'signed in successfully',
+      type: 'success',
+    );
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => const LandingPage(),
         ),
-        (route) => false,
+            (route) => false,
       );
-      displayToast(context,
-          title: 'Success', desc: 'Successfully signed up', type: 'success');
-    }
+  }
+
+  showOtpDialog(verId) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              child: Text(
+                'Enter the OTP sent',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 25,
+              ),
+              child: TextField(
+                decoration:
+                const InputDecoration(hintText: 'Enter the OTP sent',
+                  hintStyle: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 16,
+                  ),),
+                autofocus: true,
+                controller: otpText,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        final AuthCredential credential = PhoneAuthProvider.credential(
+                          verificationId: verId,
+                          smsCode: otpText.text,
+                        );
+
+                        await _firebaseAuth.signInWithCredential(credential);
+
+                        verSuccess();
+                      } catch (e) {
+                        print(e);
+                        verFailed();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xff169B93),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 25,
+                      ),
+                    ),
+                    child: const Text(
+                      'Submit OTP',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      continueWithVerification();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xff169B93),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 25,
+                      ),
+                    ),
+                    child: const Text(
+                      'Resend OTP',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override

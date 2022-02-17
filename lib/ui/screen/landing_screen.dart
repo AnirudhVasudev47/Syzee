@@ -1,11 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/services/bottom_nav_provider.dart';
+import 'package:syzee/services/cart_services.dart';
 import 'package:syzee/ui/screen/home_screen.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  final firebaseAuth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    if (firebaseAuth.currentUser != null) {
+      getUserInfo();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -6,12 +6,14 @@ import 'package:provider/provider.dart';
 import 'package:syzee/global/color.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/theme.dart';
+import 'package:syzee/global/tools.dart';
 import 'package:syzee/services/bottom_nav_provider.dart';
 import 'package:syzee/ui/screen/Tabs/brand_tab.dart';
 import 'package:syzee/ui/screen/Tabs/categories_tab.dart';
 import 'package:syzee/ui/screen/Tabs/home_tab.dart';
 import 'package:syzee/ui/screen/Tabs/profile_tab.dart';
 import 'package:syzee/ui/screen/Tabs/wishlist_tab.dart';
+import 'package:syzee/ui/widgets/appbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var provider = Provider.of<BottomNavigationBarProvider>(context);
     return Scaffold(
-      appBar: AssetConstants.customAppBar,
+      appBar: const CustomAppBar(),
       key: scaffoldKey,
       body: Builder(
         builder: (context) => SafeArea(

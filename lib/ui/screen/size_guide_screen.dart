@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:syzee/global/constants.dart';
+import 'package:syzee/global/tools.dart';
+import 'package:syzee/ui/widgets/appbar.dart';
 
 class SizeGuideScreen extends StatelessWidget {
   const SizeGuideScreen({Key? key}) : super(key: key);
@@ -7,7 +8,7 @@ class SizeGuideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AssetConstants.customAppBar,
+      appBar: const CustomAppBar(),
       body: Column(
         children: [
           const SizedBox(

@@ -10,11 +10,14 @@ class HomeTabBanner extends StatefulWidget {
   _HomeTabBannerState createState() => _HomeTabBannerState();
 }
 
-class _HomeTabBannerState extends State<HomeTabBanner> {
+class _HomeTabBannerState extends State<HomeTabBanner> with AutomaticKeepAliveClientMixin<HomeTabBanner> {
   int current = 0;
   final CarouselController carouselController = CarouselController();
   late Future<List<String>> bannerList;
   double headerAspect = 415/200;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -24,12 +27,12 @@ class _HomeTabBannerState extends State<HomeTabBanner> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return FutureBuilder(
       future: bannerList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<String> images = snapshot.data as List<String>;
-          print(images);
           return Stack(
             children: [
               CarouselSlider(

@@ -21,7 +21,6 @@ class _HomeTabCategoriesState extends State<HomeTabCategories> {
 
   @override
   Widget build(BuildContext context) {
-    getHomeCategories();
     return FutureBuilder(
       future: listData,
       builder: (context, snapshot) {

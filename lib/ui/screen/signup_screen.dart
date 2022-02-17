@@ -1,9 +1,16 @@
+import 'dart:convert';
+
+import 'package:country_picker/country_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
 import 'package:syzee/services/auth_service.dart';
+import 'package:http/http.dart' as http;
+import 'package:syzee/ui/screen/landing_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -18,6 +25,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordText = TextEditingController();
   TextEditingController repeatPassText = TextEditingController();
   TextEditingController phoneText = TextEditingController();
+  TextEditingController otpText = TextEditingController();
+
+  String verId = '';
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  String co = '974';
 
   bool isTextVisible = false;
   bool tnc = false;
@@ -33,6 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String signUpResult = 'failed';
   String? passResetResult;
 
+
   @override
   void dispose() {
     super.dispose();
@@ -41,6 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     passwordText.dispose();
     repeatPassText.dispose();
     phoneText.dispose();
+    otpText.dispose();
   }
 
   bool checkFields() {
@@ -83,23 +98,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool isEmail(String email) {
     return RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
   }
 
   handleEmailSignUp() async {
     bool isGood = checkFields();
+    String checkRes = '';
     if (isGood) {
       if (tnc) {
-        loadingDialog(
-          context,
-          asset: 'assets/images/home/lottie/loading.json'
-        );
-        signUpResult = await context.read<AuthenticationService>().signUp(
-              email: emailText.text,
-              password: passwordText.text,
-              context: context,
-            );
+        loadingDialog(context, asset: 'assets/images/home/lottie/loading.json');
+        checkRes = await context
+            .read<AuthenticationService>()
+            .checkUser(emailText.text, phoneText.text);
       } else {
         displayToast(
           context,
@@ -111,15 +122,220 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } else {
       return;
     }
-    if (signUpResult == 'failed') {
-      displayToast(
+    if (checkRes == 'stop') {
+      Navigator.pop(context);
+      return displayToast(
         context,
-        title: 'Something went wrong',
-        desc: 'Please try again later.',
+        title: 'Email is registered.',
+        desc:
+            'Entered email is already registered. Please sign in to continue.',
       );
     } else {
-      displayToast(context, title: 'Success', desc: 'Successfully signed up');
+      continueWithVerification();
     }
+  }
+
+  continueWithVerification() async {
+    String code = '+$co';
+    try {
+      await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: '$code${phoneText.text}',
+        timeout: const Duration(minutes: 2),
+        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
+          _firebaseAuth
+              .signInWithCredential(phoneAuthCredential)
+              .whenComplete(verSuccess);
+        },
+        verificationFailed: (FirebaseAuthException authException) {
+          displayToast(
+            context,
+            title:
+                'Phone number verification failed. Code: ${authException.code}',
+            desc: ' Message: ${authException.message}',
+          );
+          verFailed();
+        },
+        codeSent: (String verificationId, [int? forceResendingToken]) {
+          showOtpDialog(verificationId);
+          displayToast(context,
+              title: 'OTP sent successfully',
+              desc: 'Please check your phone for the verification code.',
+              type: 'success');
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          showOtpDialog(verificationId);
+        },
+      );
+    } catch (e) {
+      displayToast(
+        context,
+        title: "Failed to Verify Phone Number: ",
+        desc: e.toString(),
+      );
+      return 'failed';
+    }
+  }
+
+  verFailed() {
+    displayToast(
+      context,
+      title: 'Something went wrong',
+      desc: 'Please try again later.',
+      type: 'danger',
+    );
+  }
+
+  verSuccess() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> userData = {};
+    userData['name'] = nameText.text;
+    userData['phone'] = phoneText.text;
+    userData['email'] = emailText.text;
+    userData['code'] = '+$co';
+    userData['password'] = passwordText.text;
+
+    Uri createUri = Uri.parse('${AssetConstants.mockApiLink}/user/signup');
+    var response = await http.post(createUri, body: userData);
+    if (jsonDecode(response.body)['data'] == 'Success') {
+      prefs.setString('userMail', emailText.text);
+      displayToast(
+        context,
+        title: 'Phone number automatically verified',
+        desc: 'signed in successfully',
+        type: 'success',
+      );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LandingPage(),
+        ),
+            (route) => false,
+      );
+    }
+  }
+
+  showOtpDialog(verId) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              child: Text(
+                'Enter the OTP sent',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 25,
+              ),
+              child: TextField(
+                decoration:
+                    const InputDecoration(hintText: 'Enter the OTP sent',
+                      hintStyle: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                      ),),
+                autofocus: true,
+                controller: otpText,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        final AuthCredential credential = PhoneAuthProvider.credential(
+                          verificationId: verId,
+                          smsCode: otpText.text,
+                        );
+
+                        await _firebaseAuth.signInWithCredential(credential);
+
+                        verSuccess();
+                      } catch (e) {
+                        print(e);
+                        verFailed();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xff169B93),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 25,
+                      ),
+                    ),
+                    child: const Text(
+                      'Submit OTP',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      continueWithVerification();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xff169B93),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 25,
+                      ),
+                    ),
+                    child: const Text(
+                      'Resend OTP',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -158,7 +374,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   const Text(
                     'Name',
-                    style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 14,
+                    ),
                   ),
                   TextField(
                     controller: nameText,
@@ -168,17 +387,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xff169B93),
-                            width: 1,
-                          ),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xff169B93),
+                          width: 1,
                         ),
-                        hintText: 'Enter your name',
-                        hintStyle: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 18,
-                        )),
+                      ),
+                      hintText: 'Enter your name',
+                      hintStyle: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 25,
@@ -296,25 +516,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     'Phone number',
                     style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
                   ),
-                  TextField(
-                    controller: phoneText,
-                    style: const TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 18,
-                    ),
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xff169B93),
-                            width: 1,
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          showCountryPicker(
+                            context: context,
+                            showPhoneCode: true,
+                            // optional. Shows phone code before the country name.
+                            onSelect: (Country country) {
+                              setState(() {
+                                co = country.phoneCode;
+                              });
+                            },
+                          );
+                        },
+                        child: Text(
+                          '+$co',
+                          style: const TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 18,
                           ),
                         ),
-                        hintText: 'Enter your phone number',
-                        hintStyle: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 18,
-                        )),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          controller: phoneText,
+                          style: const TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 18,
+                          ),
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xff169B93),
+                                width: 1,
+                              ),
+                            ),
+                            hintText: 'Enter your phone number',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 25,
@@ -334,7 +585,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         const Text(
                           'Terms and conditions',
                           style:
-                              TextStyle(fontFamily: 'Montserrat', fontSize: 20),
+                          TextStyle(fontFamily: 'Montserrat', fontSize: 20),
                         ),
                       ],
                     ),
@@ -366,7 +617,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 14.0, horizontal: 25),
+                      vertical: 14.0,
+                      horizontal: 25,
+                    ),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text.rich(
@@ -380,10 +633,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             TextSpan(
                               text: ' Sign in',
                               style: const TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 17,
-                                  color: Color(0xff0346FF),
-                                  decoration: TextDecoration.underline),
+                                fontFamily: 'Montserrat',
+                                fontSize: 17,
+                                color: Color(0xff0346FF),
+                                decoration: TextDecoration.underline,
+                              ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () => {Navigator.of(context).pop()},
                             ),
@@ -401,3 +655,102 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
+/*
+ showModalBottomSheet(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(25.0),
+            ),
+          ),
+          backgroundColor: Colors.black,
+          context: context,
+          isScrollControlled: true,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Text(
+                    'Enter the OTP sent',
+                  ),
+                ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 25,
+                  ),
+                  child: TextField(
+                    decoration:
+                        const InputDecoration(hintText: 'Enter the OTP sent'),
+                    autofocus: true,
+                    controller: otpText,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xff169B93),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 25,
+                          ),
+                        ),
+                        child: const Text(
+                          'Submit OTP',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xff169B93),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 25,
+                          ),
+                        ),
+                        child: const Text(
+                          'Resend OTP',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+ */

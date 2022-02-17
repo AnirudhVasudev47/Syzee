@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:syzee/global/theme.dart';
+import 'package:syzee/models/user_model.dart';
 import 'package:syzee/services/auth_service.dart';
+import 'package:syzee/services/cart_services.dart';
 import 'package:syzee/ui/screen/login_screen.dart';
+import 'package:syzee/ui/screen/manage_address.dart';
 import 'package:syzee/ui/screen/sizing_profile_screen.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -16,10 +19,12 @@ class ProfileTab extends StatefulWidget {
 
 class _ProfileTabState extends State<ProfileTab> {
   final firebaseAuth = FirebaseAuth.instance;
+  late Future<UserModel> user;
 
   @override
   void initState() {
     super.initState();
+    user = getUserInfo();
   }
 
   Widget profileTile(String image, String name, {onTap}) {
@@ -136,27 +141,38 @@ class _ProfileTabState extends State<ProfileTab> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 25,
                 ),
-                child: Text(
-                  firebaseAuth.currentUser!.uid,
-                  style: const TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 25,
-                ),
-                child: Text(
-                  firebaseAuth.currentUser!.email?? '',
-                  style: const TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
+                child: FutureBuilder(
+                    future: user,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        UserModel userInfo = snapshot.data as UserModel;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              userInfo.name,
+                              style: const TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              userInfo.email,
+                              style: const TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    }),
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -176,13 +192,17 @@ class _ProfileTabState extends State<ProfileTab> {
                           print(currentTheme.currentTheme);
                         },
                       ),
-                      profileTile(
-                        'assets/images/home/profile_tab/location.png',
-                        'My Address',
-                      ),
-                      profileTile(
-                          'assets/images/home/profile_tab/clock.png',
-                          'My Orders', onTap: () {
+                      profileTile('assets/images/home/profile_tab/location.png', 'My Address',
+                          onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ManageAddress(),
+                          ),
+                        );
+                      }),
+                      profileTile('assets/images/home/profile_tab/clock.png', 'My Orders',
+                          onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(

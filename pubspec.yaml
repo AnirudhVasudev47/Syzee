@@ -48,10 +48,15 @@ dependencies:
   country_picker: ^2.0.8
   skeleton_loader: ^2.0.0+4
   http: ^0.13.4
+  strcolor: ^1.1.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  syncfusion_flutter_sliders: ^19.4.40
+  toggle_switch: ^1.3.0
+  palette_generator: ^0.3.2
+  syncfusion_flutter_core: ^19.4.40
 
 dev_dependencies:
   flutter_test:

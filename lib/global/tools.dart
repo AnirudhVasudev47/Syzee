@@ -1,8 +1,12 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:syzee/global/color.dart';
+import 'package:syzee/global/constants.dart';
+import 'package:syzee/global/theme.dart';
+import 'package:syzee/ui/screen/cart_screen.dart';
 
 displayToast(context,
     {String? title, String? desc, int? seconds, String type = 'error'}) async {
@@ -26,25 +30,27 @@ displayToast(context,
 
 loadingDialog(BuildContext context, {String? asset}) {
   return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.white,
-          child: Container(
-            height: ScreenUtil().setHeight(300),
-            alignment: Alignment.center,
-            child: asset == null
-                ? const CircularProgressIndicator()
-                : Lottie.asset(
-                    asset,
-                    height: 200,
-                    width: 200,
-                  ),
-          ),
-        );
-      });
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        child: Container(
+          height: ScreenUtil().setHeight(300),
+          alignment: Alignment.center,
+          child: asset == null
+              ? const CircularProgressIndicator()
+              : Lottie.asset(
+                  asset,
+                  height: 200,
+                  width: 200,
+                ),
+        ),
+      );
+    },
+  );
 }
+

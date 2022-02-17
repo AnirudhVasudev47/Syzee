@@ -23,21 +23,23 @@ class ProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(image);
     return InkWell(
       onTap: onTapCard,
       child: Column(
         children: [
           Container(
             width: 207,
-            height: 232,
+            height: 225,
             padding: const EdgeInsets.symmetric(
-              horizontal: 15
+              horizontal: 0
             ),
             decoration: const BoxDecoration(
               color: Color(0xffEAE5D7),
             ),
-            child: Image.asset(
+            child: Image.network(
               image,
+              fit: BoxFit.cover,
             ),
           ),
           Padding(
@@ -58,6 +60,7 @@ class ProductTile extends StatelessWidget {
                       ),
                       Text(
                         name,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 12,

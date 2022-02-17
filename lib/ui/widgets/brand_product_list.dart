@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syzee/global/constants.dart';
 import 'package:syzee/ui/layouts/brand_product_list_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
 
@@ -84,7 +85,10 @@ class _BrandProductListState extends State<BrandProductList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SingleProductScreen(),
+                  builder: (context) => const SingleProductScreen(
+                    mainCat: MainCategory.women,
+                    id: 'SYZEEWOMEN001',
+                  ),
                 ),
               );
             },

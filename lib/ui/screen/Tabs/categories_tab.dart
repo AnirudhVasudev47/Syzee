@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:syzee/ui/widgets/category_list.dart';
+import 'package:syzee/ui/widgets/category_kids.dart';
+import 'package:syzee/ui/widgets/category_men.dart';
+import 'package:syzee/ui/widgets/category_women.dart';
 
 class CategoriesTab extends StatelessWidget {
   const CategoriesTab({Key? key, required this.index}) : super(key: key);
@@ -23,9 +25,9 @@ class CategoriesTab extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                CategoryList(),
-                CategoryList(),
-                CategoryList(),
+                CategoryWomen(),
+                CategoryMen(),
+                CategoryKids(),
               ],
             ),
           ),

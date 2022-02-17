@@ -1,4 +1,5 @@
 class ProductTileModel {
+  final String id;
   final int price;
   final String name;
   final String image;
@@ -6,6 +7,7 @@ class ProductTileModel {
   final bool wishlist;
 
   ProductTileModel({
+    required this.id,
     required this.price,
     required this.name,
     required this.image,
@@ -13,18 +15,21 @@ class ProductTileModel {
     required this.wishlist,
   });
 
-  ProductTileModel.fromJson(Map<String, Object?> json)
-      : this(
-    price: json['price']! as int,
-    name: json['name']! as String,
-    image: json['image']! as String,
-    brand: json['brand']! as String,
-    wishlist: json['wishlist']! as bool,
-  );
+  factory ProductTileModel.fromJson(Map<String, dynamic> json) {
+    return ProductTileModel(
+      id: json['id'],
+      price: json['price'],
+      name: json['name'],
+      image: json['image'],
+      brand: json['brand'],
+      wishlist: json['wishlist'],
+    );
+  }
 
   Map<String, Object?> toJson() {
     return {
-      'count': price,
+      'id': id,
+      'price': price,
       'name': name,
       'image': image,
       'brand': brand,

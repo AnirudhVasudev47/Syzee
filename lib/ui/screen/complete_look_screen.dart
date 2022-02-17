@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syzee/global/constants.dart';
+import 'package:syzee/global/tools.dart';
 import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
+import 'package:syzee/ui/widgets/appbar.dart';
 
 class CompleteLookScreen extends StatefulWidget {
   const CompleteLookScreen({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AssetConstants.customAppBar,
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -65,7 +67,10 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SingleProductScreen(),
+                          builder: (context) => const SingleProductScreen(
+                            id: 'SYZEEWOMEN001',
+                            mainCat: MainCategory.women,
+                          ),
                         ),
                       );
                     },
@@ -88,7 +93,10 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SingleProductScreen(),
+                          builder: (context) => const SingleProductScreen(
+                            id: 'SYZEEWOMEN001',
+                            mainCat: MainCategory.women,
+                          ),
                         ),
                       );
                     },

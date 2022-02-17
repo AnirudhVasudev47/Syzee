@@ -324,6 +324,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  palette_generator:
+    dependency: "direct main"
+    description:
+      name: palette_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   path:
     dependency: transitive
     description:
@@ -490,6 +497,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+  strcolor:
+    dependency: "direct main"
+    description:
+      name: strcolor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   stream_channel:
     dependency: transitive
     description:
@@ -504,6 +518,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  syncfusion_flutter_core:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.4.40"
+  syncfusion_flutter_sliders:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_sliders
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.4.40"
   term_glyph:
     dependency: transitive
     description:
@@ -518,6 +546,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.2"
+  toggle_switch:
+    dependency: "direct main"
+    description:
+      name: toggle_switch
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.0"
   typed_data:
     dependency: transitive
     description:

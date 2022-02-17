@@ -7,7 +7,24 @@ import 'package:syzee/ui/screen/summary_screen.dart';
 enum PaymentMethod { online, cash }
 
 class ChoosePaymentScreen extends StatefulWidget {
-  const ChoosePaymentScreen({Key? key}) : super(key: key);
+  const ChoosePaymentScreen({
+    Key? key,
+    required this.country,
+    required this.state,
+    required this.city,
+    required this.postalCode,
+    required this.type,
+    required this.shippingAddress,
+    required this.discount,
+  }) : super(key: key);
+
+  final double discount;
+  final String shippingAddress;
+  final String country;
+  final String state;
+  final String city;
+  final String postalCode;
+  final String type;
 
   @override
   _ChoosePaymentScreenState createState() => _ChoosePaymentScreenState();
@@ -183,7 +200,16 @@ class _ChoosePaymentScreenState extends State<ChoosePaymentScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SummaryScreen(),
+                      builder: (context) => SummaryScreen(
+                        city: widget.city,
+                        type: widget.type,
+                        country: widget.country,
+                        state: widget.state,
+                        payMethod: selected == PaymentMethod.cash ? 'cash' : 'online',
+                        shippingAddress: widget.shippingAddress,
+                        postalCode: widget.postalCode,
+                        discount: widget.discount,
+                      ),
                     ),
                   );
                 },

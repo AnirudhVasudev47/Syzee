@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:syzee/global/constants.dart';
 import 'package:syzee/models/product_list_model.dart';
+import 'package:syzee/services/product.dart';
 import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
 import 'package:syzee/ui/widgets/home_tab_banner.dart';
 import 'package:syzee/ui/widgets/home_tab_blogger_list.dart';
-import 'package:syzee/ui/layouts/home_tab_categories.dart';
+import 'package:syzee/ui/widgets/home_tab_brands.dart';
 import 'package:syzee/ui/widgets/home_tab_categories.dart';
 import 'package:syzee/ui/widgets/home_tab_influencers_stories.dart';
 import 'package:syzee/ui/widgets/home_tab_most_wanted.dart';
@@ -21,6 +23,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   var listData = [
     ProductTileModel(
+      id: '1',
       price: 34,
       name: 'Red women dress',
       image: 'assets/images/578.png',
@@ -28,6 +31,7 @@ class _HomeTabState extends State<HomeTab> {
       wishlist: false,
     ),
     ProductTileModel(
+      id: '1',
       price: 14,
       name: 'Women checks',
       image: 'assets/images/pink.png',
@@ -35,6 +39,7 @@ class _HomeTabState extends State<HomeTab> {
       wishlist: false,
     ),
     ProductTileModel(
+      id: '1',
       price: 24,
       name: 'Flower women ',
       image: 'assets/images/black.png',
@@ -42,6 +47,7 @@ class _HomeTabState extends State<HomeTab> {
       wishlist: false,
     ),
     ProductTileModel(
+      id: '1',
       price: 12,
       name: 'Women pink dress',
       image: 'assets/images/white.png',
@@ -108,9 +114,10 @@ class _HomeTabState extends State<HomeTab> {
             child: const Text(
               'Shop By Category',
               style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500),
+                fontSize: 16,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           SizedBox(
@@ -132,58 +139,7 @@ class _HomeTabState extends State<HomeTab> {
               ),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(
-              vertical: 12,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset(
-                    'assets/images/home/home_tab/brand1.png',
-                    width: 170,
-                    height: 224,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset(
-                    'assets/images/home/home_tab/brand2.png',
-                    width: 170,
-                    height: 224,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(
-              vertical: 12,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset(
-                    'assets/images/home/home_tab/brand3.png',
-                    width: 170,
-                    height: 224,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset(
-                    'assets/images/home/home_tab/brand4.png',
-                    width: 170,
-                    height: 224,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const HomeTabBrands(),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 35,
@@ -257,7 +213,10 @@ class _HomeTabState extends State<HomeTab> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SingleProductScreen(),
+                            builder: (context) => const SingleProductScreen(
+                              id: 'SYZEEWOMEN001',
+                              mainCat: MainCategory.women,
+                            ),
                           ),
                         );
                       },
