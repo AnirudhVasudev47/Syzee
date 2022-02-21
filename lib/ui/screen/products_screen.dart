@@ -48,7 +48,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
       appBar: const CustomAppBar(),
       body: Column(
         children: [
-          const SortFilterButton(),
+          const SizedBox(
+            height: 25,
+          ),
           ProductOrBrand(
             tab: SelectedTab.products,
             isProduct: isProducts,

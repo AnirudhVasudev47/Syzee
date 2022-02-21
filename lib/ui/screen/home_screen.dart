@@ -16,7 +16,10 @@ import 'package:syzee/ui/screen/Tabs/wishlist_tab.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+
+  final int? customIndex;
+
+  const HomePage({Key? key, this.customIndex}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -32,7 +35,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     currentTheme.addListener(() {
-      setState(() {});
+      setState(() {
+      });
     });
   }
 

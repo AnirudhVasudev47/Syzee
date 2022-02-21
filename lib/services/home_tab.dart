@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:syzee/global/constants.dart';
+import 'package:syzee/models/brands_model.dart';
+import 'package:syzee/models/look_of_the_day_model.dart';
 
 Uri banner = Uri.parse('${AssetConstants.mockApiLink}/home_tab/banner');
 Uri categories = Uri.parse('${AssetConstants.mockApiLink}/home_tab/category');
 Uri brands = Uri.parse('${AssetConstants.mockApiLink}/home_tab/brands');
+Uri lookOfTheDay = Uri.parse('${AssetConstants.mockApiLink}/home_tab/lookOfTheDay');
 
 Future<List<String>> getBanner() async {
   List<String> imageList = [];
@@ -34,15 +37,18 @@ Future<List<Map<String, dynamic>>> getHomeCategories() async {
   return dataList;
 }
 
-Future<List<String>> getHomeTabBrands() async {
+Future<BrandsModel> getHomeTabBrands() async {
 
-  List<String> imageList = [];
-  print(brands);
   final response = await http.get(brands);
-  print(jsonDecode(response.body).length);
-  for (int i=0; i<jsonDecode(response.body).length; i++) {
-    imageList.add('${AssetConstants.mockImageLink}/BRANDS/${jsonDecode(response.body)[i]['IMAGE']}');
-  }
-  return imageList;
+
+  return BrandsModel.fromRawJson(response.body);
+
+}
+
+Future<LookOfTheDayModel> getLookOfTheDay() async {
+
+  final response = await http.get(lookOfTheDay);
+
+  return LookOfTheDayModel.fromRawJson(response.body);
 
 }

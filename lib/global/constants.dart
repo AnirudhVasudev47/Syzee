@@ -11,8 +11,8 @@ enum MainCategory {
 
 class AssetConstants {
 
-  static const mockApiLink = 'https://itchy-moth-36.loca.lt/api';
-  static const mockImageLink = 'https://bonsaihub.in/syzee/images';
+  static const mockApiLink = 'http://192.168.0.124:8000/api';
+  static const mockImageLink = 'http://192.168.0.124:80/syzee/images';
 
   static const logo = 'assets/images/logo.png';
   static const blackLogo = 'assets/images/logo1.png';

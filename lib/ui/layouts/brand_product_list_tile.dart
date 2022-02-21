@@ -29,7 +29,7 @@ class BrandProductTile extends StatelessWidget {
         children: [
           Container(
             width: 207,
-            height: 232,
+            height: 242,
             clipBehavior: Clip.hardEdge,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(
@@ -37,7 +37,7 @@ class BrandProductTile extends StatelessWidget {
               ),
               color: Color(0xffEAE5D7),
             ),
-            child: Image.asset(
+            child: Image.network(
               image,
               fit: BoxFit.cover,
             ),
@@ -60,6 +60,7 @@ class BrandProductTile extends StatelessWidget {
                       ),
                       Text(
                         name,
+                        maxLines: 2,
                         style: const TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 12,

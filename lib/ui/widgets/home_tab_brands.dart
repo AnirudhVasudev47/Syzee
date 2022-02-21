@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
+import 'package:syzee/global/constants.dart';
+import 'package:syzee/models/brands_model.dart';
 import 'package:syzee/services/home_tab.dart';
+import 'package:syzee/ui/screen/single_brand_screen.dart';
 
 class HomeTabBrands extends StatefulWidget {
   const HomeTabBrands({Key? key}) : super(key: key);
@@ -11,7 +14,7 @@ class HomeTabBrands extends StatefulWidget {
 }
 
 class _HomeTabBrandsState extends State<HomeTabBrands> {
-  late Future<List<String>> brandList;
+  late var brandList;
 
   @override
   void initState() {
@@ -22,11 +25,11 @@ class _HomeTabBrandsState extends State<HomeTabBrands> {
   @override
   Widget build(BuildContext context) {
     getHomeTabBrands();
-    return FutureBuilder<List<String>>(
+    return FutureBuilder(
       future: brandList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<String> data = snapshot.data as List<String>;
+          BrandsModel data = snapshot.data as BrandsModel;
           return Column(
             children: [
               Container(
@@ -37,18 +40,40 @@ class _HomeTabBrandsState extends State<HomeTabBrands> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SingleBrandScreen(
+                              name: data.data[0].name,
+                              id: data.data[0].id,
+                              image: '${AssetConstants.mockImageLink}/BRANDS/${data.data[0].imageCarousel}',
+                            ),
+                          ),
+                        );
+                      },
                       child: Image.network(
-                        data[0],
+                        '${AssetConstants.mockImageLink}/BRANDS/${data.data[0].image}',
                         width: 170,
                         height: 224,
                         fit: BoxFit.cover,
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SingleBrandScreen(
+                              name: data.data[1].name,
+                              id: data.data[1].id,
+                              image: '${AssetConstants.mockImageLink}/BRANDS/${data.data[1].imageCarousel}',
+                            ),
+                          ),
+                        );
+                      },
                       child: Image.network(
-                        data[1],
+                        '${AssetConstants.mockImageLink}/BRANDS/${data.data[1].image}',
                         width: 170,
                         height: 224,
                         fit: BoxFit.cover,
@@ -65,18 +90,40 @@ class _HomeTabBrandsState extends State<HomeTabBrands> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SingleBrandScreen(
+                              name: data.data[2].name,
+                              id: data.data[2].id,
+                              image: '${AssetConstants.mockImageLink}/BRANDS/${data.data[2].imageCarousel}',
+                            ),
+                          ),
+                        );
+                      },
                       child: Image.network(
-                        data[2],
+                        '${AssetConstants.mockImageLink}/BRANDS/${data.data[2].image}',
                         width: 170,
                         height: 224,
                         fit: BoxFit.cover,
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SingleBrandScreen(
+                              name: data.data[3].name,
+                              id: data.data[3].id,
+                              image: '${AssetConstants.mockImageLink}/BRANDS/${data.data[3].imageCarousel}',
+                            ),
+                          ),
+                        );
+                      },
                       child: Image.network(
-                        data[3],
+                        '${AssetConstants.mockImageLink}/BRANDS/${data.data[4].image}',
                         width: 170,
                         height: 224,
                         fit: BoxFit.cover,

@@ -1,77 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:syzee/models/single_brands_model.dart';
+import 'package:syzee/services/brands_service.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
 import 'package:syzee/ui/widgets/brand_product_list.dart';
 
 class SingleBrandScreen extends StatefulWidget {
-  const SingleBrandScreen({Key? key}) : super(key: key);
+  final String name;
+  final String image;
+  final int id;
+
+  const SingleBrandScreen(
+      {Key? key, required this.name, required this.image, required this.id})
+      : super(key: key);
 
   @override
   State<SingleBrandScreen> createState() => _SingleBrandScreenState();
 }
 
 class _SingleBrandScreenState extends State<SingleBrandScreen> {
-  var listData = [
-    'All',
-    'Tops',
-    'Sneakers',
-    'Dress',
-    'All',
-    'Tops',
-    'Sneakers',
-    'Dress',
-    'All',
-    'Tops',
-    'Sneakers',
-    'Dress',
-  ];
-
+  late var brand;
   int selectedTab = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    brand = getBrandsProducts(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 25,
-                ),
-                Expanded(
-                  child: Image.asset(
-                    'assets/images/home/brands_tab/gucci.png',
-                    fit: BoxFit.contain,
-                    height: 50,
-                    width: 50,
+        appBar: const CustomAppBar(),
+        body: FutureBuilder(
+          future: brand,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              SingleBrandsModel data = snapshot.data as SingleBrandsModel;
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Image.network(
+                      widget.image,
+                      fit: BoxFit.contain,
+                      alignment: Alignment.center,
+                      height: 90,
+                      width: 125,
+                    ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset(
-                    'assets/images/home/heart.png',
-                    height: 25,
-                    width: 25,
+                  Text(
+                    '${data.data.length} Items',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 15,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          const Text(
-            '2071 Items',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 15,
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 10,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                    ),
+                    color: const Color.fromRGBO(0, 0, 0, 0.65),
+                    child: Text(
+                      'Welcome to ${widget.name}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: BrandProductList(
+                      model: data,
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ));
+  }
+}
+
+/*
+
           SizedBox(
             height: 40,
             child: ListView.builder(
@@ -113,29 +143,4 @@ class _SingleBrandScreenState extends State<SingleBrandScreen> {
               },
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(
-              vertical: 15,
-            ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-            ),
-            color: const Color.fromRGBO(0, 0, 0, 0.65),
-            child: const Text(
-              'Welcome to Gucci',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          const Expanded(
-            child: BrandProductList(),
-          )
-        ],
-      ),
-    );
-  }
-}
+ */

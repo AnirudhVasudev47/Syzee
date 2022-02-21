@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syzee/global/constants.dart';
+import 'package:syzee/models/look_of_the_day_model.dart';
 import 'package:syzee/models/product_list_model.dart';
+import 'package:syzee/services/bottom_nav_provider.dart';
+import 'package:syzee/services/home_tab.dart';
 import 'package:syzee/services/product.dart';
 import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
@@ -67,6 +71,8 @@ class _HomeTabState extends State<HomeTab> {
 
   String greetingText = '';
 
+  late var look;
+
   getGreet() {
     if (now.hour < 12) {
       greetingText = 'Good Morning! ';
@@ -81,10 +87,12 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     getGreet();
+    look = getLookOfTheDay();
   }
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<BottomNavigationBarProvider>(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -154,7 +162,9 @@ class _HomeTabState extends State<HomeTab> {
                   borderRadius: BorderRadius.circular(0.0),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                provider.currentIndex = 2;
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 10,
@@ -178,58 +188,113 @@ class _HomeTabState extends State<HomeTab> {
             ),
           ),
           const HomeTabInfluencerStories(),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(
+          //     horizontal: 25,
+          //     vertical: 15,
+          //   ),
+          //   child: const Text(
+          //     'Most Popular',
+          //     style: TextStyle(
+          //         fontSize: 16,
+          //         fontFamily: 'Montserrat',
+          //         fontWeight: FontWeight.w500),
+          //   ),
+          // ),
+          // SizedBox(
+          //   width: MediaQuery.of(context).size.width,
+          //   height: 310,
+          //   child: ListView.builder(
+          //     itemCount: listData.length,
+          //     scrollDirection: Axis.horizontal,
+          //     itemBuilder: (context, index) {
+          //       return Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          //         child: SizedBox(
+          //           width: 168,
+          //           height: 305,
+          //           child: ProductTile(
+          //             name: listData[index].name,
+          //             brand: listData[index].brand,
+          //             price: listData[index].price,
+          //             image: listData[index].image,
+          //             isWished: wishData[index],
+          //             onTapCard: () {
+          //               Navigator.push(
+          //                 context,
+          //                 MaterialPageRoute(
+          //                   builder: (context) => const SingleProductScreen(
+          //                     id: 'SYZEEWOMEN001',
+          //                     mainCat: MainCategory.women,
+          //                   ),
+          //                 ),
+          //               );
+          //             },
+          //             onTapHeart: () {
+          //               setState(() {
+          //                 wishData[index] = !wishData[index];
+          //               });
+          //             },
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
+          const Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 25,
+            ),
+            child: Divider(
+              height: 0,
+              thickness: 1,
+              indent: 25,
+              endIndent: 25,
+              color: Color(0xffE7D1A8),
+            ),
+          ),
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 25,
-              vertical: 15,
-            ),
+            ).copyWith(bottom: 25, top: 10),
             child: const Text(
-              'Most Popular',
+              'Look of the day',
               style: TextStyle(
                   fontSize: 16,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w500),
             ),
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 310,
-            child: ListView.builder(
-              itemCount: listData.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: SizedBox(
-                    width: 168,
-                    height: 305,
-                    child: ProductTile(
-                      name: listData[index].name,
-                      brand: listData[index].brand,
-                      price: listData[index].price,
-                      image: listData[index].image,
-                      isWished: wishData[index],
-                      onTapCard: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SingleProductScreen(
-                              id: 'SYZEEWOMEN001',
-                              mainCat: MainCategory.women,
-                            ),
-                          ),
-                        );
-                      },
-                      onTapHeart: () {
-                        setState(() {
-                          wishData[index] = !wishData[index];
-                        });
-                      },
-                    ),
+          FutureBuilder(
+            future: look,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                LookOfTheDayModel look = snapshot.data as LookOfTheDayModel;
+                return SizedBox(
+                  height: 175,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: look.data.length,
+                    itemBuilder: (context, index) {
+                      return LookOfTheDay(
+                        image: look.data[index].mainCatId == 1
+                            ? '${AssetConstants.mockImageLink}/women/${look
+                            .data[index].image}'
+                            : '${AssetConstants.mockImageLink}/kids/${look
+                            .data[index].image}',
+
+                        product: look.data[index].name,
+                        discount: '${look.data[index].price} QAR',
+                      );
+                    },
                   ),
                 );
-              },
-            ),
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
           const Padding(
             padding: EdgeInsets.symmetric(
@@ -270,52 +335,6 @@ class _HomeTabState extends State<HomeTab> {
                 HomeTabBloggerList(
                   image: 'assets/images/home/home_tab/blogger2.png',
                   name: 'Man',
-                ),
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 25,
-            ),
-            child: Divider(
-              height: 0,
-              thickness: 1,
-              indent: 25,
-              endIndent: 25,
-              color: Color(0xffE7D1A8),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 25,
-            ).copyWith(bottom: 25, top: 10),
-            child: const Text(
-              'Look of the day',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: const [
-                LookOfTheDay(
-                  image: 'assets/images/home/home_tab/shirt.png',
-                  product: 'Yellow checkered \nshirt - XL',
-                  discount: '20%off',
-                ),
-                LookOfTheDay(
-                  image: 'assets/images/home/home_tab/pants.png',
-                  product: 'Biege cargo \npants - XL',
-                  discount: '20%off',
-                ),
-                LookOfTheDay(
-                  image: 'assets/images/home/home_tab/shoe.png',
-                  product: 'Woodland \nCameo shoes',
-                  discount: '20%off',
                 ),
               ],
             ),
@@ -449,3 +468,51 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 }
+/*
+SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: const [
+                LookOfTheDay(
+                  image: 'assets/images/home/home_tab/shirt.png',
+                  product: 'Yellow checkered \nshirt - XL',
+                  discount: '20%off',
+                ),
+                LookOfTheDay(
+                  image: 'assets/images/home/home_tab/pants.png',
+                  product: 'Biege cargo \npants - XL',
+                  discount: '20%off',
+                ),
+                LookOfTheDay(
+                  image: 'assets/images/home/home_tab/shoe.png',
+                  product: 'Woodland \nCameo shoes',
+                  discount: '20%off',
+                ),
+              ],
+            ),
+          ),
+ */
+
+// FutureBuilder(
+//   future: look,
+//   builder: (context, snapshot) {
+//     LookOfTheDayModel lookOfTheDay = snapshot
+//         .data as LookOfTheDayModel;
+//
+//     if (snapshot.hasData) {
+//       return ListView.builder(
+//         scrollDirection: Axis.horizontal,
+//         itemCount: lookOfTheDay.data.length,
+//         itemBuilder: (context, index) {
+//           return const LookOfTheDay(
+//             image: 'assets/images/home/home_tab/shirt.png',
+//             product: 'Yellow checkered \nshirt - XL',
+//             discount: '20%off',
+//           );
+//         },
+//       );
+//     } else {
+//       return const Center(child: CircularProgressIndicator());
+//     }
+//   },
+// ),

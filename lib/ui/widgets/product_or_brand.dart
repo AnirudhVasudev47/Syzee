@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:syzee/services/bottom_nav_provider.dart';
+import 'package:syzee/ui/screen/home_screen.dart';
 
 enum SelectedTab {
   products,
@@ -6,7 +9,12 @@ enum SelectedTab {
 }
 
 class ProductOrBrand extends StatefulWidget {
-  const ProductOrBrand({Key? key, required this.tab, required this.isProduct, required this.onTap}) : super(key: key);
+  const ProductOrBrand(
+      {Key? key,
+      required this.tab,
+      required this.isProduct,
+      required this.onTap})
+      : super(key: key);
 
   final SelectedTab tab;
   final bool isProduct;
@@ -82,27 +90,39 @@ class _ProductOrBrandState extends State<ProductOrBrand> {
         ),
         !widget.isProduct
             ? ElevatedButton(
-          onPressed: widget.onTap,
-          style: ElevatedButton.styleFrom(
-            primary: const Color(0xff169B93),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 45,
-            ),
-          ),
-          child: const Text(
-            'Brands',
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-          ),
-        )
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ChangeNotifierProvider<BottomNavigationBarProvider>(
+                              child: const HomePage(),
+                              create: (BuildContext context) {
+                                return BottomNavigationBarProvider();
+                              }),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xff169B93),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 45,
+                  ),
+                ),
+                child: const Text(
+                  'Brands',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+              )
             : OutlinedButton(
           style: OutlinedButton.styleFrom(
             side: const BorderSide(

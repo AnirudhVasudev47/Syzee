@@ -14,34 +14,50 @@ class LookOfTheDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            image,
-            width: 116,
-            height: 121,
-          ),
-          Text(
-            product,
-            style: const TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 12,
-              fontWeight: FontWeight.w300,
+    return InkWell(
+      onTap: () {
+
+      },
+      child: Container(
+        width: 120,
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              image,
+              width: 116,
+              height: 121,
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
-          ),
-          Text(
-            discount,
-            textAlign: TextAlign.start,
-            style: const TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
+            Expanded(
+              flex: 2,
+              child: Text(
+                product,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              flex: 1,
+              child: Text(
+                discount,
+                textAlign: TextAlign.start,
+                style: const TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

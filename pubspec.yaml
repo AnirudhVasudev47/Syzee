@@ -93,6 +93,7 @@ flutter:
     - assets/images/products_screen/
     - assets/images/single_product/
     - assets/images/checkout/
+    - assets/images/brand/
   #   - images/a_dot_ham.jpeg
 
   fonts:
