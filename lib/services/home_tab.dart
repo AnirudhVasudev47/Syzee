@@ -4,11 +4,13 @@ import 'package:http/http.dart' as http;
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/models/brands_model.dart';
 import 'package:syzee/models/look_of_the_day_model.dart';
+import 'package:syzee/models/week_highlights_model.dart';
 
 Uri banner = Uri.parse('${AssetConstants.mockApiLink}/home_tab/banner');
 Uri categories = Uri.parse('${AssetConstants.mockApiLink}/home_tab/category');
 Uri brands = Uri.parse('${AssetConstants.mockApiLink}/home_tab/brands');
 Uri lookOfTheDay = Uri.parse('${AssetConstants.mockApiLink}/home_tab/lookOfTheDay');
+Uri weekHighlights = Uri.parse('${AssetConstants.mockApiLink}/home_tab/weekshighlights');
 
 Future<List<String>> getBanner() async {
   List<String> imageList = [];
@@ -52,3 +54,14 @@ Future<LookOfTheDayModel> getLookOfTheDay() async {
   return LookOfTheDayModel.fromRawJson(response.body);
 
 }
+
+Future<WeekHighlightsModel> getWeekHighlights() async {
+
+  final response = await http.get(weekHighlights);
+  
+  print(response.body);
+
+  return WeekHighlightsModel.fromRawJson(response.body);
+
+}
+

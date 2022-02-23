@@ -5,8 +5,6 @@ import 'package:syzee/models/look_of_the_day_model.dart';
 import 'package:syzee/models/product_list_model.dart';
 import 'package:syzee/services/bottom_nav_provider.dart';
 import 'package:syzee/services/home_tab.dart';
-import 'package:syzee/services/product.dart';
-import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
 import 'package:syzee/ui/widgets/home_tab_banner.dart';
 import 'package:syzee/ui/widgets/home_tab_blogger_list.dart';
@@ -278,13 +276,25 @@ class _HomeTabState extends State<HomeTab> {
                     itemBuilder: (context, index) {
                       return LookOfTheDay(
                         image: look.data[index].mainCatId == 1
-                            ? '${AssetConstants.mockImageLink}/women/${look
-                            .data[index].image}'
-                            : '${AssetConstants.mockImageLink}/kids/${look
-                            .data[index].image}',
-
+                            ? '${AssetConstants.mockImageLink}/women/${look.data[index].image}'
+                            : '${AssetConstants.mockImageLink}/kids/${look.data[index].image}',
                         product: look.data[index].name,
                         discount: '${look.data[index].price} QAR',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SingleProductScreen(
+                                id: look.data[index].prodId,
+                                mainCat: look.data[index].mainCatId == 1
+                                    ? MainCategory.women
+                                    : look.data[index].mainCatId == 2
+                                        ? MainCategory.kids
+                                        : MainCategory.men,
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
                   ),

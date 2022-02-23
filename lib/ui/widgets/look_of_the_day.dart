@@ -5,19 +5,19 @@ class LookOfTheDay extends StatelessWidget {
       {Key? key,
       required this.image,
       required this.product,
-      required this.discount})
+      required this.discount,
+      required this.onTap})
       : super(key: key);
 
   final String image;
   final String product;
   final String discount;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-
-      },
+      onTap: onTap,
       child: Container(
         width: 120,
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
