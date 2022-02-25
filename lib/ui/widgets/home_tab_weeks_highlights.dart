@@ -59,9 +59,13 @@ class _HomeTabWeeksHighlightsState extends State<HomeTabWeeksHighlights> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Image.network(
-                          '${AssetConstants.mockImageLink}/week_highlights/${item.image}',
-                          height: 225,
-                        ),
+                              item.mainCatId == 'women'
+                                  ? '${AssetConstants.mockImageLink}/women/${item.image}'
+                                  : item.mainCatId == 'kids'
+                                      ? '${AssetConstants.mockImageLink}/kids/${item.image}'
+                                      : '${AssetConstants.mockImageLink}/men/${item.image}',
+                              height: 225,
+                            ),
                         Text(
                           item.title,
                           style: const TextStyle(

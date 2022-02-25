@@ -51,7 +51,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
   @override
   void initState() {
     super.initState();
-
+    print ('mainCat: ${widget.mainCat} prodId: ${widget.id}');
     setState(() {
       imageLink = widget.mainCat == MainCategory.women
           ? '${AssetConstants.mockImageLink}/women'

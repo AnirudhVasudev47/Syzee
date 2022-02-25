@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
+import 'package:syzee/global/constants.dart';
 import 'package:syzee/services/home_tab.dart';
 import 'package:syzee/ui/layouts/home_tab_categories.dart';
 
@@ -34,6 +35,12 @@ class _HomeTabCategoriesState extends State<HomeTabCategories> {
               return HomeTabCategoriesLayout(
                 image: dataList[index]['image'],
                 name: dataList[index]['text'],
+                subCatId: int.parse(dataList[index]['subCatId']),
+                mainCat: dataList[index]['mainCatId'].toString() == '1'
+                    ? MainCategory.women
+                    : dataList[index]['mainCatId'].toString() == '2'
+                        ? MainCategory.kids
+                        : MainCategory.men,
               );
             },
           );
