@@ -16,6 +16,7 @@ class ChoosePaymentScreen extends StatefulWidget {
     required this.type,
     required this.shippingAddress,
     required this.discount,
+    required this.couponName,
   }) : super(key: key);
 
   final double discount;
@@ -25,6 +26,7 @@ class ChoosePaymentScreen extends StatefulWidget {
   final String city;
   final String postalCode;
   final String type;
+  final String couponName;
 
   @override
   _ChoosePaymentScreenState createState() => _ChoosePaymentScreenState();
@@ -209,6 +211,7 @@ class _ChoosePaymentScreenState extends State<ChoosePaymentScreen> {
                         shippingAddress: widget.shippingAddress,
                         postalCode: widget.postalCode,
                         discount: widget.discount,
+                        couponName: widget.couponName,
                       ),
                     ),
                   );

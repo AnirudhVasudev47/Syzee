@@ -6,6 +6,7 @@ import 'package:syzee/global/tools.dart';
 import 'package:syzee/models/cart_model.dart';
 import 'package:syzee/models/coupon_list_model.dart';
 import 'package:syzee/services/cart_services.dart';
+import 'package:syzee/services/order_service.dart';
 import 'package:syzee/ui/screen/apply_coupon.dart';
 import 'package:syzee/ui/screen/order_successful_screen.dart';
 import 'package:syzee/ui/widgets/cart_list_tile.dart';
@@ -21,6 +22,7 @@ class SummaryScreen extends StatefulWidget {
     required this.postalCode,
     required this.type,
     required this.discount,
+    required this.couponName,
   }) : super(key: key);
 
   final double discount;
@@ -31,6 +33,7 @@ class SummaryScreen extends StatefulWidget {
   final String city;
   final String postalCode;
   final String type;
+  final String couponName;
 
   @override
   State<SummaryScreen> createState() => _SummaryScreenState();
@@ -542,11 +545,28 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            String id = await placeOrder(
+                              widget.shippingAddress,
+                              widget.country,
+                              widget.state,
+                              widget.city,
+                              widget.postalCode,
+                              widget.type,
+                              cart.data.total,
+                              discountAmt,
+                              'null',
+                              (cart.data.noOfItems * 45) + cart.data.total - discountAmt,
+                              widget.payMethod == 'online' ? 1 : 0,
+                              'testID',
+                              widget.couponName,
+                            );
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const OrderSuccessfulScreen(),
+                                builder: (context) => OrderSuccessfulScreen(
+                                  orderId: id,
+                                ),
                               ),
                             );
                           },

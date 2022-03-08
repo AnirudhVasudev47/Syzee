@@ -31,20 +31,48 @@ class Data {
     required this.kidsSearch,
   });
 
-  final List<String> womenSearch;
-  final List<String> kidsSearch;
+  final List<Search> womenSearch;
+  final List<Search> kidsSearch;
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    womenSearch: List<String>.from(json["womenSearch"].map((x) => x)),
-    kidsSearch: List<String>.from(json["kidsSearch"].map((x) => x)),
+    womenSearch: List<Search>.from(json["womenSearch"].map((x) => Search.fromJson(x))),
+    kidsSearch: List<Search>.from(json["kidsSearch"].map((x) => Search.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "womenSearch": List<dynamic>.from(womenSearch.map((x) => x)),
-    "kidsSearch": List<dynamic>.from(kidsSearch.map((x) => x)),
+    "womenSearch": List<dynamic>.from(womenSearch.map((x) => x.toJson())),
+    "kidsSearch": List<dynamic>.from(kidsSearch.map((x) => x.toJson())),
+  };
+}
+
+class Search {
+  Search({
+    required this.name,
+    required this.mainCatId,
+    required this.productId,
+  });
+
+  final String name;
+  final int mainCatId;
+  final String productId;
+
+  factory Search.fromRawJson(String str) => Search.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Search.fromJson(Map<String, dynamic> json) => Search(
+    name: json["name"],
+    mainCatId: json["mainCatId"],
+    productId: json["productId"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "mainCatId": mainCatId,
+    "productId": productId,
   };
 }

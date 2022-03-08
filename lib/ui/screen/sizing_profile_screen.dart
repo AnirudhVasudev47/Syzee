@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/theme.dart';
+import 'package:syzee/global/tools.dart';
 import 'package:syzee/models/sizing_profile_model.dart';
 import 'package:syzee/services/sizing_service.dart';
 import 'package:syzee/ui/widgets/sizing_profile_card.dart';
@@ -91,7 +92,19 @@ class _SizingProfileScreenState extends State<SizingProfileScreen> {
                             weightUnit: size.data[index].weightUnit,
                             selectedId: size.selectedId.toString(),
                             id: size.data[index].id.toString(),
-                            onTapCard: () {},
+                            onTapCard: () async {
+                              loadingDialog(context, asset: AssetConstants.loadingLottie);
+                              await updateDefaultSizingProfile(size.data[index].id.toString());
+                              setState(() {
+                                sizing = getAllSizingProfile();
+                              });
+                              Navigator.pop(context);
+                            },
+                            onFunctionComplete: () {
+                              setState(() {
+                                sizing = getAllSizingProfile();
+                              });
+                            },
                             onEdit: () {
                               showBottomSheet(
                                 context: context,
@@ -128,6 +141,12 @@ class _SizingProfileScreenState extends State<SizingProfileScreen> {
                                             hips: size.data[index].hips,
                                             upperValue: double.parse(size.data[index].upperBody),
                                             lowerValue: double.parse(size.data[index].lowerBody),
+                                            id: size.data[index].id,
+                                            onFunctionComplete: () {
+                                              setState(() {
+                                                sizing = getAllSizingProfile();
+                                              });
+                                            },
                                           ),
                                         ],
                                       ),
@@ -194,9 +213,14 @@ class _SizingProfileScreenState extends State<SizingProfileScreen> {
                                     ),
                                   ),
                                 ),
-                                // const UpdateOrAddSize(
-                                //   action: 'add',
-                                // ),
+                                UpdateOrAddSize(
+                                  action: 'add',
+                                  onFunctionComplete: () {
+                                    setState(() {
+                                      sizing = getAllSizingProfile();
+                                    });
+                                  },
+                                ),
                               ],
                             ),
                           ),

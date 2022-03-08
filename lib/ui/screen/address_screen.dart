@@ -15,9 +15,11 @@ class AddressScreen extends StatefulWidget {
   const AddressScreen({
     Key? key,
     required this.voucher,
+    required this.couponName,
   }) : super(key: key);
 
   final double voucher;
+  final String couponName;
 
   @override
   State<AddressScreen> createState() => _AddressScreenState();
@@ -158,6 +160,11 @@ class _AddressScreenState extends State<AddressScreen> {
                                               street: addressData.data[index].street,
                                               zone: addressData.data[index].zone,
                                               country: addressData.data[index].country,
+                                              onActionComplete: () {
+                                                setState(() {
+                                                  address = getAddress();
+                                                });
+                                              },
                                             ),
                                           ],
                                         ),
@@ -186,6 +193,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                       type: addressData.data[index].type,
                                       postalCode: addressData.data[index].country,
                                       city: addressData.data[index].zone,
+                                      couponName: widget.couponName,
                                     ),
                                   ),
                                 );
@@ -243,7 +251,14 @@ class _AddressScreenState extends State<AddressScreen> {
                                       ),
                                     ),
                                   ),
-                                  const UpdateOrAddAddress(action: 'add'),
+                                  UpdateOrAddAddress(
+                                    action: 'add',
+                                    onActionComplete: () {
+                                      setState(() {
+                                        address = getAddress();
+                                      });
+                                    },
+                                  ),
                                 ],
                               ),
                             ),

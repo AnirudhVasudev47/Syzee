@@ -22,6 +22,7 @@ class ThemeColors {
 
   //Light Theme
   static Color primaryColorLight = Color(0xff009C95);
+  static Color primaryColorTransparent = Color(0x5b009c95);
   static Color accentColorLight = Color(0xff2B2D42);
   static Color backgroundColorLight = Color(0xfff6f6f7);
   static Color scaffoldBackgroundColorLight = Color(0xfff6f6f7);

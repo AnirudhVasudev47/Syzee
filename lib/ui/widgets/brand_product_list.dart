@@ -14,51 +14,6 @@ class BrandProductList extends StatefulWidget {
 }
 
 class _BrandProductListState extends State<BrandProductList> {
-  var listData = [
-    BrandProductTile(
-      price: 34,
-      brand: 'Gucci shirts',
-      image: 'assets/images/home/brands_tab/image1.png',
-      name: 'Men\'s Cotton shirt',
-      isWished: true,
-      onTapCard: () {},
-      onTapHeart: () {},
-    ),
-    BrandProductTile(
-      price: 14,
-      brand: 'Gucci T Shirt',
-      image: 'assets/images/home/brands_tab/image2.png',
-      name: 'White men t-shirt',
-      isWished: true,
-      onTapCard: () {},
-      onTapHeart: () {},
-    ),
-    BrandProductTile(
-      price: 24,
-      brand: 'Gucci shoes',
-      image: 'assets/images/home/brands_tab/image3.png',
-      name: 'Black Women shoes',
-      isWished: true,
-      onTapCard: () {},
-      onTapHeart: () {},
-    ),
-    BrandProductTile(
-      price: 12,
-      brand: 'Gucci belt',
-      image: 'assets/images/home/brands_tab/image4.png',
-      name: 'Pure leather belt',
-      isWished: true,
-      onTapCard: () {},
-      onTapHeart: () {},
-    ),
-  ];
-
-  var wishedList = [
-    false,
-    false,
-    false,
-    false,
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +28,7 @@ class _BrandProductListState extends State<BrandProductList> {
           crossAxisCount: 2,
           crossAxisSpacing: 12,
           mainAxisSpacing: 10,
-          childAspectRatio: 168 / 310,
+          childAspectRatio: 217 / 415,
         ),
         itemBuilder: (context, index) {
           var imageLink = data[index].mainCatId == 1

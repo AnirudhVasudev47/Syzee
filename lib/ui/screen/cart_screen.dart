@@ -25,6 +25,7 @@ class _CartScreenState extends State<CartScreen> {
   late CartModel cart;
   late Future<CouponListModel> coupons;
   double discountAmt = 0;
+  String couponName = 'null';
 
   @override
   void initState() {
@@ -153,8 +154,7 @@ class _CartScreenState extends State<CartScreen> {
                               price: cart.data.cart[index].price.toString(),
                               deleteBtn: () async {
                                 loadingDialog(context, asset: AssetConstants.loadingLottie);
-                                var res = await deleteFromCart(
-                                    cart.data.cart[index].id, cart.data.cart[index].size);
+                                var res = await deleteFromCart(cart.data.cart[index].id, cart.data.cart[index].size);
                                 if (res != null) {
                                   // print ('over Here');
                                   setState(() {
@@ -244,10 +244,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           child: const Text(
                             'Price Details',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
+                            style: TextStyle(fontFamily: 'Montserrat', fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ),
                         const Divider(
@@ -271,9 +268,7 @@ class _CartScreenState extends State<CartScreen> {
                         // ),
                         chargesTile(
                           'Voucher discount',
-                          discountAmt == 0
-                              ? 'Apply coupon'
-                              : '- QAR ${discountAmt.toStringAsFixed(2)}',
+                          discountAmt == 0 ? 'Apply coupon' : '- QAR ${discountAmt.toStringAsFixed(2)}',
                           const Color(0xff9B0000),
                           () {
                             showModalBottomSheet<void>(
@@ -300,8 +295,7 @@ class _CartScreenState extends State<CartScreen> {
                                           future: coupons,
                                           builder: (context, snapshot) {
                                             if (snapshot.hasData) {
-                                              CouponListModel couponList =
-                                                  snapshot.data as CouponListModel;
+                                              CouponListModel couponList = snapshot.data as CouponListModel;
                                               return couponList.data.isEmpty
                                                   ? Center(
                                                       child: Column(
@@ -336,32 +330,26 @@ class _CartScreenState extends State<CartScreen> {
                                                           discount: couponList.data[index].amount,
                                                           onTap: () {
                                                             int tot = cart.data.total;
-                                                            if (tot >
-                                                                double.parse(couponList
-                                                                    .data[index].minimum)) {
-                                                              if (couponList.data[index].type ==
-                                                                  '%') {
+                                                            if (tot > double.parse(couponList.data[index].minimum)) {
+                                                              if (couponList.data[index].type == '%') {
                                                                 setState(() {
                                                                   Navigator.pop(context);
-                                                                  discountAmt = calDiscount(
-                                                                      double.parse('$tot'),
-                                                                      double.parse(couponList
-                                                                          .data[index].amount));
+                                                                  discountAmt =
+                                                                      calDiscount(double.parse('$tot'), double.parse(couponList.data[index].amount));
+                                                                  couponName = couponList.data[index].code;
                                                                 });
                                                               } else {
                                                                 setState(() {
                                                                   Navigator.pop(context);
-                                                                  discountAmt = double.parse(
-                                                                      couponList
-                                                                          .data[index].amount);
+                                                                  discountAmt = double.parse(couponList.data[index].amount);
+                                                                  couponName = couponList.data[index].code;
                                                                 });
                                                               }
                                                             } else {
                                                               Navigator.pop(context);
                                                               displayToast(context,
                                                                   title: 'Not enough items',
-                                                                  desc:
-                                                                      'Add more items to apply this coupon code.',
+                                                                  desc: 'Add more items to apply this coupon code.',
                                                                   type: 'Danger');
                                                             }
                                                           },
@@ -408,9 +396,7 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                               ),
                               Text(
-                                discountAmt == 0
-                                    ? 'QAR ${cart.data.total}'
-                                    : 'QAR ${cart.data.total - discountAmt}',
+                                discountAmt == 0 ? 'QAR ${cart.data.total}' : 'QAR ${cart.data.total - discountAmt}',
                                 style: const TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 16,
@@ -454,6 +440,7 @@ class _CartScreenState extends State<CartScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => AddressScreen(
                                     voucher: discountAmt,
+                                    couponName: couponName,
                                   ),
                                 ),
                               );

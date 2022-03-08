@@ -250,29 +250,37 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                       children: [
                         Text(
                           'QAR ${product.variants[colorIndex].sizeVariants[sizeIndex].price}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 18,
-                            decoration: TextDecoration.lineThrough,
+                            decoration: product.variants[colorIndex]
+                                        .sizeVariants[sizeIndex].discount !=
+                                    ""
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
                             decorationStyle: TextDecorationStyle.solid,
                             decorationColor: Colors.blueGrey,
                             decorationThickness: 2,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff009C95),
+                            color: const Color(0xff009C95),
                           ),
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        Text(
-                          'QAR ${product.variants[colorIndex].sizeVariants[sizeIndex].discount}',
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 23,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff009C95),
-                          ),
-                        ),
+                        product.variants[colorIndex].sizeVariants[sizeIndex]
+                                    .discount !=
+                                ""
+                            ? Text(
+                                'QAR ${product.variants[colorIndex].sizeVariants[sizeIndex].discount}',
+                                style: const TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff009C95),
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),

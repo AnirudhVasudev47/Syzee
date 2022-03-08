@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:syzee/global/color.dart';
+import 'package:syzee/global/constants.dart';
+import 'package:syzee/global/tools.dart';
+import 'package:syzee/services/sizing_service.dart';
 
 class SizingProfileCard extends StatefulWidget {
   const SizingProfileCard({
@@ -12,6 +15,7 @@ class SizingProfileCard extends StatefulWidget {
     required this.id,
     required this.selectedId,
     required this.onTapCard,
+    required this.onFunctionComplete,
   }) : super(key: key);
 
   final String height;
@@ -22,6 +26,7 @@ class SizingProfileCard extends StatefulWidget {
   final String selectedId;
   final void Function() onEdit;
   final void Function() onTapCard;
+  final VoidCallback onFunctionComplete;
 
   @override
   State<SizingProfileCard> createState() => _SizingProfileCardState();
@@ -41,11 +46,7 @@ class _SizingProfileCardState extends State<SizingProfileCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        setState(() {
-          id = widget.id;
-        });
-      },
+      onTap: widget.onTapCard,
       child: Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 25,
@@ -105,9 +106,7 @@ class _SizingProfileCardState extends State<SizingProfileCard> {
                         activeColor: ThemeColors.primaryColorLight,
                         groupValue: id,
                         onChanged: (String? value) {
-                          setState(() {
-                            id = value!;
-                          });
+                          widget.onTapCard();
                         },
                       ),
                       const Text(
@@ -135,16 +134,23 @@ class _SizingProfileCardState extends State<SizingProfileCard> {
                           ),
                         ),
                       ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     print('delete');
-                      //   },
-                      //   child: Image.asset(
-                      //     AssetConstants.bin,
-                      //     height: 20,
-                      //     width: 20,
-                      //   ),
-                      // ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          loadingDialog(context, asset: AssetConstants.loadingLottie);
+                          await deleteSizingProfile(widget.id);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          widget.onFunctionComplete();
+                        },
+                        child: Image.asset(
+                          AssetConstants.bin,
+                          height: 20,
+                          width: 20,
+                        ),
+                      ),
                     ],
                   ),
                 ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/models/search_model.dart';
 import 'package:syzee/services/products_services.dart';
+import 'package:syzee/ui/screen/single_product_screen.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -125,18 +126,30 @@ class _SearchScreenState extends State<SearchScreen> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return ListTile(
-                            onTap: () {},
-                            selected: true,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 35),
-                            title: Text(
-                              searchData.data.womenSearch[index],
-                              style: const TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 16,
-                              ),
-                            ),
-                            trailing: Image.asset(
-                              AssetConstants.arrowUpRight,
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SingleProductScreen(
+                                          mainCat: searchData.data.womenSearch[index].mainCatId == 1
+                                              ? MainCategory.women
+                                              : MainCategory.kids,
+                                          id: searchData.data.womenSearch[index].productId,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  selected: true,
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 35),
+                                  title: Text(
+                                    searchData.data.womenSearch[index].name,
+                                    style: const TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  trailing: Image.asset(
+                                    AssetConstants.arrowUpRight,
                               width: 12,
                               height: 12,
                             ),
@@ -162,16 +175,28 @@ class _SearchScreenState extends State<SearchScreen> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return ListTile(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SingleProductScreen(
+                                    mainCat: searchData.data.womenSearch[index].mainCatId == 1
+                                        ? MainCategory.women
+                                        : MainCategory.kids,
+                                    id: searchData.data.womenSearch[index].productId,
+                                  ),
+                                ),
+                              );
+                            },
                             selected: true,
                             contentPadding: const EdgeInsets.symmetric(horizontal: 35),
                             title: Text(
-                              searchData.data.kidsSearch[index],
-                              style: const TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 16,
-                              ),
-                            ),
+                              searchData.data.kidsSearch[index].name,
+                                    style: const TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 16,
+                                    ),
+                                  ),
                             trailing: Image.asset(
                               AssetConstants.arrowUpRight,
                               width: 12,

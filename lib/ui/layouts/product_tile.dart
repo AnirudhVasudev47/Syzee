@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syzee/global/constants.dart';
+import 'package:syzee/global/tools.dart';
+import 'package:syzee/services/wishlist_services.dart';
 
 class ProductTile extends StatelessWidget {
   const ProductTile({
@@ -11,6 +13,9 @@ class ProductTile extends StatelessWidget {
     required this.isWished,
     required this.onTapHeart,
     required this.onTapCard,
+    required this.size,
+    required this.productId,
+    required this.mainCatId,
   }) : super(key: key);
 
   final String name;
@@ -18,8 +23,11 @@ class ProductTile extends StatelessWidget {
   final int price;
   final String image;
   final bool isWished;
-  final VoidCallback onTapHeart;
+  final Function () onTapHeart;
   final VoidCallback onTapCard;
+  final String size;
+  final String productId;
+  final String mainCatId;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +61,8 @@ class ProductTile extends StatelessWidget {
                     children: [
                       Text(
                         brand,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'VarelaRound',
                           fontSize: 16,
@@ -60,6 +70,7 @@ class ProductTile extends StatelessWidget {
                       ),
                       Text(
                         name,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'Montserrat',
@@ -68,24 +79,30 @@ class ProductTile extends StatelessWidget {
                       ),
                       Text(
                         'QAR ' + price.toString(),
-                        style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 18,
-                            color: Color(0xff009C95)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontFamily: 'Montserrat', fontSize: 18, color: Color(0xff009C95)),
                       ),
                     ],
                   ),
                 ),
                 GestureDetector(
-                  onTap: onTapHeart,
+                  onTap: () async {
+                    loadingDialog(context);
+                    if (isWished) {
+                      removeFromWishlist(mainCatId, productId);
+                    } else {
+                      await addToWishlist(mainCatId, productId, size);
+                    }
+                    await onTapHeart();
+                    Navigator.pop(context);
+                  },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Image.asset(
-                      isWished
-                          ? AssetConstants.heartActive
-                          : AssetConstants.heartInactive,
-                      height: 20,
-                      width: 20,
+                      isWished ? AssetConstants.heartActive : AssetConstants.heartInactive,
+                      height: 30,
+                      width: 30,
                     ),
                   ),
                 ),

@@ -12,6 +12,7 @@ enum MainCategory {
 class AssetConstants {
 
   static const mockApiLink = 'http://192.168.0.124:8000/api';
+  static const mockWebLink = 'http://192.168.0.124:80/syzee';
   static const mockImageLink = 'http://192.168.0.124:80/syzee/images';
 
   static const logo = 'assets/images/logo.png';

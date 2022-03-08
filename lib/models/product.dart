@@ -103,7 +103,7 @@ class SizeVariant {
 
   factory SizeVariant.fromJson(Map<String, dynamic> json) => SizeVariant(
     size: json["size"],
-    stock: json["stock"],
+    stock: int.parse(json["stock"].toString()),
     price: json["price"],
     discount: json["discount"],
   );

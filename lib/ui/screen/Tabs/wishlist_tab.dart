@@ -113,6 +113,12 @@ class _WishlistTabState extends State<WishlistTab> {
                         if (snapshot.hasData) {
                           WishlistModal wish = snapshot.data as WishlistModal;
                           return WishlistProductList(
+                            onTap: () async {
+                              var wishRes = getWishlist();
+                              setState(() {
+                                wishData = wishRes;
+                              });
+                            },
                             wishData: wish,
                           );
                         } else {

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:syzee/global/color.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/theme.dart';
-import 'package:syzee/global/tools.dart';
 import 'package:syzee/services/bottom_nav_provider.dart';
 import 'package:syzee/ui/screen/Tabs/brand_tab.dart';
 import 'package:syzee/ui/screen/Tabs/categories_tab.dart';
@@ -30,34 +29,36 @@ class _HomePageState extends State<HomePage> {
   ScreenUtil screenUtil = ScreenUtil();
   GlobalKey scaffoldKey = GlobalKey();
   double iconSize = 20;
+  int indexOpen = 0;
 
   @override
   void initState() {
     super.initState();
     currentTheme.addListener(() {
-      setState(() {
-      });
+      setState(() {});
+    });
+    indexOpen = widget.customIndex ?? 0;
+  }
+
+  _indexChange(int index) {
+    setState(() {
+      indexOpen = index;
     });
   }
 
-  final List<Widget> _widgetOptions = <Widget>[
-    const HomeTab(),
-    const CategoriesTab(
-      index: 0,
-    ),
-    const BrandTab(),
-    const WishlistTab(),
-    const ProfileTab(),
-  ];
-
-  // _onItemTapped(int index) {
-  //   setState(() {
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<BottomNavigationBarProvider>(context);
+    final List<Widget> _widgetOptions = <Widget>[
+      HomeTab(
+        changeTab: _indexChange,
+      ),
+      const CategoriesTab(
+        index: 0,
+      ),
+      const BrandTab(),
+      const WishlistTab(),
+      const ProfileTab(),
+    ];
     return Scaffold(
       appBar: const CustomAppBar(),
       key: scaffoldKey,
@@ -65,7 +66,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context) => SafeArea(
           // top: false,
           child: Container(
-            child: _widgetOptions[provider.currentIndex],
+            child: _widgetOptions[indexOpen],
           ),
         ),
       ),
@@ -149,12 +150,10 @@ class _HomePageState extends State<HomePage> {
         iconSize: 14,
         backgroundColor: ThemeColors.navPillColor,
         type: BottomNavigationBarType.fixed,
-        currentIndex: provider.currentIndex,
+        currentIndex: indexOpen,
         selectedItemColor: ThemeColors.iconActiveColor,
         unselectedItemColor: ThemeColors.iconInActiveColor,
-        onTap: (index) {
-          provider.currentIndex = index;
-        },
+        onTap: _indexChange,
       ),
     );
   }

@@ -120,15 +120,29 @@ class _ManageAddressState extends State<ManageAddress> {
                                             ),
                                             UpdateOrAddAddress(
                                               action: 'update',
-                                              name: addressData.data[index].name,
-                                              code: addressData.data[index].code,
-                                              phone: addressData.data[index].phone,
-                                              type: addressData.data[index].type,
-                                              doorNo: addressData.data[index].doorNo,
-                                              buildingNo: addressData.data[index].buildingNo,
-                                              street: addressData.data[index].street,
-                                              zone: addressData.data[index].zone,
-                                              country: addressData.data[index].country,
+                                              name:
+                                                  addressData.data[index].name,
+                                              code:
+                                                  addressData.data[index].code,
+                                              phone:
+                                                  addressData.data[index].phone,
+                                              type:
+                                                  addressData.data[index].type,
+                                              doorNo: addressData
+                                                  .data[index].doorNo,
+                                              buildingNo: addressData
+                                                  .data[index].buildingNo,
+                                              street: addressData
+                                                  .data[index].street,
+                                              zone:
+                                                  addressData.data[index].zone,
+                                              country: addressData
+                                                  .data[index].country,
+                                              onActionComplete: () {
+                                                setState(() {
+                                                  address = getAddress();
+                                                });
+                                              },
                                             ),
                                           ],
                                         ),
@@ -198,7 +212,14 @@ class _ManageAddressState extends State<ManageAddress> {
                                       ),
                                     ),
                                   ),
-                                  const UpdateOrAddAddress(action: 'add'),
+                                  UpdateOrAddAddress(
+                                    action: 'add',
+                                    onActionComplete: () {
+                                      setState(() {
+                                        address = getAddress();
+                                      });
+                                    },
+                                  ),
                                 ],
                               ),
                             ),

@@ -4,6 +4,7 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syzee/global/color.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
+import 'package:syzee/services/sizing_service.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 enum AddressType { home, office, other }
@@ -12,18 +13,20 @@ class UpdateOrAddSize extends StatefulWidget {
   const UpdateOrAddSize({
     Key? key,
     required this.action,
-    required this.height,
-    required this.weight,
-    required this.total,
-    required this.shoulder,
-    required this.chest,
-    required this.sleeves,
-    required this.waist,
-    required this.waistFromNeck,
-    required this.chestFromNeck,
-    required this.hips,
-    required this.upperValue,
-    required this.lowerValue,
+    this.height,
+    this.weight,
+    this.total,
+    this.shoulder,
+    this.chest,
+    this.sleeves,
+    this.waist,
+    this.waistFromNeck,
+    this.chestFromNeck,
+    this.hips,
+    this.upperValue,
+    this.lowerValue,
+    this.id,
+    required this.onFunctionComplete,
   }) : super(key: key);
 
   final String action;
@@ -39,6 +42,8 @@ class UpdateOrAddSize extends StatefulWidget {
   final String? hips;
   final double? upperValue;
   final double? lowerValue;
+  final int? id;
+  final VoidCallback onFunctionComplete;
 
   @override
   State<UpdateOrAddSize> createState() => _UpdateOrAddSizeState();
@@ -61,6 +66,9 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
   TextEditingController waistFromNeckText = TextEditingController();
   TextEditingController chestFromNeckText = TextEditingController();
   TextEditingController hipsText = TextEditingController();
+
+  int heightUnitIndex = 0;
+  int weightUnitIndex = 0;
 
   @override
   void initState() {
@@ -188,6 +196,23 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
     );
   }
 
+  checkFields() {
+    if (heightText.text == '' ||
+        weightText.text == '' ||
+        totalText.text == '' ||
+        shoulderText.text == '' ||
+        chestText.text == '' ||
+        sleevesText.text == '' ||
+        waistText.text == '' ||
+        waistFromNeckText.text == '' ||
+        chestFromNeckText.text == '' ||
+        hipsText.text == '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -240,6 +265,9 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
                       inactiveBgColor: Colors.white38,
                       labels: heightArr,
                       onToggle: (index) {
+                        setState(() {
+                          heightUnitIndex = index;
+                        });
                         print('switched to: $index');
                       },
                     ),
@@ -289,6 +317,9 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
                       inactiveBgColor: Colors.white38,
                       labels: weightArr,
                       onToggle: (index) {
+                        setState(() {
+                          weightUnitIndex = index;
+                        });
                         print('switched to: $index');
                       },
                     ),
@@ -465,9 +496,57 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
             ),
             ElevatedButton(
               onPressed: () async {
-                loadingDialog(context, asset: AssetConstants.loadingLottie);
-                if (widget.action == 'add') {
-                } else {}
+                bool res = checkFields();
+                if (res) {
+                  loadingDialog(context, asset: AssetConstants.loadingLottie);
+                  if (widget.action == 'add') {
+                    addSizingProfile(
+                      heightText.text,
+                      heightArr[heightUnitIndex],
+                      weightText.text,
+                      weightArr[weightUnitIndex],
+                      upperValue,
+                      lowerValue,
+                      totalText.text,
+                      shoulderText.text,
+                      chestText.text,
+                      sleevesText.text,
+                      waistText.text,
+                      waistFromNeckText.text,
+                      chestFromNeckText.text,
+                      hipsText.text,
+                    );
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  } else {
+                    await updateSizingProfile(
+                      heightText.text,
+                      heightArr[heightUnitIndex],
+                      weightText.text,
+                      weightArr[weightUnitIndex],
+                      upperValue,
+                      lowerValue,
+                      totalText.text,
+                      shoulderText.text,
+                      chestText.text,
+                      sleevesText.text,
+                      waistText.text,
+                      waistFromNeckText.text,
+                      chestFromNeckText.text,
+                      hipsText.text,
+                      widget.id,
+                    );
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }
+                } else {
+                  displayToast(
+                    context,
+                    title: 'All fields are mandatory.',
+                    desc: 'Please fill all fields.',
+                  );
+                }
+                widget.onFunctionComplete();
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color(0xff169B93),

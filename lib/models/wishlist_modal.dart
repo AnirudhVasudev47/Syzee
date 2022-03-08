@@ -32,6 +32,7 @@ class Datum {
     required this.image,
     required this.productName,
     required this.tagLine,
+    required this.size,
     required this.wishlist,
     required this.price,
   });
@@ -41,6 +42,7 @@ class Datum {
   final String image;
   final String productName;
   final String tagLine;
+  final String size;
   final bool wishlist;
   final int price;
 
@@ -54,6 +56,7 @@ class Datum {
     image: json["image"],
     productName: json["productName"],
     tagLine: json["tagLine"],
+    size: json["size"],
     wishlist: json["wishlist"],
     price: json["price"],
   );
@@ -64,6 +67,7 @@ class Datum {
     "image": image,
     "productName": productName,
     "tagLine": tagLine,
+    "size": size,
     "wishlist": wishlist,
     "price": price,
   };

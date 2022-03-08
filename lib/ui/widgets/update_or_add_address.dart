@@ -19,6 +19,7 @@ class UpdateOrAddAddress extends StatefulWidget {
     this.street,
     this.zone,
     this.country,
+    required this.onActionComplete,
   }) : super(key: key);
 
   final String action;
@@ -31,6 +32,7 @@ class UpdateOrAddAddress extends StatefulWidget {
   final String? street;
   final String? zone;
   final String? country;
+  final VoidCallback onActionComplete;
 
   @override
   State<UpdateOrAddAddress> createState() => _UpdateOrAddAddressState();
@@ -790,6 +792,7 @@ class _UpdateOrAddAddressState extends State<UpdateOrAddAddress> {
                     // Update other country
                   }
                 }
+                widget.onActionComplete();
               },
               style: ElevatedButton.styleFrom(
                 primary: const Color(0xff169B93),

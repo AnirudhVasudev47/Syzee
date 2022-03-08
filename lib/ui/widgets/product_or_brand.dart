@@ -96,7 +96,9 @@ class _ProductOrBrandState extends State<ProductOrBrand> {
                     MaterialPageRoute(
                       builder: (context) =>
                           ChangeNotifierProvider<BottomNavigationBarProvider>(
-                              child: const HomePage(),
+                              child: const HomePage(
+                                customIndex: 2,
+                              ),
                               create: (BuildContext context) {
                                 return BottomNavigationBarProvider();
                               }),

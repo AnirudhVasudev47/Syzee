@@ -6,8 +6,10 @@ import 'package:syzee/global/theme.dart';
 import 'package:syzee/models/user_model.dart';
 import 'package:syzee/services/auth_service.dart';
 import 'package:syzee/services/cart_services.dart';
+import 'package:syzee/ui/screen/contact_us_screen.dart';
 import 'package:syzee/ui/screen/login_screen.dart';
 import 'package:syzee/ui/screen/manage_address.dart';
+import 'package:syzee/ui/screen/order_history_screen.dart';
 import 'package:syzee/ui/screen/sizing_profile_screen.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -206,7 +208,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SizingProfileScreen(),
+                            builder: (context) => const OrderHistoryScreen(),
                           ),
                         );
                       }),
@@ -229,9 +231,14 @@ class _ProfileTabState extends State<ProfileTab> {
                         'Membership ',
                       ),
                       profileTile(
-                        'assets/images/home/profile_tab/logout.png',
-                        'Contact us',
-                      ),
+                          'assets/images/home/profile_tab/logout.png', 'Contact us', onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ContactUsScreen(),
+                          ),
+                        );
+                      }),
                       profileTile(
                         'assets/images/home/profile_tab/logout.png',
                         'Log Out',

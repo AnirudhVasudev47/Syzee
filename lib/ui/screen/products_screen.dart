@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syzee/global/constants.dart';
-import 'package:syzee/global/tools.dart';
 import 'package:syzee/models/product_list_model.dart';
 import 'package:syzee/services/products_services.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
 import 'package:syzee/ui/widgets/product_or_brand.dart';
 import 'package:syzee/ui/widgets/product_screen_product_list.dart';
-import 'package:syzee/ui/widgets/sort_filter_button.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen(
@@ -67,15 +65,29 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 future: list,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    List<ProductTileModel> data =
-                        snapshot.data as List<ProductTileModel>;
+                    List<ProductTileModel> data = snapshot.data as List<ProductTileModel>;
                     print('data: $data');
                     return ProductScreenProductList(
                       mainCat: widget.cat,
                       list: data,
                       onWishTap: () {
-                        print('test');
-                      },
+                        if (widget.from == 'sub_category') {
+                          if (firebaseAuth.currentUser == null) {
+                            setState(() {
+                              list = getProductsList(widget.cat, widget.subCatId);
+                            });
+                          } else {
+                            setState(() {
+                              list = getProductsListByUser(widget.cat, widget.subCatId);
+                            });
+                          }
+                        } else if (widget.from == 'newIn') {
+                          setState(() {
+                            list = getProductFromNewIn(widget.cat, widget.subCatId);
+                          });
+                          // print(list.toString());
+                        }
+                      }, subCatId: widget.subCatId, from: widget.from,
                     );
                   } else {
                     return const Center(child: CircularProgressIndicator());

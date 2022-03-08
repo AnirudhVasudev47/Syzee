@@ -16,47 +16,15 @@ import 'package:syzee/ui/widgets/home_tab_weeks_highlights.dart';
 import 'package:syzee/ui/widgets/look_of_the_day.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({Key? key}) : super(key: key);
+  const HomeTab({Key? key, required this.changeTab}) : super(key: key);
+
+  final void Function(int) changeTab;
 
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
-  var listData = [
-    ProductTileModel(
-      id: '1',
-      price: 34,
-      name: 'Red women dress',
-      image: 'assets/images/578.png',
-      brand: 'ZARA',
-      wishlist: false,
-    ),
-    ProductTileModel(
-      id: '1',
-      price: 14,
-      name: 'Women checks',
-      image: 'assets/images/pink.png',
-      brand: 'Allen Solly',
-      wishlist: false,
-    ),
-    ProductTileModel(
-      id: '1',
-      price: 24,
-      name: 'Flower women ',
-      image: 'assets/images/black.png',
-      brand: 'Trends',
-      wishlist: false,
-    ),
-    ProductTileModel(
-      id: '1',
-      price: 12,
-      name: 'Women pink dress',
-      image: 'assets/images/white.png',
-      brand: 'ZARA',
-      wishlist: false,
-    ),
-  ];
 
   var wishData = [
     false,
@@ -161,7 +129,7 @@ class _HomeTabState extends State<HomeTab> {
                 ),
               ),
               onPressed: () {
-                provider.currentIndex = 2;
+                widget.changeTab(2);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(

@@ -4,18 +4,24 @@ import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/theme.dart';
 import 'package:syzee/services/bottom_nav_provider.dart';
 import 'package:syzee/ui/screen/home_screen.dart';
+import 'package:syzee/ui/screen/order_history_screen.dart';
 
-class OrderSuccessfulScreen extends StatelessWidget {
-  const OrderSuccessfulScreen({Key? key}) : super(key: key);
+class OrderSuccessfulScreen extends StatefulWidget {
+  const OrderSuccessfulScreen({Key? key, required this.orderId}) : super(key: key);
 
+  final String orderId;
+
+  @override
+  State<OrderSuccessfulScreen> createState() => _OrderSuccessfulScreenState();
+}
+
+class _OrderSuccessfulScreenState extends State<OrderSuccessfulScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: currentTheme.currentTheme == ThemeMode.dark
-            ? Colors.black
-            : Colors.white,
+        backgroundColor: currentTheme.currentTheme == ThemeMode.dark ? Colors.black : Colors.white,
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Image.asset(
@@ -75,14 +81,14 @@ class OrderSuccessfulScreen extends StatelessWidget {
             const SizedBox(
               height: 32,
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+            Padding(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 60,
               ),
               child: Text(
-                'Your Order No. #123-456 has been placed & waiting for the seller to confirm the delivery timings',
+                'Your Order No. ${widget.orderId} has been placed & waiting for the seller to confirm the delivery timings',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
                 ),
@@ -117,14 +123,18 @@ class OrderSuccessfulScreen extends StatelessWidget {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ChangeNotifierProvider<
-                          BottomNavigationBarProvider>(
+                      builder: (context) => ChangeNotifierProvider<BottomNavigationBarProvider>(
                         child: const HomePage(),
-                        create: (BuildContext context) =>
-                            BottomNavigationBarProvider(),
+                        create: (BuildContext context) => BottomNavigationBarProvider(),
                       ),
                     ),
                     (route) => false,
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OrderHistoryScreen(),
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(

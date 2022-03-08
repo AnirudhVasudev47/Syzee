@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:syzee/global/constants.dart';
@@ -21,7 +20,7 @@ Future<Product> getProductService(String id, MainCategory cat) async {
   }
 
   var res = await http.post(productUri, body: prodMap);
-  var data = jsonDecode(res.body);
+  print('product info: ' + res.body);
   print(prodMap);
   return Product.fromRawJson(res.body);
 }

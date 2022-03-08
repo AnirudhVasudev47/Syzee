@@ -28,7 +28,7 @@ class BrandProductTile extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 207,
+            width: 217,
             height: 242,
             clipBehavior: Clip.hardEdge,
             decoration: const BoxDecoration(
@@ -53,9 +53,11 @@ class BrandProductTile extends StatelessWidget {
                     children: [
                       Text(
                         brand,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'VarelaRound',
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                       Text(

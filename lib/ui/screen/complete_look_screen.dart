@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syzee/global/constants.dart';
-import 'package:syzee/global/tools.dart';
 import 'package:syzee/ui/layouts/product_tile.dart';
 import 'package:syzee/ui/screen/single_product_screen.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
@@ -75,9 +74,11 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
                       );
                     },
                     onTapHeart: () {
-                      setState(() {
-                      });
+                      setState(() {});
                     },
+                    size: '',
+                    productId: '',
+                    mainCatId: '1',
                   ),
                 ),
                 SizedBox(
@@ -101,9 +102,11 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
                       );
                     },
                     onTapHeart: () {
-                      setState(() {
-                      });
+                      setState(() {});
                     },
+                    size: '',
+                    productId: '',
+                    mainCatId: '1',
                   ),
                 )
               ],
