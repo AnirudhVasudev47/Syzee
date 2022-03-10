@@ -11,8 +11,6 @@ import 'package:syzee/global/color.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/theme.dart';
 import 'package:syzee/services/auth_service.dart';
-import 'package:syzee/services/bottom_nav_provider.dart';
-import 'package:syzee/ui/screen/home_screen.dart';
 import 'package:syzee/ui/screen/landing_screen.dart';
 import 'package:syzee/ui/screen/onboarding_screen.dart';
 

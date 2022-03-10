@@ -93,10 +93,10 @@ class _ProductScreenProductListState extends State<ProductScreenProductList> {
                   });
                 },
                 onView: (FilterModel filter) {
-                  List<ProductTileModel> prod = productList;
+                  List<ProductTileModel> prod = widget.list;
                   prod = prod
                       .where((element) => ((element.price >= filter.filterOneValues[0] && element.price <= filter.filterOneValues[1]) &&
-                          (int.parse(element.rating) >= filter.filterTwoValues[0] && int.parse(element.rating) <= filter.filterTwoValues[1]) &&
+                          (double.parse(element.rating) >= filter.filterTwoValues[0] && double.parse(element.rating) <= filter.filterTwoValues[1]) &&
                           (filter.filterThreeValues == 'all' ? true : (element.color == filter.filterThreeValues))))
                       .toList();
                   print(prod);
@@ -145,6 +145,18 @@ class _ProductScreenProductListState extends State<ProductScreenProductList> {
                             }
                           } else if (widget.from == 'newIn') {
                             var prod = await getProductFromNewIn(widget.mainCat, widget.subCatId);
+                            setState(() {
+                              productList = prod;
+                            });
+                            // print(list.toString());
+                          } else if (widget.from == 'allClothing'){
+                            var prod = await getAllProducts(widget.mainCat, widget.subCatId);
+                            setState(() {
+                              productList = prod;
+                            });
+                            // print(list.toString());
+                          } else if (widget.from == 'gifts'){
+                            var prod = await getGifts(widget.mainCat, widget.subCatId);
                             setState(() {
                               productList = prod;
                             });

@@ -52,8 +52,9 @@ class _HomePageState extends State<HomePage> {
       HomeTab(
         changeTab: _indexChange,
       ),
-      const CategoriesTab(
+      CategoriesTab(
         index: 0,
+        changeTab: _indexChange,
       ),
       const BrandTab(),
       const WishlistTab(),

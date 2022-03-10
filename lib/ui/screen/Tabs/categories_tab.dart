@@ -5,16 +5,17 @@ import 'package:syzee/ui/widgets/category_men.dart';
 import 'package:syzee/ui/widgets/category_women.dart';
 
 class CategoriesTab extends StatelessWidget {
-  const CategoriesTab({Key? key, required this.index}) : super(key: key);
+  const CategoriesTab({Key? key, required this.index, required this.changeTab}) : super(key: key);
   final int index;
+  final void Function(int) changeTab;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: index,
       length: 3,
       child: Column(
-        children: const [
-          TabBar(
+        children: [
+          const TabBar(
             dragStartBehavior: DragStartBehavior.down,
             tabs: [
               Tab(text: 'Women'),
@@ -25,9 +26,13 @@ class CategoriesTab extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                CategoryWomen(),
-                CategoryMen(),
-                CategoryKids(),
+                CategoryWomen(
+                  changeTab: changeTab,
+                ),
+                const CategoryMen(),
+                CategoryKids(
+                  changeTab: changeTab,
+                ),
               ],
             ),
           ),

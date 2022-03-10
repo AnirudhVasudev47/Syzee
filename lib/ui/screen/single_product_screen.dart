@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
@@ -31,7 +32,7 @@ class SingleProductScreen extends StatefulWidget {
 class _SingleProductScreenState extends State<SingleProductScreen> {
   final firebaseAuth = FirebaseAuth.instance;
   final CarouselController carouselController = CarouselController();
-  late Future<Product> product;
+  late var product;
   int current = 0;
   SizeVariant? _chosenValue;
   bool isWished = false;
@@ -39,14 +40,6 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
 
   int sizeIndex = 0;
   int colorIndex = 0;
-
-  List<Color> color = [
-    Colors.amber,
-    Colors.blueGrey,
-    Colors.red,
-    Colors.lightGreen,
-    Colors.black54,
-  ];
 
   @override
   void initState() {
@@ -59,9 +52,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
               ? '${AssetConstants.mockImageLink}/men'
               : '${AssetConstants.mockImageLink}/kids';
     });
-
     product = getProductService(widget.id, widget.mainCat);
-    print('data: ' '${product.toString()}');
   }
 
   @override
@@ -72,6 +63,37 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
         future: product,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            if (snapshot.data == 'no/Product') {
+              return Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset(
+                      AssetConstants.couponEmpty,
+                      height: 200,
+                      width: 200,
+                      fit: BoxFit.cover,
+                      repeat: false,
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Product not found!',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 200,
+                    ),
+                  ],
+                ),
+              );
+            }
             Product product = snapshot.data as Product;
             product.variants[colorIndex].images.map((e) => print('image: $e \n'));
             return SingleChildScrollView(
@@ -96,12 +118,12 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                     items: product.variants[colorIndex].images
                         .map(
                           (item) => Image.network(
-                            '$imageLink/$item',
-                            height: 407,
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.cover,
-                          ),
-                        )
+                        '$imageLink/$item',
+                        height: 407,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      ),
+                    )
                         .toList(),
                   ),
                   Row(
@@ -116,8 +138,8 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color:
-                                (carouselController.ready ? const Color(0xff9A6D4A) : Colors.black)
-                                    .withOpacity(current == entry.key ? 0.9 : 0.4),
+                            (carouselController.ready ? const Color(0xff9A6D4A) : Colors.black)
+                                .withOpacity(current == entry.key ? 0.9 : 0.4),
                           ),
                         ),
                       );
@@ -126,14 +148,14 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Image.asset(
-                          'assets/images/single_product/share.png',
-                          height: 30,
-                          width: 30,
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {},
+                      //   child: Image.asset(
+                      //     'assets/images/single_product/share.png',
+                      //     height: 30,
+                      //     width: 30,
+                      //   ),
+                      // ),
                       OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(
@@ -215,29 +237,31 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                             ],
                           ),
                         ),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(
-                              color: Color(0xff169B93),
-                              width: 1,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0.0),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 25,
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: const Text(
-                            'Tailor Size available',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
+                        product.tailorAssist == '1'
+                            ? OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(
+                                    color: Color(0xff169B93),
+                                    width: 1,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0.0),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 25,
+                                  ),
+                                ),
+                                onPressed: () {},
+                                child: const Text(
+                                  'Tailor Size available',
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -254,8 +278,8 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                             fontFamily: 'Montserrat',
                             fontSize: 18,
                             decoration: product.variants[colorIndex]
-                                        .sizeVariants[sizeIndex].discount !=
-                                    ""
+                                .sizeVariants[sizeIndex].discount !=
+                                ""
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
                             decorationStyle: TextDecorationStyle.solid,
@@ -269,17 +293,17 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           width: 5,
                         ),
                         product.variants[colorIndex].sizeVariants[sizeIndex]
-                                    .discount !=
-                                ""
+                            .discount !=
+                            ""
                             ? Text(
-                                'QAR ${product.variants[colorIndex].sizeVariants[sizeIndex].discount}',
-                                style: const TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 23,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff009C95),
-                                ),
-                              )
+                          'QAR ${product.variants[colorIndex].sizeVariants[sizeIndex].discount}',
+                          style: const TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 23,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff009C95),
+                          ),
+                        )
                             : Container(),
                       ],
                     ),
@@ -307,7 +331,6 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           } else {
                             return InkWell(
                               onTap: () {
-                                print(color[index - 1]);
                                 setState(() {
                                   colorIndex = index - 1;
                                 });
@@ -357,31 +380,31 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 25),
-                    alignment: Alignment.center,
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(
-                          color: Color(0xff169B93),
-                          width: 1,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 25,
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        'Find your size with our Size Assistant',
-                        style:
-                            TextStyle(fontFamily: 'Montserrat', fontSize: 16, color: Colors.black),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   padding: const EdgeInsets.only(top: 25),
+                  //   alignment: Alignment.center,
+                  //   child: OutlinedButton(
+                  //     style: OutlinedButton.styleFrom(
+                  //       side: const BorderSide(
+                  //         color: Color(0xff169B93),
+                  //         width: 1,
+                  //       ),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(0.0),
+                  //       ),
+                  //       padding: const EdgeInsets.symmetric(
+                  //         vertical: 10,
+                  //         horizontal: 25,
+                  //       ),
+                  //     ),
+                  //     onPressed: () {},
+                  //     child: const Text(
+                  //       'Find your size with our Size Assistant',
+                  //       style:
+                  //           TextStyle(fontFamily: 'Montserrat', fontSize: 16, color: Colors.black),
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 25,

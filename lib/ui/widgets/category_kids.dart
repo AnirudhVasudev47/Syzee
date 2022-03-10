@@ -5,7 +5,9 @@ import 'package:syzee/services/categories_service.dart';
 import 'package:syzee/ui/layouts/category_list_tile.dart';
 
 class CategoryKids extends StatefulWidget {
-  const CategoryKids({Key? key}) : super(key: key);
+  const CategoryKids({Key? key, required this.changeTab}) : super(key: key);
+
+  final void Function(int) changeTab;
 
   @override
   State<CategoryKids> createState() => _CategoryKidsState();
@@ -35,6 +37,7 @@ class _CategoryKidsState extends State<CategoryKids> {
                 name: categories[index].name,
                 id: categories[index].id,
                 cat: MainCategory.kids,
+                changeTab: widget.changeTab,
               );
             },
           );

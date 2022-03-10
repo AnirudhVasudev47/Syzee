@@ -2,6 +2,7 @@
 //
 //     final product = productFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Product {
@@ -11,6 +12,7 @@ class Product {
     required this.sellerId,
     required this.productId,
     required this.tagLine,
+    required this.tailorAssist,
     required this.description,
     required this.variants,
   });
@@ -20,6 +22,7 @@ class Product {
   final String sellerId;
   final String productId;
   final String tagLine;
+  final String tailorAssist;
   final String description;
   final List<Variant> variants;
 
@@ -33,6 +36,7 @@ class Product {
     sellerId: json["sellerId"],
     productId: json["productId"],
     tagLine: json["tagLine"],
+    tailorAssist: json["tailorAssist"],
     description: json["description"],
     variants: List<Variant>.from(json["variants"].map((x) => Variant.fromJson(x))),
   );
@@ -43,6 +47,7 @@ class Product {
     "sellerId": sellerId,
     "productId": productId,
     "tagLine": tagLine,
+    "tailorAssist": tailorAssist,
     "description": description,
     "variants": List<dynamic>.from(variants.map((x) => x.toJson())),
   };
@@ -103,7 +108,7 @@ class SizeVariant {
 
   factory SizeVariant.fromJson(Map<String, dynamic> json) => SizeVariant(
     size: json["size"],
-    stock: int.parse(json["stock"].toString()),
+    stock: json["stock"],
     price: json["price"],
     discount: json["discount"],
   );

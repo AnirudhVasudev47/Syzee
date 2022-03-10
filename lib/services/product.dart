@@ -1,9 +1,11 @@
 
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/models/product.dart';
 
-Future<Product> getProductService(String id, MainCategory cat) async {
+getProductService(String id, MainCategory cat) async {
   Uri productUri = Uri.parse('${AssetConstants.mockApiLink}/id/product');
 
   Map<String, dynamic> prodMap = {};
@@ -22,5 +24,14 @@ Future<Product> getProductService(String id, MainCategory cat) async {
   var res = await http.post(productUri, body: prodMap);
   print('product info: ' + res.body);
   print(prodMap);
-  return Product.fromRawJson(res.body);
+
+  var response = jsonDecode(res.body);
+
+  print('data: ${response['data']}');
+
+  if (response['data'] == null) {
+    return Product.fromRawJson(res.body);
+  } else {
+    return 'no/Product';
+  }
 }

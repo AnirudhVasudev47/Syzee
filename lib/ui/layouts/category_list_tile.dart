@@ -12,12 +12,14 @@ class CategoryListTile extends StatelessWidget {
     required this.name,
     required this.id,
     required this.cat,
+    required this.changeTab,
   }) : super(key: key);
 
   final String image;
   final String name;
   final int id;
   final MainCategory cat;
+  final void Function(int) changeTab;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,32 @@ class CategoryListTile extends StatelessWidget {
                   cat: cat,
                   subCatId: 0,
                   from: 'newIn',
+                ),
+              ),
+            );
+          } else if (name.contains('Shops')) {
+            changeTab(2);
+          } else if (name.contains('Home')) {
+            changeTab(0);
+          } else if (name.contains('All')) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductsScreen(
+                  cat: cat,
+                  subCatId: 0,
+                  from: 'allClothing',
+                ),
+              ),
+            );
+          } else if (name.contains('Gifts')) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductsScreen(
+                  cat: cat,
+                  subCatId: 0,
+                  from: 'gifts',
                 ),
               ),
             );

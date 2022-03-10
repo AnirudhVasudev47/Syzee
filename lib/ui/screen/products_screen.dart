@@ -37,6 +37,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
     } else if (widget.from == 'newIn'){
       list = getProductFromNewIn(widget.cat, widget.subCatId);
       // print(list.toString());
+    } else if (widget.from == 'allClothing'){
+      list = getAllProducts(widget.cat, widget.subCatId);
+      // print(list.toString());
+    } else if (widget.from == 'gifts'){
+      list = getGifts(widget.cat, widget.subCatId);
+      // print(list.toString());
     }
   }
 
