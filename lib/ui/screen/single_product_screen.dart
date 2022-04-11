@@ -13,7 +13,6 @@ import 'package:syzee/ui/screen/cart_screen.dart';
 import 'package:syzee/ui/screen/complete_look_screen.dart';
 import 'package:syzee/ui/screen/size_guide_screen.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
-import 'package:syzee/ui/widgets/review_card.dart';
 
 class SingleProductScreen extends StatefulWidget {
   const SingleProductScreen({
@@ -98,7 +97,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
             product.variants[colorIndex].images.map((e) => print('image: $e \n'));
             return SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(
                     height: 15,
@@ -638,7 +637,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           ),
                         ),
                         Text(
-                          ' 1236',
+                          ' 0',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
                             color: Color(0xff7F7F7F),
@@ -655,7 +654,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                     child: Row(
                       children: [
                         const Text(
-                          '4.5',
+                          '0',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 29,
@@ -669,31 +668,32 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           height: 20,
                           width: 20,
                         ),
-                        const SizedBox(
-                          width: 24,
-                        ),
-                        const Text(
-                          '1663 Verified Buyers',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 13,
-                          ),
-                        ),
                       ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                    ).copyWith(top: 25, bottom: 8),
-                    child: const ReviewCard(),
+                  const Text(
+                    'No reviews Yet',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                    ).copyWith(top: 25, bottom: 25),
-                    child: const ReviewCard(),
+                  const SizedBox(
+                    height: 34,
                   ),
+                  // Container(
+                  //   padding: const EdgeInsets.symmetric(
+                  //     horizontal: 25,
+                  //   ).copyWith(top: 25, bottom: 8),
+                  //   child: const ReviewCard(),
+                  // ),
+                  // Container(
+                  //   padding: const EdgeInsets.symmetric(
+                  //     horizontal: 25,
+                  //   ).copyWith(top: 25, bottom: 25),
+                  //   child: const ReviewCard(),
+                  // ),
                 ],
               ),
             );
