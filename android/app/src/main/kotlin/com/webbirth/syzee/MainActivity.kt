@@ -1,0 +1,6 @@
+package com.webbirth.syzee
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}

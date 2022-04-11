@@ -45,7 +45,7 @@ class ProductTileModel {
     createdOn: DateTime.parse(json["created_on"]),
     rating: json["rating"],
     color: json["color"],
-    brand: json["brand"],
+    brand: json["brand"] ?? ' ',
     wishlist: json["wishlist"],
     size: json["size"],
   );

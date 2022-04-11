@@ -51,15 +51,18 @@ class _BrandTabState extends State<BrandTab> {
                   crossAxisSpacing: 25.0,
                   mainAxisSpacing: 25.0,
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  children: List.generate(brands.data.length, (index) {
-                    return Center(
-                      child: BrandTileWidget(
-                        id: brands.data[index].id,
-                        image: '${AssetConstants.mockImageLink}/BRANDS/${brands.data[index].imageCarousel}',
-                        name: brands.data[index].name,
-                      ),
-                    );
-                  }),
+                  children: List.generate(
+                    brands.data.length,
+                    (index) {
+                      return Center(
+                        child: BrandTileWidget(
+                          id: brands.data[index].id,
+                          image: '${AssetConstants.mockImageLink}/BRANDS/${brands.data[index].imageCarousel}',
+                          name: brands.data[index].name,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               );
             } else {

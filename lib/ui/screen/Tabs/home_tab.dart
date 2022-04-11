@@ -373,7 +373,7 @@ class _HomeTabState extends State<HomeTab> {
               vertical: 15,
             ),
             child: const Text(
-              'Couldn\'t find something your were looking for?',
+              'Couldn\'t find something you were looking for?',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,

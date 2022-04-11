@@ -244,7 +244,11 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           child: const Text(
                             'Price Details',
-                            style: TextStyle(fontFamily: 'Montserrat', fontSize: 16, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                         const Divider(

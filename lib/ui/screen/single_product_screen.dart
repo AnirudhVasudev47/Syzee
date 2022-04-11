@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +9,7 @@ import 'package:syzee/models/product.dart';
 import 'package:syzee/services/cart_services.dart';
 import 'package:syzee/services/color_code_convert.dart';
 import 'package:syzee/services/product.dart';
+import 'package:syzee/ui/screen/cart_screen.dart';
 import 'package:syzee/ui/screen/complete_look_screen.dart';
 import 'package:syzee/ui/screen/size_guide_screen.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
@@ -174,7 +174,12 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CompleteLookScreen(),
+                              builder: (context) => CompleteLookScreen(
+                                sellerId: product.sellerId,
+                                mainCatId: widget.mainCat,
+                                prodStyle: widget.id,
+                                prodImg: '$imageLink/${product.variants[colorIndex].images[0]}',
+                              ),
                             ),
                           );
                         },
@@ -237,7 +242,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                             ],
                           ),
                         ),
-                        product.tailorAssist == '1'
+                        product.variants[colorIndex].tailorAssist == '1'
                             ? OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                   side: const BorderSide(
@@ -360,26 +365,32 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 25.0,
-                      top: 8,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SizeGuideScreen(),
+                  product.variants[colorIndex].chartStatus == 1
+                      ? Padding(
+                          padding: const EdgeInsets.only(
+                            left: 25.0,
+                            top: 8,
                           ),
-                        );
-                      },
-                      child: const Text(
-                        'View size guide',
-                        style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
-                      ),
-                    ),
-                  ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SizeGuideScreen(
+                                    productId: product.variants[colorIndex].id,
+                                    mainCat: widget.mainCat,
+                                    prodImg: '$imageLink/${product.variants[colorIndex].images[0]}',
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'View size guide',
+                              style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
+                            ),
+                          ),
+                        )
+                      : Container(),
                   // Container(
                   //   padding: const EdgeInsets.only(top: 25),
                   //   alignment: Alignment.center,
@@ -498,12 +509,12 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                               }
                             }
 
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const CartScreen(),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CartScreen(),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             primary: const Color(0xff169B93),

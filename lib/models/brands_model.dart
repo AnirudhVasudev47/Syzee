@@ -40,13 +40,13 @@ class Datum {
 
   final int id;
   final String name;
-  final String description;
+  final dynamic description;
   final String image;
   final String imageCarousel;
   final int status;
   final DateTime createdOn;
-  final String createdBy;
-  final DateTime resetOn;
+  final dynamic createdBy;
+  final dynamic resetOn;
 
   factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
 
@@ -61,7 +61,7 @@ class Datum {
     status: json["STATUS"],
     createdOn: DateTime.parse(json["CREATED_ON"]),
     createdBy: json["CREATED_BY"],
-    resetOn: DateTime.parse(json["RESET_ON"]),
+    resetOn: json["RESET_ON"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -73,6 +73,6 @@ class Datum {
     "STATUS": status,
     "CREATED_ON": createdOn.toIso8601String(),
     "CREATED_BY": createdBy,
-    "RESET_ON": resetOn.toIso8601String(),
+    "RESET_ON": resetOn,
   };
 }

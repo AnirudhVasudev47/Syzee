@@ -123,7 +123,7 @@ class _HomeTabBrandsState extends State<HomeTabBrands> {
                         );
                       },
                       child: Image.network(
-                        '${AssetConstants.mockImageLink}/BRANDS/${data.data[4].image}',
+                        '${AssetConstants.mockImageLink}/BRANDS/${data.data[3].image}',
                         width: 170,
                         height: 224,
                         fit: BoxFit.cover,

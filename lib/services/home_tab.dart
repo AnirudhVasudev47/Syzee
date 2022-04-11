@@ -30,7 +30,7 @@ Future<List<Map<String, dynamic>>> getHomeCategories() async {
   List<Map<String, dynamic>> dataList = [];
 
   final res = await http.get(categories);
-  // print(jsonDecode(res.body));
+  print(jsonDecode(res.body));
   for (int i=0; i<jsonDecode(res.body).length; i++) {
     Map<String, dynamic> item = {};
     item['image'] = '${AssetConstants.mockImageLink}/product_images/${jsonDecode(res.body)[i]['image']}';
@@ -45,7 +45,7 @@ Future<List<Map<String, dynamic>>> getHomeCategories() async {
 Future<BrandsModel> getHomeTabBrands() async {
 
   final response = await http.get(brands);
-
+  // print(response.body.toString());
   return BrandsModel.fromRawJson(response.body);
 
 }
@@ -62,7 +62,7 @@ Future<WeekHighlightsModel> getWeekHighlights() async {
 
   final response = await http.get(weekHighlights);
   
-  print(response.body);
+  // print(response.body);
 
   return WeekHighlightsModel.fromRawJson(response.body);
 

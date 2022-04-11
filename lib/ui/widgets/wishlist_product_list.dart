@@ -32,7 +32,7 @@ class _WishlistProductListState extends State<WishlistProductList> {
                 Container(
                   alignment: Alignment.center,
                   child: const Text(
-                    'Cart Empty',
+                    'Wishlist Empty',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 22,

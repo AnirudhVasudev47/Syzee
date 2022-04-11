@@ -103,10 +103,11 @@ class CategoryListTile extends StatelessWidget {
         child: Text(
           name,
           style: const TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 26,
-              color: Colors.white,
-              fontWeight: FontWeight.bold),
+            fontFamily: 'Montserrat',
+            fontSize: 26,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

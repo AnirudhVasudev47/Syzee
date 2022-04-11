@@ -63,6 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           searchValue = text;
                         });
                       },
+                      autofocus: true,
                       keyboardType: TextInputType.text,
                       style: const TextStyle(
                         fontFamily: 'Montserrat',

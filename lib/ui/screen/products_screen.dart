@@ -43,6 +43,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
     } else if (widget.from == 'gifts'){
       list = getGifts(widget.cat, widget.subCatId);
       // print(list.toString());
+    } else if (widget.from == 'category') {
+      list = getCatProductsList(widget.cat, widget.subCatId);
     }
   }
 

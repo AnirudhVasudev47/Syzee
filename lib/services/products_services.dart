@@ -31,12 +31,35 @@ Future<List<ProductTileModel>> getProductsList(MainCategory cat, int subCatId) a
   }
 
   var response = await http.post(prodListUri, body: prodListMap);
-  print(jsonDecode(response.body));
+  // print(jsonDecode(response.body));
 
   List<ProductTileModel> list = [];
   var data = jsonDecode(response.body);
   data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
-  print(list);
+  // print(list);
+  return list;
+}
+
+Future<List<ProductTileModel>> getCatProductsList(MainCategory cat, int catId) async {
+  Map<String, String> prodListMap = {};
+  prodListMap['subCategoryId'] = '$catId';
+  if (cat == MainCategory.women) {
+    prodListMap['mainCatId'] = '1';
+  }
+  if (cat == MainCategory.men) {
+    prodListMap['mainCatId'] = '3';
+  }
+  if (cat == MainCategory.kids) {
+    prodListMap['mainCatId'] = '2';
+  }
+
+  var response = await http.post(prodListUri, body: prodListMap);
+  // print(jsonDecode(response.body));
+
+  List<ProductTileModel> list = [];
+  var data = jsonDecode(response.body);
+  data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
+  // print(list);
   return list;
 }
 
@@ -55,14 +78,14 @@ Future<List<ProductTileModel>> getProductsListByUser(MainCategory cat, int subCa
     prodListMap['mainCatId'] = '2';
   }
   prodListMap['email'] = prefs.getString('userMail') ?? '';
-  print ('map: $prodListMap');
+  // print ('map: $prodListMap');
   var response = await http.post(prodListUri, body: prodListMap);
-  print(jsonDecode(response.body));
+  // print(jsonDecode(response.body));
 
   List<ProductTileModel> list = [];
   var data = jsonDecode(response.body);
   data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
-  print(list);
+  // print(list);
   return list;
 }
 
@@ -81,19 +104,19 @@ Future<List<ProductTileModel>> getProductFromNewIn(MainCategory cat, int subCatI
     prodListMap['mainCatId'] = '2';
   }
   prodListMap['email'] = prefs.getString('userMail') ?? '';
-  print ('map: $prodListMap \nlink: $prodListNewInUri');
+  // print ('map: $prodListMap \nlink: $prodListNewInUri');
   var response = await http.post(prodListNewInUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
   List<ProductTileModel> list = [];
   var data = jsonDecode(response.body);
-  print('new in: ${response.body}');
+  // print('new in: ${response.body}');
   try {
     data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
   } catch (e) {
-    print(e.toString());
+    // print(e.toString());
   }
-  print('list: $list');
+  // print('list: $list');
   return list;
 }
 
@@ -112,19 +135,19 @@ Future<List<ProductTileModel>> getAllProducts(MainCategory cat, int subCatId) as
     prodListMap['mainCatId'] = '2';
   }
   prodListMap['email'] = prefs.getString('userMail') ?? '';
-  print ('map: $prodListMap \nlink: $prodListNewInUri');
+  // print ('map: $prodListMap \nlink: $prodListNewInUri');
   var response = await http.post(prodListAllClothingUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
   List<ProductTileModel> list = [];
   var data = jsonDecode(response.body);
-  print('all clothing: ${response.body}');
+  // print('all clothing: ${response.body}');
   try {
     data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
   } catch (e) {
-    print(e.toString());
+    // print(e.toString());
   }
-  print('list: $list');
+  // print('list: $list');
   return list;
 }
 
@@ -143,19 +166,19 @@ Future<List<ProductTileModel>> getGifts(MainCategory cat, int subCatId) async {
     prodListMap['mainCatId'] = '2';
   }
   prodListMap['email'] = prefs.getString('userMail') ?? '';
-  print ('map: $prodListMap \nlink: $prodListNewInUri');
+  // print ('map: $prodListMap \nlink: $prodListNewInUri');
   var response = await http.post(prodListGiftsUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
   List<ProductTileModel> list = [];
   var data = jsonDecode(response.body);
-  print('all clothing: ${response.body}');
+  // print('all clothing: ${response.body}');
   try {
     data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
   } catch (e) {
-    print(e.toString());
+    // print(e.toString());
   }
-  print('list: $list');
+  // print('list: $list');
   return list;
 }
 

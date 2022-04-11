@@ -36,7 +36,7 @@ class _HomeTabCategoriesLayoutState extends State<HomeTabCategoriesLayout> {
               builder: (context) => ProductsScreen(
                 cat: widget.mainCat,
                 subCatId: widget.subCatId,
-                from: 'sub_category',
+                from: 'category',
               ),
             ),
           );

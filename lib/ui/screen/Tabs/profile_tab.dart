@@ -188,10 +188,10 @@ class _ProfileTabState extends State<ProfileTab> {
                         'assets/images/home/profile_tab/edit.png',
                         'My Profile',
                         onTap: () {
-                          setState(() {
-                            currentTheme.toggleTheme();
-                          });
-                          print(currentTheme.currentTheme);
+                          // setState(() {
+                          //   currentTheme.toggleTheme();
+                          // });
+                          // print(currentTheme.currentTheme);
                         },
                       ),
                       profileTile('assets/images/home/profile_tab/location.png', 'My Address',

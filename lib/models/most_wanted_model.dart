@@ -64,10 +64,10 @@ class Datum {
     subCategoryId: json["SUB_CATEGORY_ID"],
     mainCategoryId: json["MAIN_CATEGORY_ID"],
     createdOn: DateTime.parse(json["CREATED_ON"]),
-    createdBy: json["CREATED_BY"],
+    createdBy: json["CREATED_BY"] ?? '',
     resetOn: json["RESET_ON"],
-    resetBy: json["RESET_BY"],
-    status: json["STATUS"],
+    resetBy: json["RESET_BY"] ?? '',
+    status: json["STATUS"] ?? 1,
   );
 
   Map<String, dynamic> toJson() => {

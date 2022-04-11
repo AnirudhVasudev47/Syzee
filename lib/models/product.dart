@@ -12,7 +12,6 @@ class Product {
     required this.sellerId,
     required this.productId,
     required this.tagLine,
-    required this.tailorAssist,
     required this.description,
     required this.variants,
   });
@@ -22,7 +21,6 @@ class Product {
   final String sellerId;
   final String productId;
   final String tagLine;
-  final String tailorAssist;
   final String description;
   final List<Variant> variants;
 
@@ -36,7 +34,6 @@ class Product {
     sellerId: json["sellerId"],
     productId: json["productId"],
     tagLine: json["tagLine"],
-    tailorAssist: json["tailorAssist"],
     description: json["description"],
     variants: List<Variant>.from(json["variants"].map((x) => Variant.fromJson(x))),
   );
@@ -47,7 +44,6 @@ class Product {
     "sellerId": sellerId,
     "productId": productId,
     "tagLine": tagLine,
-    "tailorAssist": tailorAssist,
     "description": description,
     "variants": List<dynamic>.from(variants.map((x) => x.toJson())),
   };
@@ -56,6 +52,8 @@ class Product {
 class Variant {
   Variant({
     required this.id,
+    required this.tailorAssist,
+    required this.chartStatus,
     required this.color,
     required this.colorName,
     required this.images,
@@ -63,6 +61,8 @@ class Variant {
   });
 
   final int id;
+  final String tailorAssist;
+  final int chartStatus;
   final String color;
   final String colorName;
   final List<String> images;
@@ -74,6 +74,8 @@ class Variant {
 
   factory Variant.fromJson(Map<String, dynamic> json) => Variant(
     id: json["id"],
+    tailorAssist: json["tailorAssist"],
+    chartStatus: json["chartStatus"],
     color: json["color"],
     colorName: json["colorName"],
     images: List<String>.from(json["images"].map((x) => x)),
@@ -82,6 +84,8 @@ class Variant {
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "tailorAssist": tailorAssist,
+    "chartStatus": chartStatus,
     "color": color,
     "colorName": colorName,
     "images": List<dynamic>.from(images.map((x) => x)),

@@ -41,8 +41,9 @@ class _HomeTabBannerState extends State<HomeTabBanner> with AutomaticKeepAliveCl
                     enlargeCenterPage: false,
                     aspectRatio: headerAspect,
                     viewportFraction: 1,
-                    autoPlay: false,
-                    autoPlayAnimationDuration: const Duration(seconds: 2),
+                    autoPlay: true,
+                    pauseAutoPlayOnManualNavigate: false,
+                    autoPlayAnimationDuration: const Duration(seconds: 3),
                     onPageChanged: (index, _) {
                       setState(() {
                         current = index;

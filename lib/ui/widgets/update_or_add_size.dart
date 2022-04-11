@@ -266,7 +266,7 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
                       labels: heightArr,
                       onToggle: (index) {
                         setState(() {
-                          heightUnitIndex = index;
+                          heightUnitIndex = index!;
                         });
                         print('switched to: $index');
                       },
@@ -318,7 +318,7 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
                       labels: weightArr,
                       onToggle: (index) {
                         setState(() {
-                          weightUnitIndex = index;
+                          weightUnitIndex = index!;
                         });
                         print('switched to: $index');
                       },
