@@ -342,314 +342,316 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 65.0, bottom: 50),
-              child: Image.asset(
-                AssetConstants.blackLogo,
-                height: 42,
-                width: 127,
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 65.0, bottom: 50),
+                child: Image.asset(
+                  AssetConstants.blackLogo,
+                  height: 42,
+                  width: 127,
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0),
-              child: Text(
-                'Register',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 30,
-                    color: Color(0xff009C95)),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 25,
-                vertical: 15,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Name',
-                    style: TextStyle(
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  'Register',
+                  style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontSize: 14,
-                    ),
-                  ),
-                  TextField(
-                    controller: nameText,
-                    style: const TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 18,
-                    ),
-                    keyboardType: TextInputType.name,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xff169B93),
-                          width: 1,
-                        ),
+                      fontSize: 30,
+                      color: Color(0xff009C95)),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 25,
+                  vertical: 15,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Name',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 14,
                       ),
-                      hintText: 'Enter your name',
-                      hintStyle: TextStyle(
+                    ),
+                    TextField(
+                      controller: nameText,
+                      style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 18,
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  const Text(
-                    'Email',
-                    style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
-                  ),
-                  TextField(
-                    controller: emailText,
-                    style: const TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 18,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
+                      keyboardType: TextInputType.name,
+                      decoration: const InputDecoration(
                         border: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xff169B93),
                             width: 1,
                           ),
                         ),
-                        hintText: 'Enter your email',
+                        hintText: 'Enter your name',
                         hintStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 18,
-                        )),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  const Text(
-                    'Password',
-                    style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
-                  ),
-                  TextField(
-                    controller: passwordText,
-                    obscureText: !isTextVisible,
-                    style: const TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
+                        ),
+                      ),
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isTextVisible = !isTextVisible;
-                          });
-                        },
-                        icon: Icon(
-                          isTextVisible
-                              ? Icons.remove_red_eye_outlined
-                              : Icons.visibility_off_outlined,
-                        ),
-                      ),
-                      border: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xff169B93),
-                          width: 1,
-                        ),
-                      ),
-                      hintText: 'Enter new password',
-                      hintStyle: const TextStyle(
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    const Text(
+                      'Email',
+                      style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
+                    ),
+                    TextField(
+                      controller: emailText,
+                      style: const TextStyle(
                         fontFamily: 'Montserrat',
-                        fontSize: 16,
+                        fontSize: 18,
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  const Text(
-                    'Re enter Password',
-                    style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
-                  ),
-                  TextField(
-                    controller: repeatPassText,
-                    obscureText: !isTextVisible,
-                    style: const TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 16,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isTextVisible = !isTextVisible;
-                          });
-                        },
-                        icon: Icon(
-                          isTextVisible
-                              ? Icons.remove_red_eye_outlined
-                              : Icons.visibility_off_outlined,
-                        ),
-                      ),
-                      border: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xff169B93),
-                          width: 1,
-                        ),
-                      ),
-                      hintText: 'Enter new password',
-                      hintStyle: const TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  const Text(
-                    'Phone number',
-                    style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
-                  ),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          showCountryPicker(
-                            context: context,
-                            showPhoneCode: true,
-                            // optional. Shows phone code before the country name.
-                            onSelect: (Country country) {
-                              setState(() {
-                                co = country.phoneCode;
-                              });
-                            },
-                          );
-                        },
-                        child: Text(
-                          '+$co',
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: phoneText,
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 18,
-                          ),
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xff169B93),
-                                width: 1,
-                              ),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xff169B93),
+                              width: 1,
                             ),
-                            hintText: 'Enter your phone number',
-                            hintStyle: TextStyle(
+                          ),
+                          hintText: 'Enter your email',
+                          hintStyle: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 18,
+                          )),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    const Text(
+                      'Password',
+                      style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
+                    ),
+                    TextField(
+                      controller: passwordText,
+                      obscureText: !isTextVisible,
+                      style: const TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isTextVisible = !isTextVisible;
+                            });
+                          },
+                          icon: Icon(
+                            isTextVisible
+                                ? Icons.remove_red_eye_outlined
+                                : Icons.visibility_off_outlined,
+                          ),
+                        ),
+                        border: const UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xff169B93),
+                            width: 1,
+                          ),
+                        ),
+                        hintText: 'Enter new password',
+                        hintStyle: const TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    const Text(
+                      'Re enter Password',
+                      style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
+                    ),
+                    TextField(
+                      controller: repeatPassText,
+                      obscureText: !isTextVisible,
+                      style: const TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isTextVisible = !isTextVisible;
+                            });
+                          },
+                          icon: Icon(
+                            isTextVisible
+                                ? Icons.remove_red_eye_outlined
+                                : Icons.visibility_off_outlined,
+                          ),
+                        ),
+                        border: const UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xff169B93),
+                            width: 1,
+                          ),
+                        ),
+                        hintText: 'Enter new password',
+                        hintStyle: const TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    const Text(
+                      'Phone number',
+                      style: TextStyle(fontFamily: 'Montserrat', fontSize: 14),
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            showCountryPicker(
+                              context: context,
+                              showPhoneCode: true,
+                              // optional. Shows phone code before the country name.
+                              onSelect: (Country country) {
+                                setState(() {
+                                  co = country.phoneCode;
+                                });
+                              },
+                            );
+                          },
+                          child: Text(
+                            '+$co',
+                            style: const TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 18,
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: tnc,
-                          onChanged: (val) {
-                            setState(() {
-                              tnc = !tnc;
-                            });
-                          },
+                        const SizedBox(
+                          width: 8,
                         ),
-                        const Text(
-                          'Terms and conditions',
-                          style:
-                          TextStyle(fontFamily: 'Montserrat', fontSize: 20),
+                        Expanded(
+                          child: TextField(
+                            controller: phoneText,
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 18,
+                            ),
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xff169B93),
+                                  width: 1,
+                                ),
+                              ),
+                              hintText: 'Enter your phone number',
+                              hintStyle: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: ElevatedButton(
-                      onPressed: handleEmailSignUp,
-                      style: ElevatedButton.styleFrom(
-                        primary: const Color(0xff169B93),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 72,
-                        ),
-                      ),
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
+                    const SizedBox(
+                      height: 25,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 14.0,
-                      horizontal: 25,
-                    ),
-                    child: Align(
+                    Align(
                       alignment: Alignment.center,
-                      child: Text.rich(
-                        TextSpan(
-                          text: 'Already have an account?',
-                          style: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 17,
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: tnc,
+                            onChanged: (val) {
+                              setState(() {
+                                tnc = !tnc;
+                              });
+                            },
                           ),
-                          children: <InlineSpan>[
-                            TextSpan(
-                              text: ' Sign in',
-                              style: const TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 17,
-                                color: Color(0xff0346FF),
-                                decoration: TextDecoration.underline,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => {Navigator.of(context).pop()},
-                            ),
-                          ],
+                          const Text(
+                            'Terms and conditions',
+                            style:
+                            TextStyle(fontFamily: 'Montserrat', fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: ElevatedButton(
+                        onPressed: handleEmailSignUp,
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xff169B93),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 72,
+                          ),
+                        ),
+                        child: const Text(
+                          'Sign up',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 14.0,
+                        horizontal: 25,
+                      ),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text.rich(
+                          TextSpan(
+                            text: 'Already have an account?',
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 17,
+                            ),
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: ' Sign in',
+                                style: const TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 17,
+                                  color: Color(0xff0346FF),
+                                  decoration: TextDecoration.underline,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => {Navigator.of(context).pop()},
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/models/product.dart';
 import 'package:syzee/models/product_list_model.dart';
+import 'package:syzee/models/review_model.dart';
 import 'package:syzee/models/size_chart_model.dart';
 
 getProductService(String id, MainCategory cat) async {
@@ -95,4 +96,26 @@ Future<List<ProductTileModel>> getCompleteLook(MainCategory cat, String style, S
   }
   // print('list: $list');
   return list;
+}
+
+Future<ReviewModel> getProductReviews (id, cat) async {
+  Uri prodReview = Uri.parse('${AssetConstants.mockApiLink}/product/review');
+
+  Map<String, String> prodListMap = {};
+  prodListMap['productId'] = id.toString();
+
+  if (cat == MainCategory.women) {
+    prodListMap['mainCatId'] = '1';
+  }
+  if (cat == MainCategory.men) {
+    prodListMap['mainCatId'] = '3';
+  }
+  if (cat == MainCategory.kids) {
+    prodListMap['mainCatId'] = '2';
+  }
+  print('review post: $prodListMap');
+  var response = await http.post(prodReview, body: prodListMap);  
+  print ('review data: '+ response.body);
+  ReviewModel rev = ReviewModel.fromRawJson(response.body);
+  return rev;
 }

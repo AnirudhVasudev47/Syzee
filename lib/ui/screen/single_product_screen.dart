@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
 import 'package:syzee/models/product.dart';
+import 'package:syzee/models/review_model.dart';
 import 'package:syzee/services/cart_services.dart';
 import 'package:syzee/services/color_code_convert.dart';
 import 'package:syzee/services/product.dart';
@@ -13,6 +14,9 @@ import 'package:syzee/ui/screen/cart_screen.dart';
 import 'package:syzee/ui/screen/complete_look_screen.dart';
 import 'package:syzee/ui/screen/size_guide_screen.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
+import 'package:syzee/ui/widgets/review_card.dart';
+
+import 'login_screen.dart';
 
 class SingleProductScreen extends StatefulWidget {
   const SingleProductScreen({
@@ -36,14 +40,16 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
   SizeVariant? _chosenValue;
   bool isWished = false;
   String imageLink = '';
+  late Future<ReviewModel> reviews;
 
   int sizeIndex = 0;
   int colorIndex = 0;
+  int initIndex = -1;
 
   @override
   void initState() {
     super.initState();
-    print ('mainCat: ${widget.mainCat} prodId: ${widget.id}');
+    print('mainCat: ${widget.mainCat} prodId: ${widget.id}');
     setState(() {
       imageLink = widget.mainCat == MainCategory.women
           ? '${AssetConstants.mockImageLink}/women'
@@ -94,6 +100,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
               );
             }
             Product product = snapshot.data as Product;
+            reviews = getProductReviews(product.variants[0].id, widget.mainCat);
             product.variants[colorIndex].images.map((e) => print('image: $e \n'));
             return SingleChildScrollView(
               child: Column(
@@ -335,6 +342,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           } else {
                             return InkWell(
                               onTap: () {
+                                reviews = getProductReviews(product.variants[index - 1].id, widget.mainCat);
                                 setState(() {
                                   colorIndex = index - 1;
                                 });
@@ -460,6 +468,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                         setState(() {
                           _chosenValue = value;
                           sizeIndex = product.variants[colorIndex].sizeVariants.indexOf(value);
+                          initIndex = product.variants[colorIndex].sizeVariants.indexOf(value);
                         });
                       },
                     ),
@@ -481,9 +490,21 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                                 title: 'Please login to continue',
                                 desc: 'You hav not logged in. Please login to continue',
                               );
+
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginScreen(),
+                                ),
+                              );
                             } else {
-                              loadingDialog(context,
-                                  asset: 'assets/images/home/lottie/loading.json');
+                              if (initIndex == -1) {
+                                return displayToast(
+                                  context,
+                                  title: 'Select a size',
+                                  desc: 'Size not selected. Please select a size to continue',
+                                );
+                              }
+                              loadingDialog(context, asset: 'assets/images/home/lottie/loading.json');
 
                               bool res = await addToCart(
                                 widget.mainCat,
@@ -506,14 +527,14 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                                   desc: 'Please try again later',
                                 );
                               }
-                            }
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const CartScreen(),
-                              ),
-                            );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CartScreen(),
+                                ),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             primary: const Color(0xff169B93),
@@ -622,78 +643,100 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                   //     ),
                   //   ),
                   // ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                    ).copyWith(top: 25, bottom: 8),
-                    child: Row(
-                      children: const [
-                        Text(
-                          'Reviews',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          ' 0',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: Color(0xff7F7F7F),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 25,
-                    ).copyWith(top: 13, bottom: 8),
-                    child: Row(
-                      children: [
-                        const Text(
-                          '0',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 29,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Image.asset(
-                          'assets/images/single_product/star.png',
-                          height: 20,
-                          width: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Text(
-                    'No reviews Yet',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 14,
-                    ),
-                    textAlign: TextAlign.center,
+                  FutureBuilder(
+                    future: reviews,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        ReviewModel revList = snapshot.data as ReviewModel;
+                        return Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 25,
+                              ).copyWith(top: 25, bottom: 8),
+                              child: Row(
+                                children: [
+                                  const Text(
+                                    'Reviews',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    ' ${revList.data.length}',
+                                    style: const TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Color(0xff7F7F7F),
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 25,
+                              ).copyWith(top: 13, bottom: 8),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    revList.average.toString(),
+                                    style: const TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 29,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Image.asset(
+                                    'assets/images/single_product/star.png',
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            revList.data.isEmpty
+                            ? const Text(
+                              'No reviews Yet',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
+                            )
+                            : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: revList.data.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 25,
+                                  ).copyWith(top: 25, bottom: 8),
+                                  child: ReviewCard(
+                                    name: revList.data[index].userEmail,
+                                    review: revList.data[index].description,
+                                    date: revList.data[index].createdOn.toString(),
+                                    rate: double.parse(revList.data[index].reviewValue),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
                   ),
                   const SizedBox(
                     height: 34,
                   ),
-                  // Container(
-                  //   padding: const EdgeInsets.symmetric(
-                  //     horizontal: 25,
-                  //   ).copyWith(top: 25, bottom: 8),
-                  //   child: const ReviewCard(),
-                  // ),
-                  // Container(
-                  //   padding: const EdgeInsets.symmetric(
-                  //     horizontal: 25,
-                  //   ).copyWith(top: 25, bottom: 25),
-                  //   child: const ReviewCard(),
-                  // ),
                 ],
               ),
             );

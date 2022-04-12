@@ -184,30 +184,32 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
-              child: Text(
-                'Enter the OTP sent',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 14,
-                ),
+            const SizedBox(
+              height: 55,
+            ),
+            const Text(
+              'Enter the OTP sent',
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 14,
               ),
             ),
             const SizedBox(
-              height: 8.0,
+              height: 25.0,
             ),
             Padding(
               padding: const EdgeInsets.only(
                 bottom: 25,
               ),
               child: TextField(
-                decoration:
-                const InputDecoration(hintText: 'Enter the OTP sent',
+                decoration: const InputDecoration(
+                  hintText: 'Enter the OTP sent',
                   hintStyle: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 16,
-                  ),),
+                  ),
+                ),
+                keyboardType: TextInputType.phone,
                 autofocus: true,
                 controller: otpText,
               ),
@@ -222,6 +224,30 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      continueWithVerification();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xff169B93),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 25,
+                      ),
+                    ),
+                    child: const Text(
+                      'Resend OTP',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   ElevatedButton(
                     onPressed: () async {
                       try {
@@ -250,30 +276,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: const Text(
                       'Submit OTP',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      continueWithVerification();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color(0xff169B93),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 25,
-                      ),
-                    ),
-                    child: const Text(
-                      'Resend OTP',
                       style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 16,

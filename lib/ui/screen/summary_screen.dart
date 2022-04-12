@@ -546,6 +546,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         ),
                         ElevatedButton(
                           onPressed: () async {
+                            loadingDialog(context, asset: 'assets/images/home/lottie/loading.json');
                             String id = await placeOrder(
                               widget.shippingAddress,
                               widget.country,
@@ -561,13 +562,15 @@ class _SummaryScreenState extends State<SummaryScreen> {
                               'testID',
                               widget.couponName,
                             );
-                            Navigator.push(
+                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => OrderSuccessfulScreen(
                                   orderId: id,
                                 ),
                               ),
+                              (route) => false,
                             );
                           },
                           style: ElevatedButton.styleFrom(

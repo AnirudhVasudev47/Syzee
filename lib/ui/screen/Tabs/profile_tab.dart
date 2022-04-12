@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:syzee/global/theme.dart';
 import 'package:syzee/models/user_model.dart';
 import 'package:syzee/services/auth_service.dart';
 import 'package:syzee/services/cart_services.dart';
 import 'package:syzee/ui/screen/contact_us_screen.dart';
+import 'package:syzee/ui/screen/edit_profile_screen.dart';
 import 'package:syzee/ui/screen/login_screen.dart';
 import 'package:syzee/ui/screen/manage_address.dart';
 import 'package:syzee/ui/screen/order_history_screen.dart';
@@ -188,6 +188,12 @@ class _ProfileTabState extends State<ProfileTab> {
                         'assets/images/home/profile_tab/edit.png',
                         'My Profile',
                         onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditProfileScreen(),
+                            ),
+                          );
                           // setState(() {
                           //   currentTheme.toggleTheme();
                           // });
