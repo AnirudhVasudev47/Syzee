@@ -10,9 +10,9 @@ enum MainCategory {
 }
 
 class AssetConstants {
-  static const mockApiLink = 'http://192.168.0.124:8000/api';
-  static const mockWebLink = 'http://192.168.0.124/syzee';
-  static const mockImageLink = 'http://192.168.0.124/syzee/images';
+  static const mockApiLink = 'http://syzee.co:8000/api';
+  static const mockWebLink = 'http://syzee.co';
+  static const mockImageLink = 'http://syzee.co/images';
 
   static const logo = 'assets/images/logo.png';
   static const blackLogo = 'assets/images/logo1.png';
