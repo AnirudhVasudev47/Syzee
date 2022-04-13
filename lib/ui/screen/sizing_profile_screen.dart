@@ -19,6 +19,8 @@ class SizingProfileScreen extends StatefulWidget {
 
 class _SizingProfileScreenState extends State<SizingProfileScreen> {
   late Future<SizingProfileModel> sizing;
+  int heightUnitIndex = 0;
+  List<String> heightArr = ['cm', 'ft'];
 
   @override
   void initState() {

@@ -4,8 +4,9 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syzee/global/color.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
-import 'package:syzee/services/sizing_service.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+
+import '../../services/sizing_service.dart';
 
 enum AddressType { home, office, other }
 
@@ -268,7 +269,7 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
                         setState(() {
                           heightUnitIndex = index!;
                         });
-                        print('switched to: $index');
+                        // print('switched to: $index');
                       },
                     ),
                   ],
@@ -320,7 +321,7 @@ class _UpdateOrAddSizeState extends State<UpdateOrAddSize> {
                         setState(() {
                           weightUnitIndex = index!;
                         });
-                        print('switched to: $index');
+                        // print('switched to: $index');
                       },
                     ),
                   ],

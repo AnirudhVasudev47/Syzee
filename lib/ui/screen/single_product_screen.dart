@@ -10,6 +10,7 @@ import 'package:syzee/models/review_model.dart';
 import 'package:syzee/services/cart_services.dart';
 import 'package:syzee/services/color_code_convert.dart';
 import 'package:syzee/services/product.dart';
+import 'package:syzee/services/wishlist_services.dart';
 import 'package:syzee/ui/screen/cart_screen.dart';
 import 'package:syzee/ui/screen/complete_look_screen.dart';
 import 'package:syzee/ui/screen/size_guide_screen.dart';
@@ -557,7 +558,26 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            loadingDialog(context);
+                            if (isWished) {
+                              removeFromWishlist(
+                                  widget.mainCat == MainCategory.women
+                                      ? '1'
+                                      : widget.mainCat == MainCategory.kids
+                                          ? '2'
+                                          : '3',
+                                  product.variants[colorIndex].id);
+                            } else {
+                              await addToWishlist(
+                                  widget.mainCat == MainCategory.women
+                                      ? '1'
+                                      : widget.mainCat == MainCategory.kids
+                                          ? '2'
+                                          : '3',
+                                  product.variants[colorIndex].id,
+                                  product.variants[colorIndex].sizeVariants[sizeIndex].size);
+                            }
                             setState(() {
                               isWished = !isWished;
                             });

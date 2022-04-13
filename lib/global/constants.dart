@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:syzee/global/theme.dart';
-import 'package:syzee/ui/screen/cart_screen_empty.dart';
-
 enum MainCategory {
   women,
   men,

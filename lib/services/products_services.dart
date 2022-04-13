@@ -116,7 +116,7 @@ Future<List<ProductTileModel>> getProductFromNewIn(MainCategory cat, int subCatI
   } catch (e) {
     // print(e.toString());
   }
-  // print('list: $list');
+
   return list;
 }
 

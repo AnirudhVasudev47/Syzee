@@ -120,6 +120,7 @@ class _ManageAddressState extends State<ManageAddress> {
                                             ),
                                             UpdateOrAddAddress(
                                               action: 'update',
+                                              id: addressData.data[index].id.toString(),
                                               name:
                                                   addressData.data[index].name,
                                               code:

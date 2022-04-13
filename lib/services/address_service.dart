@@ -47,6 +47,7 @@ Future<dynamic> updateAddress(id, name, code, phone, doorNo, buildingNo, street,
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   Map<String, dynamic> prodMap = {};
+  prodMap['email'] = prefs.getString('userMail') ?? '';
   prodMap['id'] = id;
   prodMap['name'] = name;
   prodMap['code'] = code;
@@ -58,8 +59,8 @@ Future<dynamic> updateAddress(id, name, code, phone, doorNo, buildingNo, street,
   prodMap['country'] = country;
   prodMap['addType'] = addType;
 
-  var res = await http.post(addAddressUri, body: prodMap);
-
+  var res = await http.post(updateAddressUri, body: prodMap);
+  // print (res.body);
   return jsonDecode(res.body);
 }
 

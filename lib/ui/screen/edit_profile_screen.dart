@@ -34,12 +34,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   fetchUserData(UserModel user) async {
-    setState(() {
       emailText.text = user.email;
       usernameText.text = user.name;
       codeText.text = user.code;
       mobileText.text = user.phone;
-    });
   }
 
   @override

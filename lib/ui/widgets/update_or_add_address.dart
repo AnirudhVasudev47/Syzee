@@ -20,9 +20,11 @@ class UpdateOrAddAddress extends StatefulWidget {
     this.zone,
     this.country,
     required this.onActionComplete,
+    this.id,
   }) : super(key: key);
 
   final String action;
+  final String? id;
   final String? name;
   final String? type;
   final String? code;
@@ -91,6 +93,29 @@ class _UpdateOrAddAddressState extends State<UpdateOrAddAddress> {
         });
       }
     }
+  }
+
+  bool checkFields() {
+    if (country == 'Qatar') {
+      if (nameText.text == '' ||
+          mobileText.text == '' ||
+          buildingNoText.text == '' ||
+          zoneText.text == '' ||
+          streetText.text == '' ||
+          doorText.text == '') {
+        return false;
+      }
+    } else {
+      if (nameText.text == '' ||
+          mobileText.text == '' ||
+          street1Text.text == '' ||
+          street2Text.text == '' ||
+          cityText.text == '' ||
+          stateText.text == '') {
+        return false;
+      }
+    }
+    return true;
   }
 
   @override
@@ -744,53 +769,98 @@ class _UpdateOrAddAddressState extends State<UpdateOrAddAddress> {
             ),
             ElevatedButton(
               onPressed: () async {
-                loadingDialog(context, asset: AssetConstants.loadingLottie);
-                if (widget.action == 'add') {
-                  if (country == 'Qatar') {
-                    // Add Qatar
-                    await addAddress(
-                      nameText.text,
-                      '+${selectedCountry.phoneCode}',
-                      mobileText.text,
-                      doorText.text,
-                      buildingNoText.text,
-                      streetText.text,
-                      zoneText.text,
-                      country,
-                      _type == AddressType.home
-                          ? 'Home'
-                          : _type == AddressType.office
-                              ? 'Office'
-                              : 'Other',
-                    );
-                    int count = 0;
-                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                bool checkRes = checkFields();
+                if (checkRes) {
+                  loadingDialog(context, asset: AssetConstants.loadingLottie);
+                  if (widget.action == 'add') {
+                    if (country == 'Qatar') {
+                      // Add Qatar
+                      await addAddress(
+                        nameText.text,
+                        '+${selectedCountry.phoneCode}',
+                        mobileText.text,
+                        doorText.text,
+                        buildingNoText.text,
+                        streetText.text,
+                        zoneText.text,
+                        country,
+                        _type == AddressType.home
+                            ? 'Home'
+                            : _type == AddressType.office
+                                ? 'Office'
+                                : 'Other',
+                      );
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    } else {
+                      // Add other country
+                      await addAddress(
+                        nameText.text,
+                        '+${selectedCountry.phoneCode}',
+                        mobileText.text,
+                        street1Text.text,
+                        street2Text.text,
+                        cityText.text,
+                        stateText.text,
+                        country,
+                        _type == AddressType.home
+                            ? 'Home'
+                            : _type == AddressType.office
+                                ? 'Office'
+                                : 'Other',
+                      );
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    }
                   } else {
-                    // Add other country
-                    await addAddress(
-                      nameText.text,
-                      selectedCountry.phoneCode,
-                      mobileText.text,
-                      street1Text.text,
-                      street2Text.text,
-                      cityText.text,
-                      stateText.text,
-                      country,
-                      _type == AddressType.home
-                          ? 'Home'
-                          : _type == AddressType.office
-                              ? 'Office'
-                              : 'Other',
-                    );
-                    int count = 0;
-                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                    if (isQatar) {
+                      // Update Qatar
+                      await updateAddress(
+                        widget.id,
+                        nameText.text,
+                        '+${selectedCountry.phoneCode}',
+                        mobileText.text,
+                        doorText.text,
+                        buildingNoText.text,
+                        streetText.text,
+                        zoneText.text,
+                        country,
+                        _type == AddressType.home
+                            ? 'Home'
+                            : _type == AddressType.office
+                                ? 'Office'
+                                : 'Other',
+                      );
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    } else {
+                      // Update other country
+                      await updateAddress(
+                        widget.id,
+                        nameText.text,
+                        '+${selectedCountry.phoneCode}',
+                        mobileText.text,
+                        street1Text.text,
+                        street2Text.text,
+                        cityText.text,
+                        stateText.text,
+                        country,
+                        _type == AddressType.home
+                            ? 'Home'
+                            : _type == AddressType.office
+                                ? 'Office'
+                                : 'Other',
+                      );
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    }
                   }
                 } else {
-                  if (isQatar) {
-                    // Update Qatar
-                  } else {
-                    // Update other country
-                  }
+                  displayToast(
+                    context,
+                    title: 'Please fill all the fields',
+                    desc: 'Please check and fill all the fields to continue.',
+                  );
                 }
                 widget.onActionComplete();
               },
