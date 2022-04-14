@@ -2,7 +2,6 @@
 //
 //     final productTileModel = productTileModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class ProductTileModel {
@@ -38,29 +37,30 @@ class ProductTileModel {
 
   factory ProductTileModel.fromJson(Map<String, dynamic> json) => ProductTileModel(
     productId: json["productId"],
-    id: json["id"],
-    name: json["name"],
-    image: json["image"],
-    price: json["price"],
-    createdOn: DateTime.parse(json["created_on"]),
-    rating: json["rating"],
-    color: json["color"],
-    brand: json["brand"] ?? ' ',
-    wishlist: json["wishlist"],
-    size: json["size"],
-  );
+        id: json["id"],
+        name: json["name"],
+        image: json["image"],
+        price: json["price"],
+        createdOn: DateTime.parse(json["created_on"]),
+        rating: json["rating"] ?? 0,
+        color: json["color"],
+        brand: json["brand"] ?? ' ',
+        wishlist: json["wishlist"],
+        size: json["size"],
+      );
 
-  Map<String, dynamic> toJson() => {
-    "productId": productId,
-    "id": id,
-    "name": name,
-    "image": image,
-    "price": price,
-    "created_on": createdOn.toIso8601String(),
-    "rating": rating,
-    "color": color,
-    "brand": brand,
-    "wishlist": wishlist,
-    "size": size,
-  };
+  Map<String, dynamic> toJson() =>
+      {
+        "productId": productId,
+        "id": id,
+        "name": name,
+        "image": image,
+        "price": price,
+        "created_on": createdOn.toIso8601String(),
+        "rating": rating == null ? null : rating,
+        "color": color,
+        "brand": brand == null ? null : brand,
+        "wishlist": wishlist,
+        "size": size,
+      };
 }

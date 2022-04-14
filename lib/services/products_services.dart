@@ -110,13 +110,13 @@ Future<List<ProductTileModel>> getProductFromNewIn(MainCategory cat, int subCatI
 
   List<ProductTileModel> list = [];
   var data = jsonDecode(response.body);
-  // print('new in: ${response.body}');
+  print('new in: ${response.body}');
   try {
     data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
   } catch (e) {
     // print(e.toString());
   }
-
+  print ('list: $list');
   return list;
 }
 

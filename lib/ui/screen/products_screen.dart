@@ -36,7 +36,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       }
     } else if (widget.from == 'newIn'){
       list = getProductFromNewIn(widget.cat, widget.subCatId);
-      // print(list.toString());
+      print(list.toString());
     } else if (widget.from == 'allClothing'){
       list = getAllProducts(widget.cat, widget.subCatId);
       // print(list.toString());
@@ -73,6 +73,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 future: list,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    print(snapshot.data);
                     List<ProductTileModel> data = snapshot.data as List<ProductTileModel>;
                     print('data: $data');
                     return ProductScreenProductList(

@@ -32,7 +32,7 @@ class ProductScreenProductList extends StatefulWidget {
 class _ProductScreenProductListState extends State<ProductScreenProductList> {
   String imageLink = '';
   final firebaseAuth = FirebaseAuth.instance;
-  List<ProductTileModel> productList = [];
+  late List<ProductTileModel> productList;
   List<String> colorList = [];
 
   @override
