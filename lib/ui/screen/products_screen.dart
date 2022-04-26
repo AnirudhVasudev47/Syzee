@@ -22,7 +22,7 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   bool isProducts = true;
-  late Future<List<ProductTileModel>> list;
+  late Future<ProductTileModel> list;
   final firebaseAuth = FirebaseAuth.instance;
 
   @override
@@ -74,7 +74,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     print(snapshot.data);
-                    List<ProductTileModel> data = snapshot.data as List<ProductTileModel>;
+                    ProductTileModel data = snapshot.data as ProductTileModel;
                     print('data: $data');
                     return ProductScreenProductList(
                       mainCat: widget.cat,

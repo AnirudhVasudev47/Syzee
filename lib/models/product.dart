@@ -2,7 +2,6 @@
 //
 //     final product = productFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Product {
@@ -30,13 +29,13 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
     name: json["name"],
-    brand: json["brand"],
-    sellerId: json["sellerId"],
-    productId: json["productId"],
-    tagLine: json["tagLine"],
-    description: json["description"],
-    variants: List<Variant>.from(json["variants"].map((x) => Variant.fromJson(x))),
-  );
+        brand: json["brand"] ?? ' ',
+        sellerId: json["sellerId"],
+        productId: json["productId"],
+        tagLine: json["tagLine"],
+        description: json["description"],
+        variants: List<Variant>.from(json["variants"].map((x) => Variant.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
     "name": name,
@@ -74,13 +73,13 @@ class Variant {
 
   factory Variant.fromJson(Map<String, dynamic> json) => Variant(
     id: json["id"],
-    tailorAssist: json["tailorAssist"],
-    chartStatus: json["chartStatus"],
-    color: json["color"],
-    colorName: json["colorName"],
-    images: List<String>.from(json["images"].map((x) => x)),
-    sizeVariants: List<SizeVariant>.from(json["sizeVariants"].map((x) => SizeVariant.fromJson(x))),
-  );
+        tailorAssist: json["tailorAssist"],
+        chartStatus: json["chartStatus"],
+        color: json["color"] == "" || json['color'] == null ? '#000' : json["color"],
+        colorName: json["colorName"],
+        images: List<String>.from(json["images"].map((x) => x)),
+        sizeVariants: List<SizeVariant>.from(json["sizeVariants"].map((x) => SizeVariant.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
     "id": id,

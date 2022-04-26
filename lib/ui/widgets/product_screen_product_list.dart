@@ -19,7 +19,7 @@ class ProductScreenProductList extends StatefulWidget {
     required this.from,
   }) : super(key: key);
 
-  final List<ProductTileModel> list;
+  final ProductTileModel list;
   final VoidCallback onWishTap;
   final MainCategory mainCat;
   final int subCatId;
@@ -32,7 +32,7 @@ class ProductScreenProductList extends StatefulWidget {
 class _ProductScreenProductListState extends State<ProductScreenProductList> {
   String imageLink = '';
   final firebaseAuth = FirebaseAuth.instance;
-  late List<ProductTileModel> productList;
+  late ProductTileModel productList;
   List<String> colorList = [];
 
   @override
@@ -53,8 +53,8 @@ class _ProductScreenProductListState extends State<ProductScreenProductList> {
 
   @override
   Widget build(BuildContext context) {
-    print(productList.isEmpty);
-    return productList.isEmpty
+    print(productList.data.isEmpty);
+    return productList.data.isEmpty
         ? const Expanded(
             child: Center(
               child: Text(
@@ -74,34 +74,36 @@ class _ProductScreenProductListState extends State<ProductScreenProductList> {
                 colorList: widget.list,
                 onHtl: () {
                   setState(() {
-                    productList.sort((a, b) => b.price.compareTo(a.price));
+                    productList.data.sort((a, b) => b.price.compareTo(a.price));
                   });
                 },
                 onLth: () {
                   setState(() {
-                    productList.sort((a, b) => a.price.compareTo(b.price));
+                    productList.data.sort((a, b) => a.price.compareTo(b.price));
                   });
                 },
                 onNew: () {
                   setState(() {
-                    productList.sort((a, b) => a.createdOn.compareTo(b.createdOn));
+                    productList.data.sort((a, b) => a.createdOn.compareTo(b.createdOn));
                   });
                 },
                 onOld: () {
                   setState(() {
-                    productList.sort((a, b) => b.createdOn.compareTo(a.createdOn));
+                    productList.data.sort((a, b) => b.createdOn.compareTo(a.createdOn));
                   });
                 },
                 onView: (FilterModel filter) {
-                  List<ProductTileModel> prod = widget.list;
-                  prod = prod
-                      .where((element) => ((element.price >= filter.filterOneValues[0] && element.price <= filter.filterOneValues[1]) &&
-                          (double.parse(element.rating) >= filter.filterTwoValues[0] && double.parse(element.rating) <= filter.filterTwoValues[1]) &&
-                          (filter.filterThreeValues == 'all' ? true : (element.color == filter.filterThreeValues))))
-                      .toList();
+                  ProductTileModel prod = widget.list;
+                  ProductTileModel newList = ProductTileModel(
+                      data: prod.data
+                          .where((element) => ((element.price >= filter.filterOneValues[0] && element.price <= filter.filterOneValues[1]) &&
+                              (double.parse(element.rating) >= filter.filterTwoValues[0] &&
+                                  double.parse(element.rating) <= filter.filterTwoValues[1]) &&
+                              (filter.filterThreeValues == 'all' ? true : (element.color == filter.filterThreeValues))))
+                          .toList());
                   print(prod);
                   setState(() {
-                    productList = prod;
+                    productList = newList;
                   });
                 },
               ),
@@ -109,7 +111,7 @@ class _ProductScreenProductListState extends State<ProductScreenProductList> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: GridView.builder(
-                    itemCount: productList.length,
+                    itemCount: productList.data.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 12,
@@ -118,18 +120,18 @@ class _ProductScreenProductListState extends State<ProductScreenProductList> {
                     ),
                     itemBuilder: (context, index) {
                       return ProductTile(
-                        name: productList[index].name,
-                        brand: productList[index].brand,
-                        price: productList[index].price,
-                        image: '$imageLink/${productList[index].image}',
-                        isWished: productList[index].wishlist,
-                        size: productList[index].size,
+                        name: productList.data[index].name,
+                        brand: productList.data[index].brand,
+                        price: productList.data[index].price,
+                        image: '$imageLink/${productList.data[index].image}',
+                        isWished: productList.data[index].wishlist,
+                        size: productList.data[index].size,
                         mainCatId: widget.mainCat == MainCategory.women
                             ? '1'
                             : widget.mainCat == MainCategory.kids
                                 ? '2'
                                 : '3',
-                        productId: productList[index].productId.toString(),
+                        productId: productList.data[index].productId.toString(),
                         onTapHeart: () async {
                           if (widget.from == 'sub_category') {
                             if (firebaseAuth.currentUser == null) {
@@ -170,7 +172,7 @@ class _ProductScreenProductListState extends State<ProductScreenProductList> {
                             MaterialPageRoute(
                               builder: (context) => SingleProductScreen(
                                 mainCat: widget.mainCat,
-                                id: productList[index].id,
+                                id: productList.data[index].id,
                               ),
                             ),
                           );

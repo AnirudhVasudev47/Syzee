@@ -27,7 +27,7 @@ class CompleteLookScreen extends StatefulWidget {
 
 class _CompleteLookScreenState extends State<CompleteLookScreen> {
   String imageLink = '';
-  late Future<List<ProductTileModel>> prodList;
+  late Future<ProductTileModel> prodList;
 
   @override
   void initState() {
@@ -83,8 +83,8 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
               future: prodList,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
-                  List<ProductTileModel> data = snapshot.data as List<ProductTileModel>;
-                  if (data.length < 2) {
+                  ProductTileModel data = snapshot.data as ProductTileModel;
+                  if (data.data.length < 2) {
                     return const Center(
                       child: Text('Sorry no products found'),
                     );
@@ -96,17 +96,17 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
                         width: 168,
                         height: 305,
                         child: ProductTile(
-                          name: data[0].name,
-                          brand: data[0].brand,
-                          price: data[0].price,
-                          image: '$imageLink/${data[0].image}',
-                          isWished: data[0].wishlist,
+                          name: data.data[0].name,
+                          brand: data.data[0].brand,
+                          price: data.data[0].price,
+                          image: '$imageLink/${data.data[0].image}',
+                          isWished: data.data[0].wishlist,
                           onTapCard: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SingleProductScreen(
-                                  id: data[0].id,
+                                  id: data.data[0].id,
                                   mainCat: widget.mainCatId,
                                 ),
                               ),
@@ -117,8 +117,8 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
                               prodList = getCompleteLook(widget.mainCatId, widget.prodStyle, widget.sellerId);
                             });
                           },
-                          size: data[0].size,
-                          productId: data[0].productId.toString(),
+                          size: data.data[0].size,
+                          productId: data.data[0].productId.toString(),
                           mainCatId: widget.mainCatId == MainCategory.women
                               ? '1'
                               : widget.mainCatId == MainCategory.kids
@@ -130,17 +130,17 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
                         width: 168,
                         height: 305,
                         child: ProductTile(
-                          name: data[1].name,
-                          brand: data[1].brand,
-                          price: data[1].price,
-                          image: '$imageLink/${data[1].image}',
-                          isWished: data[1].wishlist,
+                          name: data.data[1].name,
+                          brand: data.data[1].brand,
+                          price: data.data[1].price,
+                          image: '$imageLink/${data.data[1].image}',
+                          isWished: data.data[1].wishlist,
                           onTapCard: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SingleProductScreen(
-                                  id: data[1].id,
+                                  id: data.data[1].id,
                                   mainCat: widget.mainCatId,
                                 ),
                               ),
@@ -151,8 +151,8 @@ class _CompleteLookScreenState extends State<CompleteLookScreen> {
                               prodList = getCompleteLook(widget.mainCatId, widget.prodStyle, widget.sellerId);
                             });
                           },
-                          size: data[1].size,
-                          productId: data[1].productId.toString(),
+                          size: data.data[1].size,
+                          productId: data.data[1].productId.toString(),
                           mainCatId: widget.mainCatId == MainCategory.women
                               ? '1'
                               : widget.mainCatId == MainCategory.kids

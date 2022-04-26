@@ -64,7 +64,7 @@ Future<SizeChartModel> getProductSizeChart(String id, MainCategory cat) async {
   return SizeChartModel.fromRawJson(res.body);
 }
 
-Future<List<ProductTileModel>> getCompleteLook(MainCategory cat, String style, String sellerId) async {
+Future<ProductTileModel> getCompleteLook(MainCategory cat, String style, String sellerId) async {
   Uri completeUri = Uri.parse('${AssetConstants.mockApiLink}/product/complete_look');
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -86,14 +86,7 @@ Future<List<ProductTileModel>> getCompleteLook(MainCategory cat, String style, S
   var response = await http.post(completeUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
-  List<ProductTileModel> list = [];
-  var data = jsonDecode(response.body);
-  // print('all clothing: ${response.body}');
-  try {
-    data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
-  } catch (e) {
-    // print(e.toString());
-  }
+  ProductTileModel list = ProductTileModel.fromRawJson(response.body);
   // print('list: $list');
   return list;
 }

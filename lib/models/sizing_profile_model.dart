@@ -2,7 +2,6 @@
 //
 //     final sizingProfileModel = sizingProfileModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class SizingProfileModel {
@@ -49,7 +48,6 @@ class Datum {
     required this.status,
     required this.createdOn,
     required this.createdBy,
-    required this.resetOn,
   });
 
   final int id;
@@ -70,7 +68,6 @@ class Datum {
   final int status;
   final DateTime createdOn;
   final String createdBy;
-  final String resetOn;
 
   factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
 
@@ -95,7 +92,6 @@ class Datum {
     status: json["status"],
     createdOn: DateTime.parse(json["created_on"]),
     createdBy: json["created_by"],
-    resetOn: json["reset_on"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -117,6 +113,5 @@ class Datum {
     "status": status,
     "created_on": createdOn.toIso8601String(),
     "created_by": createdBy,
-    "reset_on": resetOn,
   };
 }

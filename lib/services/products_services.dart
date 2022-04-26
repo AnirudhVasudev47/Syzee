@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syzee/global/constants.dart';
@@ -17,7 +15,7 @@ Uri prodListGiftsUri =
 Uri searchUri =
     Uri.parse('${AssetConstants.mockApiLink}/products_list/search');
 
-Future<List<ProductTileModel>> getProductsList(MainCategory cat, int subCatId) async {
+Future<ProductTileModel> getProductsList(MainCategory cat, int subCatId) async {
   Map<String, String> prodListMap = {};
   prodListMap['subCategoryId'] = '$subCatId';
   if (cat == MainCategory.women) {
@@ -32,15 +30,12 @@ Future<List<ProductTileModel>> getProductsList(MainCategory cat, int subCatId) a
 
   var response = await http.post(prodListUri, body: prodListMap);
   // print(jsonDecode(response.body));
-
-  List<ProductTileModel> list = [];
-  var data = jsonDecode(response.body);
-  data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
+  ProductTileModel list = ProductTileModel.fromRawJson(response.body);
   // print(list);
   return list;
 }
 
-Future<List<ProductTileModel>> getCatProductsList(MainCategory cat, int catId) async {
+Future<ProductTileModel> getCatProductsList(MainCategory cat, int catId) async {
   Map<String, String> prodListMap = {};
   prodListMap['subCategoryId'] = '$catId';
   if (cat == MainCategory.women) {
@@ -56,15 +51,13 @@ Future<List<ProductTileModel>> getCatProductsList(MainCategory cat, int catId) a
   var response = await http.post(prodListUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
-  List<ProductTileModel> list = [];
-  var data = jsonDecode(response.body);
-  data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
+  ProductTileModel list = ProductTileModel.fromRawJson(response.body);
   // print(list);
   return list;
 }
 
-Future<List<ProductTileModel>> getProductsListByUser(MainCategory cat, int subCatId) async {
-  SharedPreferences prefs =  await SharedPreferences.getInstance();
+Future<ProductTileModel> getProductsListByUser(MainCategory cat, int subCatId) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
   Map<String, String> prodListMap = {};
   prodListMap['subCategoryId'] = '$subCatId';
@@ -82,15 +75,13 @@ Future<List<ProductTileModel>> getProductsListByUser(MainCategory cat, int subCa
   var response = await http.post(prodListUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
-  List<ProductTileModel> list = [];
-  var data = jsonDecode(response.body);
-  data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
+  ProductTileModel list = ProductTileModel.fromRawJson(response.body);
   // print(list);
   return list;
 }
 
-Future<List<ProductTileModel>> getProductFromNewIn(MainCategory cat, int subCatId) async {
-  SharedPreferences prefs =  await SharedPreferences.getInstance();
+Future<ProductTileModel> getProductFromNewIn(MainCategory cat, int subCatId) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
   Map<String, String> prodListMap = {};
   prodListMap['subCategoryId'] = '$subCatId';
@@ -108,23 +99,16 @@ Future<List<ProductTileModel>> getProductFromNewIn(MainCategory cat, int subCatI
   var response = await http.post(prodListNewInUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
-  List<ProductTileModel> list = [];
-  var data = jsonDecode(response.body);
-  print('new in: ${response.body}');
-  try {
-    data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
-  } catch (e) {
-    // print(e.toString());
-  }
-  print ('list: $list');
+  ProductTileModel list = ProductTileModel.fromRawJson(response.body);
+  print('list: $list');
   return list;
 }
 
-Future<List<ProductTileModel>> getAllProducts(MainCategory cat, int subCatId) async {
-  SharedPreferences prefs =  await SharedPreferences.getInstance();
+Future<ProductTileModel> getAllProducts(MainCategory cat, int subCatId) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
   Map<String, String> prodListMap = {};
-  prodListMap['subCategoryId'] = '$subCatId';
+  // prodListMap['subCategoryId'] = '$subCatId';
   if (cat == MainCategory.women) {
     prodListMap['mainCatId'] = '1';
   }
@@ -139,20 +123,13 @@ Future<List<ProductTileModel>> getAllProducts(MainCategory cat, int subCatId) as
   var response = await http.post(prodListAllClothingUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
-  List<ProductTileModel> list = [];
-  var data = jsonDecode(response.body);
-  // print('all clothing: ${response.body}');
-  try {
-    data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
-  } catch (e) {
-    // print(e.toString());
-  }
-  // print('list: $list');
+  ProductTileModel list = ProductTileModel.fromRawJson(response.body);
+  print('list: $list');
   return list;
 }
 
-Future<List<ProductTileModel>> getGifts(MainCategory cat, int subCatId) async {
-  SharedPreferences prefs =  await SharedPreferences.getInstance();
+Future<ProductTileModel> getGifts(MainCategory cat, int subCatId) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
   Map<String, String> prodListMap = {};
   prodListMap['subCategoryId'] = '$subCatId';
@@ -170,14 +147,7 @@ Future<List<ProductTileModel>> getGifts(MainCategory cat, int subCatId) async {
   var response = await http.post(prodListGiftsUri, body: prodListMap);
   // print(jsonDecode(response.body));
 
-  List<ProductTileModel> list = [];
-  var data = jsonDecode(response.body);
-  // print('all clothing: ${response.body}');
-  try {
-    data.forEach((prod) => {list.add(ProductTileModel.fromJson(prod))});
-  } catch (e) {
-    // print(e.toString());
-  }
+  ProductTileModel list = ProductTileModel.fromRawJson(response.body);
   // print('list: $list');
   return list;
 }

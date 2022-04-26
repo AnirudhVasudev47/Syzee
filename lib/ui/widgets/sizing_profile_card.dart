@@ -16,6 +16,8 @@ class SizingProfileCard extends StatefulWidget {
     required this.selectedId,
     required this.onTapCard,
     required this.onFunctionComplete,
+    this.showEdit,
+    this.showDel,
   }) : super(key: key);
 
   final String height;
@@ -24,6 +26,8 @@ class SizingProfileCard extends StatefulWidget {
   final String weightUnit;
   final String id;
   final String selectedId;
+  final bool? showEdit;
+  final bool? showDel;
   final void Function() onEdit;
   final void Function() onTapCard;
   final VoidCallback onFunctionComplete;
@@ -122,35 +126,39 @@ class _SizingProfileCardState extends State<SizingProfileCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      InkWell(
-                        onTap: widget.onEdit,
-                        child: const Text(
-                          'Edit',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Color(0xffe30000),
-                          ),
-                        ),
-                      ),
+                      widget.showEdit ?? true
+                          ? InkWell(
+                              onTap: widget.onEdit,
+                              child: const Text(
+                                'Edit',
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: Color(0xffe30000),
+                                ),
+                              ),
+                            )
+                          : Container(),
                       const SizedBox(
                         width: 15,
                       ),
-                      InkWell(
-                        onTap: () async {
-                          loadingDialog(context, asset: AssetConstants.loadingLottie);
-                          await deleteSizingProfile(widget.id);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          widget.onFunctionComplete();
-                        },
-                        child: Image.asset(
-                          AssetConstants.bin,
-                          height: 20,
-                          width: 20,
-                        ),
-                      ),
+                      widget.showEdit ?? true
+                          ? InkWell(
+                              onTap: () async {
+                                loadingDialog(context, asset: AssetConstants.loadingLottie);
+                                await deleteSizingProfile(widget.id);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                widget.onFunctionComplete();
+                              },
+                              child: Image.asset(
+                                AssetConstants.bin,
+                                height: 20,
+                                width: 20,
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 ],

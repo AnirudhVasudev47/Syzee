@@ -1,11 +1,10 @@
-import 'dart:ui';
-
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/theme.dart';
-import 'package:syzee/models/order_list_model.dart';
-import 'package:syzee/services/order_service.dart';
-import 'package:syzee/ui/widgets/order_history_tile.dart';
+import 'package:syzee/ui/widgets/all_orders.dart';
+
+import '../widgets/pending_orders.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({Key? key}) : super(key: key);
@@ -15,14 +14,6 @@ class OrderHistoryScreen extends StatefulWidget {
 }
 
 class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
-  late Future<OrderListModel> orderList;
-
-  @override
-  void initState() {
-    super.initState();
-
-    orderList = getOrderList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,95 +46,33 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
             textAlign: TextAlign.center,
           ),
           Expanded(
-              child: FutureBuilder(
-            future: orderList,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                OrderListModel order = snapshot.data as OrderListModel;
-                if (order.data.isEmpty) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'No orders found.',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 18,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+            child: DefaultTabController(
+              initialIndex: 0,
+              length: 2,
+              child: Column(
+                children: const [
+                  TabBar(
+                    dragStartBehavior: DragStartBehavior.down,
+                    tabs: [
+                      Tab(text: 'Pending Orders'),
+                      Tab(text: 'All Orders'),
                     ],
-                  );
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 25,
                   ),
-                  itemCount: order.data.length,
-                  itemBuilder: (context, index) {
-                    return OrderHistoryTile(
-                      orderNo: order.data[index].orderId,
-                      productId: order.data[index].prodId.toString(),
-                      price: order.data[index].price,
-                      orderDate: order.data[index].date.toString(),
-                      mainCatId: order.data[index].mainCatId.toString(),
-                      status: order.data[index].status.toString(),
-                    );
-                  },
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          )),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        PendingOrdersTab(),
+                        AllOrdersTab(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-/*
-Container(
-                child: SfSliderTheme(
-                  data: SfSliderThemeData(
-                      activeTrackHeight: 2,
-                      inactiveTrackHeight: 2,
-                      activeDividerRadius: 6,
-                      inactiveDividerRadius: 6,
-                      inactiveDividerColor: ThemeColors.mediumGrey,
-                      activeDividerColor: ThemeColors.primaryColorLight),
-                  child: SfSlider.vertical(
-                    min: 1.0,
-                    max: 5.0,
-                    showLabels: true,
-                    interval: 1,
-                    isInversed: true,
-                    showDividers: true,
-                    value: 5,
-                    labelFormatterCallback:
-                        (dynamic actualValue, String formattedText) {
-                      if (actualValue == 1) {
-                        return 'Order Signed';
-                      } else if (actualValue == 2) {
-                        return 'Order Processed';
-                      } else if (actualValue == 3) {
-                        return 'Shipped ';
-                      } else if (actualValue == 4) {
-                        return 'Out for delivery';
-                      } else {
-                        return 'Delivered';
-                      }
-                    },
-                    onChanged: (dynamic newValue) {
-                      print(newValue);
-                      setState(() {
-                        _value = newValue;
-                      });
-                    },
-                  ),
-                ),
-              ),
- */

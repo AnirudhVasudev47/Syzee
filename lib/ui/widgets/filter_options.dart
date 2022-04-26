@@ -6,7 +6,7 @@ import 'package:syzee/models/product_list_model.dart';
 class FilterOptions extends StatefulWidget {
   const FilterOptions({Key? key, required this.colors, required this.controller, required this.onView}) : super(key: key);
 
-  final List<ProductTileModel> colors;
+  final ProductTileModel colors;
   final ScrollController controller;
   final Function (FilterModel) onView;
 
@@ -315,15 +315,15 @@ class _FilterOptionsState extends State<FilterOptions> {
               ? ListView.builder(
                   controller: widget.controller,
                   shrinkWrap: true,
-                  itemCount: widget.colors.length,
+                  itemCount: widget.colors.data.length,
                   itemBuilder: (context, index) {
                     return filterSubTile(
-                      widget.colors[index].color,
+                      widget.colors.data[index].color,
                       'All',
                       index,
                       3,
                       onTap: () {
-                        var temp = widget.colors[index].color;
+                        var temp = widget.colors.data[index].color;
                         setState(() {
                           filterThreeValue = temp;
                           filterIndexThree = index;

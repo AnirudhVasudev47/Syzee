@@ -49,6 +49,69 @@ Future<dynamic> addToCart(
   }
 }
 
+Future<dynamic> addToCartWithTailor(
+  MainCategory cat,
+  String productId,
+  String size,
+  String email,
+  String height,
+  String heightUnits,
+  String weight,
+  String weightUnits,
+  String upperBody,
+  String lowerBody,
+  String length,
+  String width,
+  String chest,
+  String sleevesFromNeck,
+  String waist,
+  String waistFromNeck,
+  String chestFromNeck,
+  String hips,
+) async {
+  Map<String, dynamic> prodMap = {};
+
+  prodMap['productId'] = productId;
+  prodMap['size'] = size;
+  prodMap['email'] = email;
+  prodMap['height'] = height;
+  prodMap['height_units'] = heightUnits;
+  prodMap['weight'] = weight;
+  prodMap['weight_units'] = weightUnits;
+  prodMap['upper_body'] = upperBody;
+  prodMap['lower_body'] = lowerBody;
+  prodMap['length'] = length;
+  prodMap['width'] = width;
+  prodMap['chest'] = chest;
+  prodMap['sleeves_from_neck'] = sleevesFromNeck;
+  prodMap['waist'] = waist;
+  prodMap['waist_from_neck'] = waistFromNeck;
+  prodMap['chest_from_neck'] = chestFromNeck;
+  prodMap['hips'] = hips;
+
+  if (cat == MainCategory.women) {
+    prodMap['mainCatId'] = '1';
+  }
+  if (cat == MainCategory.men) {
+    prodMap['mainCatId'] = '3';
+  }
+  if (cat == MainCategory.kids) {
+    prodMap['mainCatId'] = '2';
+  }
+
+  var res = await http.post(addToCartUri, body: prodMap);
+
+  var data = jsonDecode(res.body);
+
+  if (data['data'] == 'success') {
+    print('done');
+    return true;
+  } else {
+    print('done');
+    return false;
+  }
+}
+
 Future<CartModel> fetchCartByEmail() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 

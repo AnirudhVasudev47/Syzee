@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +9,19 @@ import 'package:syzee/global/constants.dart';
 import 'package:syzee/global/tools.dart';
 import 'package:syzee/models/product.dart';
 import 'package:syzee/models/review_model.dart';
+import 'package:syzee/models/sizing_profile_model.dart';
 import 'package:syzee/services/cart_services.dart';
 import 'package:syzee/services/color_code_convert.dart';
 import 'package:syzee/services/product.dart';
+import 'package:syzee/services/sizing_service.dart';
 import 'package:syzee/services/wishlist_services.dart';
 import 'package:syzee/ui/screen/cart_screen.dart';
 import 'package:syzee/ui/screen/complete_look_screen.dart';
 import 'package:syzee/ui/screen/size_guide_screen.dart';
 import 'package:syzee/ui/widgets/appbar.dart';
 import 'package:syzee/ui/widgets/review_card.dart';
+import 'package:syzee/ui/widgets/sizing_profile_card.dart';
+import 'package:syzee/ui/widgets/update_or_add_size.dart';
 
 import 'login_screen.dart';
 
@@ -47,6 +53,8 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
   int colorIndex = 0;
   int initIndex = -1;
 
+  late Future<SizingProfileModel> sizing;
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +67,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
               : '${AssetConstants.mockImageLink}/kids';
     });
     product = getProductService(widget.id, widget.mainCat);
+    sizing = getAllSizingProfile();
   }
 
   @override
@@ -264,7 +273,217 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                                     horizontal: 25,
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  showBottomSheet(
+                                    context: context,
+                                    enableDrag: true,
+                                    builder: (context) {
+                                      return BackdropFilter(
+                                        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                                        child: FutureBuilder(
+                                          future: sizing,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              SizingProfileModel size = snapshot.data as SizingProfileModel;
+                                              return size.data.isEmpty
+                                                  ? Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                      children: [
+                                                        Lottie.asset(
+                                                          AssetConstants.sizeEmpty,
+                                                          repeat: true,
+                                                        ),
+                                                        const Text(
+                                                          'Add a size and get started',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Montserrat',
+                                                            fontSize: 18,
+                                                          ),
+                                                          textAlign: TextAlign.center,
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.symmetric(
+                                                            horizontal: 45.0,
+                                                            vertical: 35,
+                                                          ).copyWith(bottom: 22),
+                                                          child: Builder(
+                                                            builder: (context) {
+                                                              return ElevatedButton(
+                                                                onPressed: () {
+                                                                  Scaffold.of(context).showBottomSheet<void>(
+                                                                    (BuildContext context) {
+                                                                      return BackdropFilter(
+                                                                        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                                                                        child: SingleChildScrollView(
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                            children: [
+                                                                              Container(
+                                                                                height: 4,
+                                                                                width: 80,
+                                                                                alignment: Alignment.center,
+                                                                                margin: const EdgeInsets.symmetric(
+                                                                                  horizontal: 150,
+                                                                                ),
+                                                                                padding: const EdgeInsets.symmetric(
+                                                                                  vertical: 75,
+                                                                                ),
+                                                                                decoration: const BoxDecoration(
+                                                                                  color: Colors.blueGrey,
+                                                                                  borderRadius: BorderRadius.all(
+                                                                                    Radius.circular(30),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              UpdateOrAddSize(
+                                                                                action: 'add',
+                                                                                onFunctionComplete: () {
+                                                                                  setState(() {
+                                                                                    sizing = getAllSizingProfile();
+                                                                                  });
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                },
+                                                                style: ElevatedButton.styleFrom(
+                                                                  primary: const Color(0xff169B93),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10.0),
+                                                                  ),
+                                                                  padding: const EdgeInsets.symmetric(
+                                                                    vertical: 10,
+                                                                    horizontal: 45,
+                                                                  ),
+                                                                ),
+                                                                child: const Text(
+                                                                  'Add Size Profile',
+                                                                  style: TextStyle(
+                                                                    fontFamily: 'Montserrat',
+                                                                    fontSize: 16,
+                                                                    fontWeight: FontWeight.w500,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : ListView.builder(
+                                                      shrinkWrap: true,
+                                                      physics: const NeverScrollableScrollPhysics(),
+                                                      itemCount: size.data.length,
+                                                      itemBuilder: (context, index) {
+                                                        return SizingProfileCard(
+                                                          showEdit: false,
+                                                          heightUnit: size.data[index].heightUnit,
+                                                          height: size.data[index].height,
+                                                          weight: size.data[index].weight,
+                                                          weightUnit: size.data[index].weightUnit,
+                                                          selectedId: size.selectedId.toString(),
+                                                          id: size.data[index].id.toString(),
+                                                          onTapCard: () async {
+                                                            SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                                                            if (firebaseAuth.currentUser == null) {
+                                                              displayToast(
+                                                                context,
+                                                                title: 'Please login to continue',
+                                                                desc: 'You hav not logged in. Please login to continue',
+                                                              );
+
+                                                              Navigator.of(context).push(
+                                                                MaterialPageRoute(
+                                                                  builder: (context) => const LoginScreen(),
+                                                                ),
+                                                              );
+                                                            } else {
+                                                              loadingDialog(context, asset: 'assets/images/home/lottie/loading.json');
+
+                                                              bool res = await addToCartWithTailor(
+                                                                widget.mainCat,
+                                                                '${product.variants[colorIndex].id}',
+                                                                product.variants[colorIndex].sizeVariants[sizeIndex].size,
+                                                                prefs.getString('userMail') ?? '',
+                                                                size.data[index].height,
+                                                                size.data[index].heightUnit,
+                                                                size.data[index].weight,
+                                                                size.data[index].weightUnit,
+                                                                size.data[index].upperBody,
+                                                                size.data[index].lowerBody,
+                                                                size.data[index].length,
+                                                                size.data[index].width,
+                                                                size.data[index].chest,
+                                                                size.data[index].sleevesFromNeck,
+                                                                size.data[index].waist,
+                                                                size.data[index].waistFromNeck,
+                                                                size.data[index].chestFromNeck,
+                                                                size.data[index].hips,
+                                                              );
+                                                              Navigator.pop(context);
+                                                              if (res) {
+                                                                displayToast(
+                                                                  context,
+                                                                  title: 'Success',
+                                                                  desc: 'Item Successfully added to cart',
+                                                                  type: 'success',
+                                                                );
+                                                              } else {
+                                                                displayToast(
+                                                                  context,
+                                                                  title: 'Something went wrong',
+                                                                  desc: 'Please try again later',
+                                                                );
+                                                              }
+
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder: (context) => const CartScreen(),
+                                                                ),
+                                                              );
+                                                            }
+                                                          },
+                                                          onFunctionComplete: () {
+                                                            setState(() {
+                                                              sizing = getAllSizingProfile();
+                                                            });
+                                                          },
+                                                          onEdit: () {},
+                                                        );
+                                                      },
+                                                    );
+                                            } else {
+                                              return Column(
+                                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                children: [
+                                                  Lottie.asset(
+                                                    AssetConstants.loadingLottie,
+                                                    repeat: true,
+                                                  ),
+                                                  const Text(
+                                                    'Loading',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Montserrat',
+                                                      fontSize: 18,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                                 child: const Text(
                                   'Tailor Size available',
                                   style: TextStyle(
@@ -581,6 +800,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                             setState(() {
                               isWished = !isWished;
                             });
+                            Navigator.pop(context);
                           },
                           child: Image.asset(
                             isWished ? AssetConstants.heartActive : AssetConstants.heartInactive,
@@ -720,32 +940,32 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                               ),
                             ),
                             revList.data.isEmpty
-                            ? const Text(
-                              'No reviews Yet',
-                              style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            )
-                            : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: revList.data.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 25,
-                                  ).copyWith(top: 25, bottom: 8),
-                                  child: ReviewCard(
-                                    name: revList.data[index].userEmail,
-                                    review: revList.data[index].description,
-                                    date: revList.data[index].createdOn.toString(),
-                                    rate: double.parse(revList.data[index].reviewValue),
+                                ? const Text(
+                                    'No reviews Yet',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 14,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: revList.data.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 25,
+                                        ).copyWith(top: 25, bottom: 8),
+                                        child: ReviewCard(
+                                          name: revList.data[index].userEmail,
+                                          review: revList.data[index].description,
+                                          date: revList.data[index].createdOn.toString(),
+                                          rate: double.parse(revList.data[index].reviewValue),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
-                            ),
                           ],
                         );
                       }

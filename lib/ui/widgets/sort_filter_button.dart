@@ -27,7 +27,7 @@ class SortFilterButton extends StatefulWidget {
   final VoidCallback? onNew;
   final VoidCallback? onOld;
 
-  final List<ProductTileModel> colorList;
+  final ProductTileModel colorList;
 
   final Function(int, int)? priceRange;
   final Function(int, int)? rateFilter;

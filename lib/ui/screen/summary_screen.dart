@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:syzee/global/constants.dart';
@@ -10,6 +13,7 @@ import 'package:syzee/services/order_service.dart';
 import 'package:syzee/ui/screen/apply_coupon.dart';
 import 'package:syzee/ui/screen/order_successful_screen.dart';
 import 'package:syzee/ui/widgets/cart_list_tile.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class SummaryScreen extends StatefulWidget {
   const SummaryScreen({
@@ -50,6 +54,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   @override
   void initState() {
     super.initState();
+    if (Platform.isAndroid) WebView.platform = AndroidWebView();
     cartInit = fetchCartByEmail();
     coupons = getCouponList();
     setState(() {
@@ -109,8 +114,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor:
-              currentTheme.currentTheme == ThemeMode.dark ? Colors.black : Colors.white,
+          backgroundColor: currentTheme.currentTheme == ThemeMode.dark ? Colors.black : Colors.white,
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: Image.asset(
@@ -207,7 +211,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       'Total MRP',
                       'QAR ${cart.data.total}',
                       Colors.black,
-                      () {},
+                          () {},
                     ),
                     // chargesTile(
                     //   'Discount on MRP',
@@ -218,7 +222,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       'Voucher discount',
                       discountAmt == 0 ? 'Apply coupon' : '- QAR ${discountAmt.toStringAsFixed(2)}',
                       const Color(0xff9B0000),
-                      () {
+                          () {
                         showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
@@ -243,8 +247,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                       future: coupons,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          CouponListModel couponList =
-                                              snapshot.data as CouponListModel;
+                                          CouponListModel couponList = snapshot.data as CouponListModel;
                                           return couponList.data.isEmpty
                                               ? Center(
                                                   child: Column(
@@ -256,61 +259,55 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                                         width: 200,
                                                       ),
                                                       const SizedBox(
-                                                        height: 25,
-                                                      ),
-                                                      const Text(
-                                                        'Sorry no coupons available at this moment',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Montserrat',
-                                                        ),
-                                                      )
-                                                    ],
+                                                  height: 25,
+                                                ),
+                                                const Text(
+                                                  'Sorry no coupons available at this moment',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Montserrat',
                                                   ),
                                                 )
+                                              ],
+                                            ),
+                                          )
                                               : ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount: couponList.data.length,
-                                                  itemBuilder: (context, index) {
-                                                    return ApplyCoupon(
-                                                      couponCode: couponList.data[index].code,
-                                                      minAmt: couponList.data[index].minimum,
-                                                      discountType: couponList.data[index].type,
-                                                      expiresOn: couponList.data[index].expiry,
-                                                      discount: couponList.data[index].amount,
-                                                      onTap: () {
-                                                        int tot = cart.data.total;
-                                                        if (tot >
-                                                            double.parse(
-                                                                couponList.data[index].minimum)) {
+                                            shrinkWrap: true,
+                                            itemCount: couponList.data.length,
+                                            itemBuilder: (context, index) {
+                                              return ApplyCoupon(
+                                                couponCode: couponList.data[index].code,
+                                                minAmt: couponList.data[index].minimum,
+                                                discountType: couponList.data[index].type,
+                                                expiresOn: couponList.data[index].expiry,
+                                                discount: couponList.data[index].amount,
+                                                onTap: () {
+                                                  int tot = cart.data.total;
+                                                  if (tot > double.parse(couponList.data[index].minimum)) {
                                                           if (couponList.data[index].type == '%') {
                                                             setState(() {
                                                               Navigator.pop(context);
-                                                              discountAmt = calDiscount(
-                                                                  double.parse('$tot'),
-                                                                  double.parse(couponList
-                                                                      .data[index].amount));
+                                                              discountAmt =
+                                                                  calDiscount(double.parse('$tot'), double.parse(couponList.data[index].amount));
                                                             });
                                                           } else {
                                                             setState(() {
                                                               Navigator.pop(context);
-                                                              discountAmt = double.parse(
-                                                                  couponList.data[index].amount);
+                                                              discountAmt = double.parse(couponList.data[index].amount);
                                                             });
-                                                          }
-                                                        } else {
-                                                          Navigator.pop(context);
-                                                          displayToast(
-                                                            context,
+                                                    }
+                                                  } else {
+                                                    Navigator.pop(context);
+                                                    displayToast(
+                                                      context,
                                                             title: 'Not enough items',
-                                                            desc:
-                                                                'Add more items to apply this coupon code.',
+                                                            desc: 'Add more items to apply this coupon code.',
                                                             type: 'Danger',
                                                           );
-                                                        }
-                                                      },
-                                                    );
-                                                  },
-                                                );
+                                                  }
+                                                },
+                                              );
+                                            },
+                                          );
                                         } else {
                                           return const CircularProgressIndicator();
                                         }
@@ -328,7 +325,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       'Delivery Charges',
                       'QAR ${cart.data.noOfItems * 45}',
                       Colors.black,
-                      () {},
+                          () {},
                     ),
                     const SizedBox(
                       height: 11,
@@ -547,6 +544,79 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         ElevatedButton(
                           onPressed: () async {
                             loadingDialog(context, asset: 'assets/images/home/lottie/loading.json');
+                            // var html = await getPaymentGateway();
+                            //
+                            // showModalBottomSheet(
+                            //   context: context,
+                            //   // color is applied to main screen when modal bottom screen is displayed
+                            //   barrierColor: Colors.black.withOpacity(0.6),
+                            //   //background color for modal bottom screen
+                            //   backgroundColor: Colors.transparent,
+                            //   isScrollControlled: true,
+                            //   isDismissible: false,
+                            //   //elevates modal bottom screen
+                            //   // elevation: 10,
+                            //   // gives rounded corner to modal bottom screen
+                            //   shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(10.0),
+                            //   ),
+                            //   builder: (BuildContext context) {
+                            //     return BackdropFilter(
+                            //       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                            //       child: Container(
+                            //         padding: const EdgeInsets.only(top: 75),
+                            //         decoration: const BoxDecoration(
+                            //           color: Colors.white,
+                            //           borderRadius: BorderRadius.only(
+                            //             topLeft: Radius.circular(10),
+                            //             topRight: Radius.circular(10),
+                            //           ),
+                            //         ),
+                            //         height: MediaQuery.of(context).size.height,
+                            //         child: Column(
+                            //           mainAxisAlignment: MainAxisAlignment.start,
+                            //           children: <Widget>[
+                            //             const Text(
+                            //               'Pay Online',
+                            //               style: TextStyle(
+                            //                 fontFamily: 'Montserrat',
+                            //                 fontSize: 18,
+                            //                 fontWeight: FontWeight.w500,
+                            //                 color: Colors.black,
+                            //               ),
+                            //             ),
+                            //             const SizedBox(
+                            //               height: 14,
+                            //             ),
+                            //             Expanded(
+                            //               child: WebView(
+                            //                 initialUrl: Uri.dataFromString(html, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString(),
+                            //                 javascriptMode: JavascriptMode.unrestricted,
+                            //                 allowsInlineMediaPlayback: true,
+                            //                 zoomEnabled: true,
+                            //                 navigationDelegate: (NavigationRequest request) {
+                            //                   if (request.url.contains('udemy')) {
+                            //                     var para1 = Uri.parse(request.url);
+                            //
+                            //                     print('qdata: ' + para1.queryParameters.toString());
+                            //
+                            //                     //You can do anything
+                            //
+                            //                     //Prevent that url works
+                            //                     return NavigationDecision.navigate;
+                            //                   }
+                            //                   //Any other url works
+                            //                   return NavigationDecision.navigate;
+                            //                 },
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     );
+                            //   },
+                            // );
+
                             String id = await placeOrder(
                               widget.shippingAddress,
                               widget.country,
@@ -570,7 +640,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                   orderId: id,
                                 ),
                               ),
-                              (route) => false,
+                                  (route) => false,
                             );
                           },
                           style: ElevatedButton.styleFrom(

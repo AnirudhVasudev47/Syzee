@@ -146,9 +146,9 @@ class _OrderHistoryTileState extends State<OrderHistoryTile> {
             ),
           );
         } else {
-          return SizedBox(
+          return const SizedBox(
             height: 120,
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(),
             ),
           );
